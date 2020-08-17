@@ -45,13 +45,18 @@ in
     direnv
     xorg.xrandr
     vim
-    emacs
     git
     tmux
     niv
     dbeaver
+    virtualbox
+    openvpn
+    networkmanager-openvpn
     jdk11
     openvpn
+    aws
+    docker
+    redis
 
     # Purescript
     psc-package
@@ -61,7 +66,7 @@ in
 
   # Configuration
   imports = [
-    # ./programs/doom-emacs.nix
+    ./programs/doom-emacs.nix
     ./programs/lorri.nix
     ./programs/tmux.nix
     ./programs/haskell.nix
@@ -98,6 +103,7 @@ in
   home.sessionVariables = {
     EDITOR = "nvim";
     BANYAN_PASSWORD = "P@ssword1";
+    BANYAN_CACHE = "false";
     JWT_SECRET = "";
     JWT_PASSWORD = "";
     JWT_KEY = "";

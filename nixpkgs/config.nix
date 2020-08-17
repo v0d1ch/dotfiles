@@ -1,4 +1,6 @@
 {
     allowUnfree = true;
-    ghc.version = "ghc865";
+    allowBroken = true;
+    virtualisation.virtualbox.host.enable = true;
+    virtualisation.virtualbox.host.enableExtensionPack = true;
 }

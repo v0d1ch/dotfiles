@@ -119,6 +119,7 @@
         "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDnCLEXU8AQIhF2EsUK0JCtmzEa/Byd+2vvsHKtr+csB/CSjBMqxCYo8o647XEfLR0WRMCUaB8zJzpCJ5IPy/uyxHvarDfFpYzUwO29Q0wPFJq2P46zjLLcMKg9rUrY8Eii3tKqy9A6PtnaCBNwHhni5aZmHT92Wx4/XgaVGSb4TEXPErCQiT6wyvf21lXeKxjipojYXCL/nrN5jBBiJ53VFSt7myj0TWgkcDDvGJVuE7mgUTEySlmfwQwLd/42PoSuitN4e86SzuCN4AFa4cGQeJRGJ+aDsF3JhNOBuDYjFlMJseooMdvR9DhTq263M+D7w3fpJBmRBXLdXj3GoHpvXh6L4LxP08dd6D4AdcDPZHwEkpd1pDaGQL/PuTDqpug7x5/OWVcLNVlnG0AXGlEFOVBQ4pUNwQ+xHvI1pMKl0I4JYBPEU/Ul2qX37tVhwQol3k9n5U/K8iJGTEyOO/ipr4uz2uQoeyVOXRSObl+pjlzGYfF7IG7/idcNfYUg6Tk= v0d1ch@nixos"
       ];
   };
+
   nixpkgs.config.allowUnfree = true;
   services.xserver.videoDrivers = [ "nvidia" ];
   hardware.opengl.driSupport32Bit = true;
@@ -129,7 +130,8 @@
     nvidiaBusId = "PCI:01:00:0";
   };
 
-
+  virtualisation.virtualbox.host.enable = true;
+  users.extraGroups.vboxusers.members = [ "root" "v0d1ch" ];
 
 
   services.postgresql = {
@@ -145,6 +147,9 @@
       CREATE ROLE banyan_backend WITH LOGIN PASSWORD 'banyan_backend' CREATEDB;
       CREATE DATABASE banyan_backend;
       GRANT ALL PRIVILEGES ON DATABASE banyan_backend TO banyan_backend;
+      CREATE ROLE banyan_backend_test WITH LOGIN PASSWORD 'banyan_backend' CREATEDB;
+      CREATE DATABASE banyan_backend_test;
+      GRANT ALL PRIVILEGES ON DATABASE banyan_backend_test TO banyan_backend;
     '';
   };
   # This value determines the NixOS release from which the default
