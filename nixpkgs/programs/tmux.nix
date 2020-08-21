@@ -12,7 +12,10 @@
     resizeAmount = 5;
     escapeTime = 0;
     # terminal = "xterm-24bit";
-
+    plugins = with pkgs; [
+      tmuxPlugins.resurrect
+      tmuxPlugins.yank
+    ];
     extraConfig = ''
       # Fix environment variables
       set-option -g update-environment "SSH_AUTH_SOCK \

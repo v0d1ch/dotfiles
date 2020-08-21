@@ -9,54 +9,71 @@ let
   # export NIX_PATH=$HOME/.nix-defexpr/channels${NIX_PATH:+:}$NIX_PATH
 in
 {
+
+  # Let Home Manager install and manage itself.
+  programs.home-manager.enable = true;
+
   # Packages
   home.packages = with pkgs; [
     #general
-    wget
-    pciutils
     google-chrome
     zoom-us
     libreoffice
     skypeforlinux
     vlc
     caffeine-ng
-    zlib
-
-    # GNU > BSD :)
-    coreutils
-    autoconf
+    gnome3.nautilus
+    kdeApplications.spectacle
+    thunderbird-78
+    dbeaver
+    virtualbox
+    calibre
 
     # utils
-    thunderbird-78
+    zlib
+    xclip
+    wget
+    zip
+    unzip
+    gnumake
+    pciutils
+    coreutils
+    autoconf
     htop
     jq
     wget
     ripgrep
     ffmpeg
+    dmenu
+    direnv
+    xorg.xrandr
+    any-nix-shell
 
     # dev
+    dbmate
+    postman
     terminator
     alacritty
     tree
     jq
     ag
-
-    dmenu
-    direnv
-    xorg.xrandr
     vim
     git
     tmux
+    fzf
+    fzf-zsh
     niv
-    dbeaver
-    virtualbox
+    tinc
     openvpn
     networkmanager-openvpn
     jdk11
     openvpn
     aws
     docker
+    docker-compose
     redis
+    postgresql_11
+    qutebrowser
 
     # Purescript
     psc-package
@@ -95,20 +112,23 @@ in
   };
 
   programs.neovim = vimsettings pkgs;
+
   programs.alacritty = {
     enable = true;
     settings = lib.attrsets.recursiveUpdate (import ./programs/alacritty.nix) {};
   };
 
+  programs.zsh.enable = true;
+
+  programs.zsh.oh-my-zsh = {
+    enable = true;
+    theme = "lambda";
+    plugins = [ "git" "sudo" "docker" "tmux"];
+  };
+
   home.sessionVariables = {
     EDITOR = "nvim";
-    BANYAN_PASSWORD = "P@ssword1";
-    BANYAN_CACHE = "false";
-    JWT_SECRET = "";
-    JWT_PASSWORD = "";
-    JWT_KEY = "";
-    ICORE_BANK_LIST = "test";
-
+    SHELL = "/home/v0d1ch/.nix-profile/bin/fish";
   };
 
   home.file.".profile".text = ''
@@ -118,8 +138,46 @@ in
     ${cfg.profileExtra}
   '';
 
-  # Let Home Manager install and manage itself.
-  programs.home-manager.enable = true;
+  services.gpg-agent = {
+    enable = true;
+    enableSshSupport = true;
+    defaultCacheTtl = 1800;
+  };
+
+  programs.fish = {
+    enable = true;
+    package = pkgs.fish;
+    promptInit = ''
+       any-nix-shell fish --info-right | source
+     '';
+  };
+
+  programs.fzf = {
+    enable = true;
+  };
+
+  programs.starship = {
+    enable = true;
+    enableFishIntegration = true;
+    settings = {
+      add_newline = true;
+
+      character = {
+        symbol = "λ";
+        error_symbol = "✗";
+        use_symbol_for_status = true;
+      };
+
+      cmd_duration = {
+        min_time = 100;
+        prefix = "underwent ";
+      };
+
+      haskell = {
+        symbol = " ";
+        disabled = false;
+      };
+    };
+  };
 
 }
-

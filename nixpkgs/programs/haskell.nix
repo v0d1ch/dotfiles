@@ -3,23 +3,23 @@
   home.packages = with pkgs.haskellPackages; [
     hoogle
     hasktags
-    hlint
     stylish-haskell
     cabal2nix
-    ghcid
     dhall
     cabal-install
-    stack
     xmobar
     xmonad
     yeganesh
-    cabal2nix
+    cachix
+    styx
   ];
 
   home.file = {
     # ghci
     ".ghci".text = ''
-      :set prompt "λ> "
+      :set -fobject-code
+      :set prompt      "λ> "
+      :set prompt-cont "|> "
     '';
   };
 }

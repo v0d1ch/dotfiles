@@ -39,7 +39,7 @@
 (use-package! evil-escape
 :init
 (setq evil-escape-key-sequence "jk"))
-
+(add-hook 'vue-mode-hook #'lsp!)
 ;; Here are some additional functions/macros that could help you configure Doom:
 ;;
 ;; - `load!' for loading external *.el files relative to this one

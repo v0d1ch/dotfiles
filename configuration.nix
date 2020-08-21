@@ -8,6 +8,7 @@
   imports =
     [ # Include the results of the hardware scan.
       ./hardware-configuration.nix
+      ./cachix.nix 
     ];
 
   # Use the systemd-boot EFI boot loader.
@@ -114,11 +115,16 @@
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.v0d1ch = {
     isNormalUser = true;
-    extraGroups = [ "wheel" ]; # Enable ‘sudo’ for the user.
+    extraGroups = [ "wheel" "audio" "postgres" ]; # Enable ‘sudo’ for the user.
     openssh.authorizedKeys.keys = [
         "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDnCLEXU8AQIhF2EsUK0JCtmzEa/Byd+2vvsHKtr+csB/CSjBMqxCYo8o647XEfLR0WRMCUaB8zJzpCJ5IPy/uyxHvarDfFpYzUwO29Q0wPFJq2P46zjLLcMKg9rUrY8Eii3tKqy9A6PtnaCBNwHhni5aZmHT92Wx4/XgaVGSb4TEXPErCQiT6wyvf21lXeKxjipojYXCL/nrN5jBBiJ53VFSt7myj0TWgkcDDvGJVuE7mgUTEySlmfwQwLd/42PoSuitN4e86SzuCN4AFa4cGQeJRGJ+aDsF3JhNOBuDYjFlMJseooMdvR9DhTq263M+D7w3fpJBmRBXLdXj3GoHpvXh6L4LxP08dd6D4AdcDPZHwEkpd1pDaGQL/PuTDqpug7x5/OWVcLNVlnG0AXGlEFOVBQ4pUNwQ+xHvI1pMKl0I4JYBPEU/Ul2qX37tVhwQol3k9n5U/K8iJGTEyOO/ipr4uz2uQoeyVOXRSObl+pjlzGYfF7IG7/idcNfYUg6Tk= v0d1ch@nixos"
       ];
   };
+
+  users.extraUsers.v0d1ch = {
+    shell = pkgs.zsh;
+  };
+
 
   nixpkgs.config.allowUnfree = true;
   services.xserver.videoDrivers = [ "nvidia" ];
@@ -126,18 +132,26 @@
   hardware.nvidia.modesetting.enable = true;
   hardware.nvidia.optimus_prime = {
     enable = true;
-    intelBusId = "PCI:00:02:0";
     nvidiaBusId = "PCI:01:00:0";
+    intelBusId = "PCI:00:02:0";
   };
 
   virtualisation.virtualbox.host.enable = true;
   users.extraGroups.vboxusers.members = [ "root" "v0d1ch" ];
 
-
   services.postgresql = {
     enable = true;
     package = pkgs.postgresql_11;
+    dataDir = "/tmp/postgres";
     enableTCPIP = true;
+    extraConfig = ''
+      logging_collector = on
+      log_statement = 'all'
+      log_duration = on
+      log_directory = '/tmp/postgres'
+      log_filename = 'postgresql.log'
+    '';
+
     authentication = pkgs.lib.mkForce ''
       local   all             all                                     trust
       host    all             all             127.0.0.1/32            trust
@@ -152,6 +166,7 @@
       GRANT ALL PRIVILEGES ON DATABASE banyan_backend_test TO banyan_backend;
     '';
   };
+
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions
   # on your system were taken. It‘s perfectly fine and recommended to leave

@@ -4,23 +4,14 @@ pkgs:
   viAlias = true;
   vimAlias = true;
   plugins = with pkgs.vimPlugins; [
-    fzf-vim
-    fzfWrapper
-    LanguageClient-neovim
-    lightline-vim
     nerdtree
-    supertab
-    tabular
-    vim-better-whitespace
-    vim-multiple-cursors
     vim-surround
-    #vimproc
-    #vimproc-vim
+    vim-fugitive
+    vimagit
+    ctrlp
 
     # themes
     wombat256
-
-    # language packages
 
     # Haskell
     vim-hoogle
@@ -53,34 +44,11 @@ pkgs:
     imap jk <Esc>
     let mapleader = "<SPACE>"
 
-    let g:SuperTabDefaultCompletionType = '<c-x><c-o>'
-
-    if has("gui_running")
-      imap <c-space> <c-r>=SuperTabAlternateCompletion("\<lt>c-x>\<lt>c-o>")<cr>
-    else " no gui
-      if has("unix")
-        inoremap <Nul> <c-r>=SuperTabAlternateCompletion("\<lt>c-x>\<lt>c-o>")<cr>
-      endif
-    endif
-
-    let g:haskellmode_completion_ghc = 0
-    autocmd FileType haskell setlocal omnifunc=necoghc#omnifunc
-    autocmd FileType markdown setlocal conceallevel=0
-
-    " Tabular bindings
-    let g:haskell_tabular = 1
-    vmap <leader>a= :Tabularize /=<CR>
-    vmap <leader>a; :Tabularize /::<CR>
-    vmap <leader>a- :Tabularize /-><CR>
-    vmap <leader>a# :Tabularize /#<CR>
-
-    " fzf bindings
-    nnoremap <leader>r :Rg<CR>
-    nnoremap <leader>b :Buffers<CR>
-    nnoremap <leader>e :Files<CR>
-    nnoremap <leader>l :Lines<CR>
-    nnoremap <leader>L :BLines<CR>
-    nnoremap <leader>c :Commits<CR>
-    nnoremap <leader>C :BCommits<CR>
+    "nerdtree
+    map <C-n> :NERDTreeToggle<CR>
+    autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
+    "ctrl-p
+    let g:ctrlp_map = '<c-p>'
+    let g:ctrlp_cmd = 'CtrlP'
   '';
 }
