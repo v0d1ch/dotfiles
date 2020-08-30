@@ -21,6 +21,9 @@ in
     libreoffice
     skypeforlinux
     vlc
+    wayland
+    qt4
+    # viber
     caffeine-ng
     gnome3.nautilus
     kdeApplications.spectacle
@@ -28,17 +31,26 @@ in
     dbeaver
     virtualbox
     calibre
+    kazam
+    kdenlive
+    xsane
+    hplip
+    gimp
 
     # utils
     zlib
     xclip
     wget
+    pwgen
     zip
     unzip
     gnumake
     pciutils
     coreutils
     autoconf
+    gtk3
+    python3
+    glib
     htop
     jq
     wget
@@ -48,6 +60,7 @@ in
     direnv
     xorg.xrandr
     any-nix-shell
+    gzip
 
     # dev
     dbmate
@@ -68,7 +81,6 @@ in
     networkmanager-openvpn
     jdk11
     openvpn
-    aws
     docker
     docker-compose
     redis
@@ -79,6 +91,8 @@ in
     psc-package
     purescript
     spago
+
+    go
     ];
 
   # Configuration
@@ -129,6 +143,8 @@ in
   home.sessionVariables = {
     EDITOR = "nvim";
     SHELL = "/home/v0d1ch/.nix-profile/bin/fish";
+    DOCKER_HOST="unix:///run/docker.sock";
+    GOPATH="/home/v0d1ch/go";
   };
 
   home.file.".profile".text = ''

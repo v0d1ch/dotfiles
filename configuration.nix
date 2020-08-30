@@ -49,6 +49,8 @@
     proggyfonts
     opensans-ttf
     ubuntu_font_family
+    hasklig
+    iosevka
   ];
 
   # Set your time zone.
@@ -80,7 +82,8 @@
   # networking.firewall.enable = false;
 
   # Enable CUPS to print documents.
-  # services.printing.enable = true;
+  services.printing.enable = true;
+  services.printing.drivers = [ pkgs.hplipWithPlugin ];
 
   # Enable sound.
   sound.enable = true;
@@ -111,11 +114,12 @@
   # Enable the KDE Desktop Environment.
   services.xserver.displayManager.sddm.enable = true;
   services.xserver.desktopManager.plasma5.enable = true;
+  virtualisation.docker.enable = true;
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.v0d1ch = {
     isNormalUser = true;
-    extraGroups = [ "wheel" "audio" "postgres" ]; # Enable ‘sudo’ for the user.
+    extraGroups = [ "wheel" "audio" "postgres" "docker" ]; # Enable ‘sudo’ for the user.
     openssh.authorizedKeys.keys = [
         "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDnCLEXU8AQIhF2EsUK0JCtmzEa/Byd+2vvsHKtr+csB/CSjBMqxCYo8o647XEfLR0WRMCUaB8zJzpCJ5IPy/uyxHvarDfFpYzUwO29Q0wPFJq2P46zjLLcMKg9rUrY8Eii3tKqy9A6PtnaCBNwHhni5aZmHT92Wx4/XgaVGSb4TEXPErCQiT6wyvf21lXeKxjipojYXCL/nrN5jBBiJ53VFSt7myj0TWgkcDDvGJVuE7mgUTEySlmfwQwLd/42PoSuitN4e86SzuCN4AFa4cGQeJRGJ+aDsF3JhNOBuDYjFlMJseooMdvR9DhTq263M+D7w3fpJBmRBXLdXj3GoHpvXh6L4LxP08dd6D4AdcDPZHwEkpd1pDaGQL/PuTDqpug7x5/OWVcLNVlnG0AXGlEFOVBQ4pUNwQ+xHvI1pMKl0I4JYBPEU/Ul2qX37tVhwQol3k9n5U/K8iJGTEyOO/ipr4uz2uQoeyVOXRSObl+pjlzGYfF7IG7/idcNfYUg6Tk= v0d1ch@nixos"
       ];
@@ -127,7 +131,7 @@
 
 
   nixpkgs.config.allowUnfree = true;
-  services.xserver.videoDrivers = [ "nvidia" ];
+  services.xserver.videoDrivers = ["nvidia" ];
   hardware.opengl.driSupport32Bit = true;
   hardware.nvidia.modesetting.enable = true;
   hardware.nvidia.optimus_prime = {
@@ -135,6 +139,7 @@
     nvidiaBusId = "PCI:01:00:0";
     intelBusId = "PCI:00:02:0";
   };
+
 
   virtualisation.virtualbox.host.enable = true;
   users.extraGroups.vboxusers.members = [ "root" "v0d1ch" ];

@@ -3,8 +3,8 @@
   home.packages = with pkgs; [
     lorri
   ];
-#  services.lorri = {
-#    enable = true;
-#  };
+ services.lorri = {
+   enable = true;
+ };
 }
 

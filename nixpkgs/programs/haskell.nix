@@ -4,6 +4,7 @@
     hoogle
     hasktags
     stylish-haskell
+    ghcid
     cabal2nix
     dhall
     cabal-install
@@ -12,6 +13,7 @@
     yeganesh
     cachix
     styx
+    z3
   ];
 
   home.file = {

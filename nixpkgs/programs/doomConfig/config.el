@@ -34,7 +34,7 @@
 ;; This determines the style of line numbers in effect. If set to `nil', line
 ;; numbers are disabled. For relative line numbers, set this to `relative'.
 (setq display-line-numbers-type t)
-(setq doom-font (font-spec :family "Hack" :size 14))
+(setq doom-font (font-spec :family "Hasklig" :size 14))
 
 (use-package! evil-escape
 :init
