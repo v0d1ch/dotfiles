@@ -33,11 +33,13 @@ in
     calibre
     kazam
     kdenlive
-    xsane
-    hplip
     gimp
+    gscan2pdf
+    xsane
+    simple-scan
 
     # utils
+    gcc
     zlib
     xclip
     wget
