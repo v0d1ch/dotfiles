@@ -37,6 +37,13 @@ in
     gscan2pdf
     xsane
     simple-scan
+    okular
+    xarchiver
+    weechat
+    xscreensaver
+    trayer
+    arandr 
+
 
     # utils
     gcc

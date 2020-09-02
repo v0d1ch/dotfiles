@@ -85,10 +85,11 @@
 
   # Enable sound.
   sound.enable = true;
-  hardware.pulseaudio.enable = true;
+  # hardware.pulseaudio.enable = true;
 
   # Enable the X11 windowing system.
   services.xserver.enable = true;
+  services.xserver.dpi = 96;
   services.xserver.layout = "us";
   services.xserver.xkbOptions = "eurosign:e";
   # services.xserver.desktopManager.default = "none";      # Unset the default desktop manager.

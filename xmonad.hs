@@ -11,24 +11,24 @@ import qualified XMonad.StackSet          as W
 import           XMonad.Util.Run          (spawnPipe)
 
 main = do
-  -- xmproc <- spawnPipe "xmobar"
+  xmproc <- spawnPipe "xmobar"
   xmonad kde4Config
     { modMask = mod4Mask
     , manageHook = manageHook kde4Config
     , layoutHook = avoidStruts  $ layoutHook defaultConfig
-    -- , logHook = dynamicLogWithPP xmobarPP
-    --                 { ppOutput = hPutStrLn xmproc
-    --                 , ppTitle = xmobarColor "black" "" . shorten 50
-    --                 }
+    , logHook = dynamicLogWithPP xmobarPP
+                    { ppOutput = hPutStrLn xmproc
+                    , ppTitle = xmobarColor "black" "" . shorten 50
+                    }
     , handleEventHook = handleEventHook kde4Config <+> docksEventHook
     , keys     = kde4Keys <+> keys desktopConfig
     , workspaces = myWorkspaces
     , startupHook = do
-        spawnOn "www" "google-chrome-stable"
-        spawnOn "haskell" "emacs-26.3"
-        spawnOn "haskell" "alacritty"
-        spawnOn "other" "dbeaver"
-        spawnOn "mail" "thunderbird"
+         spawnOn "www" "google-chrome-stable"
+         spawnOn "haskell" "emacs-26.3"
+         spawnOn "haskell" "alacritty"
+        -- spawnOn "other" "dbeaver"
+         spawnOn "mail" "thunderbird"
     }
 
 kde4Keys (XConfig {modMask = modm}) = M.fromList $
