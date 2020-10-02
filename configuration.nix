@@ -9,6 +9,7 @@
     [ # Include the results of the hardware scan.
       ./hardware-configuration.nix
       ./cachix.nix 
+      ./cache.nix 
       ./printing.nix
     ];
 
@@ -33,9 +34,10 @@
 
   # Select internationalisation properties.
   i18n = {
-    consoleKeyMap = "us";
     defaultLocale = "en_US.UTF-8";
   };
+
+  console.keyMap = "us";
 
   #fonts
   fonts.fonts = with pkgs; [
@@ -52,6 +54,7 @@
     ubuntu_font_family
     hasklig
     iosevka
+    font-awesome-ttf
   ];
 
   # Set your time zone.
@@ -85,7 +88,7 @@
 
   # Enable sound.
   sound.enable = true;
-  # hardware.pulseaudio.enable = true;
+  hardware.pulseaudio.enable = true;
 
   # Enable the X11 windowing system.
   services.xserver.enable = true;
@@ -101,7 +104,6 @@
       hpkgs.xmonad-extras                                # Install xmonad-extras.
       hpkgs.xmonad                                       # Install xmonad itself.
     ];
-    default = "xmonad";                                  # Set xmonad as the default window manager.
   };
 
   services.xserver.desktopManager.xterm.enable = false;  # Disable NixOS default desktop manager.
@@ -118,16 +120,15 @@
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.v0d1ch = {
     isNormalUser = true;
-    extraGroups = [ "wheel" "audio" "postgres" "docker" "scanner" ]; # Enable ‘sudo’ for the user.
+    extraGroups = [ "wheel" "audio" "postgres" "docker" "scanner" "lp" ]; # Enable ‘sudo’ for the user.
     openssh.authorizedKeys.keys = [
         "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDnCLEXU8AQIhF2EsUK0JCtmzEa/Byd+2vvsHKtr+csB/CSjBMqxCYo8o647XEfLR0WRMCUaB8zJzpCJ5IPy/uyxHvarDfFpYzUwO29Q0wPFJq2P46zjLLcMKg9rUrY8Eii3tKqy9A6PtnaCBNwHhni5aZmHT92Wx4/XgaVGSb4TEXPErCQiT6wyvf21lXeKxjipojYXCL/nrN5jBBiJ53VFSt7myj0TWgkcDDvGJVuE7mgUTEySlmfwQwLd/42PoSuitN4e86SzuCN4AFa4cGQeJRGJ+aDsF3JhNOBuDYjFlMJseooMdvR9DhTq263M+D7w3fpJBmRBXLdXj3GoHpvXh6L4LxP08dd6D4AdcDPZHwEkpd1pDaGQL/PuTDqpug7x5/OWVcLNVlnG0AXGlEFOVBQ4pUNwQ+xHvI1pMKl0I4JYBPEU/Ul2qX37tVhwQol3k9n5U/K8iJGTEyOO/ipr4uz2uQoeyVOXRSObl+pjlzGYfF7IG7/idcNfYUg6Tk= v0d1ch@nixos"
       ];
   };
 
   users.extraUsers.v0d1ch = {
-    shell = pkgs.zsh;
+    shell = pkgs.fish;
   };
-
 
   nixpkgs.config.allowUnfree = true;
   services.xserver.videoDrivers = ["nvidia" ];
@@ -143,22 +144,18 @@
   virtualisation.virtualbox.host.enable = true;
   users.extraGroups.vboxusers.members = [ "root" "v0d1ch" ];
 
-  nixpkgs.config.packageOverrides = pkgs: {
-    xsaneGimp = pkgs.xsane.override { gimpSupport = true; }; 
-  };
-
   services.postgresql = {
     enable = true;
     package = pkgs.postgresql_11;
     dataDir = "/tmp/postgres";
     enableTCPIP = true;
-    extraConfig = ''
-      logging_collector = on
-      log_statement = 'all'
-      log_duration = on
-      log_directory = '/tmp/postgres'
-      log_filename = 'postgresql.log'
-    '';
+    settings = { 
+      logging_collector = true;
+      log_statement = "all";
+      log_duration = true;
+      log_directory = "/tmp/postgres";
+      log_filename = "postgresql.log";
+    };
 
     authentication = pkgs.lib.mkForce ''
       local   all             all                                     trust
@@ -172,6 +169,10 @@
       CREATE ROLE banyan_backend_test WITH LOGIN PASSWORD 'banyan_backend' CREATEDB;
       CREATE DATABASE banyan_backend_test;
       GRANT ALL PRIVILEGES ON DATABASE banyan_backend_test TO banyan_backend;
+
+      CREATE ROLE devnull WITH LOGIN PASSWORD 'devnull' CREATEDB;
+      CREATE DATABASE devnull;
+      GRANT ALL PRIVILEGES ON DATABASE devnull TO devnull;
     '';
   };
 
