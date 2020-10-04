@@ -46,7 +46,12 @@ in
     arandr 
     autorandr
     pavucontrol
+    powerdevil
     hplip
+    ntfs3g
+    exfat-utils
+    udiskie
+    stalonetray
 
 
     # utils
@@ -75,6 +80,7 @@ in
     any-nix-shell
     gzip
     p7zip
+    qbittorrent
 
     # dev
     dbmate
@@ -118,6 +124,7 @@ in
     ./programs/lorri.nix
     ./programs/tmux.nix
     ./programs/haskell.nix
+    ./programs/stalonetray.nix
   ];
 
   #programs
