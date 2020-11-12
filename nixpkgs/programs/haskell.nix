@@ -6,6 +6,7 @@
     stylish-haskell
     ghcid
     cabal2nix
+    haskell-language-server
     dhall
     cabal-install
     xmobar
@@ -13,7 +14,7 @@
     yeganesh
     cachix
     styx
-    z3
+    stack
   ];
 
   home.file = {

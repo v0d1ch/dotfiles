@@ -31,18 +31,38 @@ in
     dbeaver
     virtualbox
     calibre
+    unetbootin  
     kazam
+    vokoscreen
     kdenlive
     gimp
     gscan2pdf
     xsane
     simple-scan
+    at-spi2-core
     okular
-    xarchiver
+    gnome3.file-roller
     weechat
     xscreensaver
     trayer
     arandr 
+    autorandr
+    pavucontrol
+    powerdevil
+    networkmanager
+    networkmanager-openvpn
+    networkmanagerapplet
+    hplip
+    ntfs3g
+    exfat-utils
+    udiskie
+    stalonetray
+    sqitchPg
+    overmind
+    step-ca
+    step-cli
+    phantomjs
+    kubectl
 
 
     # utils
@@ -62,6 +82,7 @@ in
     glib
     htop
     jq
+    lsof
     wget
     ripgrep
     ffmpeg
@@ -70,8 +91,13 @@ in
     xorg.xrandr
     any-nix-shell
     gzip
+    p7zip
+    qbittorrent
+    nicotine-plus
+
 
     # dev
+   # haskell.compiler.ghc8102
     dbmate
     postman
     terminator
@@ -80,6 +106,7 @@ in
     jq
     ag
     vim
+    vscode
     git
     tmux
     fzf
@@ -89,12 +116,16 @@ in
     openvpn
     networkmanager-openvpn
     jdk11
+    gradle_5
     openvpn
     docker
     docker-compose
     redis
     postgresql_11
     qutebrowser
+    slack
+    travis
+    gdrive
 
     # Purescript
     psc-package
@@ -110,6 +141,7 @@ in
     ./programs/lorri.nix
     ./programs/tmux.nix
     ./programs/haskell.nix
+    ./programs/stalonetray.nix
   ];
 
   #programs
@@ -175,6 +207,14 @@ in
     promptInit = ''
        any-nix-shell fish --info-right | source
      '';
+    shellInit = '' 
+       xset r rate 250 50
+       set PATH ~/.daml/bin $PATH
+       set PATH ~/.daml/bin $PATH
+       set NO_AT_BRIDGE 1
+       eval (direnv hook fish)
+     '';
+     # set -x JAVA_HOME /home/v0d1ch/.nix-profile/bin/java
   };
 
   programs.fzf = {

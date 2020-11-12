@@ -21,7 +21,7 @@
   };
 
   cursor.style = "Block";
-  shell.program = "/home/v0d1ch/.nix-profile/bin/zsh";
+  shell.program = "/home/v0d1ch/.nix-profile/bin/fish";
 
   # colors = {
   #   # Default colors

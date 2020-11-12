@@ -143,11 +143,14 @@
 
   virtualisation.virtualbox.host.enable = true;
   users.extraGroups.vboxusers.members = [ "root" "v0d1ch" ];
+  security.pki.certificateFiles =
+    [ "${pkgs.cacert}/etc/ssl/certs/ca-bundle.crt"
+    ];
 
   services.postgresql = {
     enable = true;
     package = pkgs.postgresql_11;
-    dataDir = "/tmp/postgres";
+    dataDir = "/mnt/postgres";
     enableTCPIP = true;
     settings = { 
       logging_collector = true;
@@ -160,6 +163,8 @@
     authentication = pkgs.lib.mkForce ''
       local   all             all                                     trust
       host    all             all             127.0.0.1/32            trust
+      host    all             all             192.168.0.0/16          trust
+      host    all             all             172.17.0.0/16           trust
       host    all             all             ::1/128                 trust
     '';
     initialScript = pkgs.writeText "backend-initScript" ''

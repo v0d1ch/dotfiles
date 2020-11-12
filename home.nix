@@ -31,7 +31,9 @@ in
     dbeaver
     virtualbox
     calibre
+    unetbootin  
     kazam
+    vokoscreen
     kdenlive
     gimp
     gscan2pdf
@@ -47,11 +49,20 @@ in
     autorandr
     pavucontrol
     powerdevil
+    networkmanager
+    networkmanager-openvpn
+    networkmanagerapplet
     hplip
     ntfs3g
     exfat-utils
     udiskie
     stalonetray
+    sqitchPg
+    overmind
+    step-ca
+    step-cli
+    phantomjs
+    kubectl
 
 
     # utils
@@ -71,6 +82,7 @@ in
     glib
     htop
     jq
+    lsof
     wget
     ripgrep
     ffmpeg
@@ -81,8 +93,11 @@ in
     gzip
     p7zip
     qbittorrent
+    nicotine-plus
+
 
     # dev
+   # haskell.compiler.ghc8102
     dbmate
     postman
     terminator
@@ -101,6 +116,7 @@ in
     openvpn
     networkmanager-openvpn
     jdk11
+    gradle_5
     openvpn
     docker
     docker-compose
@@ -109,6 +125,7 @@ in
     qutebrowser
     slack
     travis
+    gdrive
 
     # Purescript
     psc-package
@@ -195,8 +212,9 @@ in
        set PATH ~/.daml/bin $PATH
        set PATH ~/.daml/bin $PATH
        set NO_AT_BRIDGE 1
+       eval (direnv hook fish)
      '';
-     #  set -x JAVA_HOME /home/v0d1ch/.nix-profile/bin/java
+     # set -x JAVA_HOME /home/v0d1ch/.nix-profile/bin/java
   };
 
   programs.fzf = {
