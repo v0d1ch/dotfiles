@@ -1,6 +1,7 @@
 #!/bin/sh
 
 
+spd-say 'backup starting'
 # check to see is git command line installed in this machine
 IS_GIT_AVAILABLE="$(git --version)"
 if [[ $IS_GIT_AVAILABLE == *"version"* ]]; then
@@ -34,4 +35,4 @@ fi
 git add -u;
 git commit -m "New backup `date +'%Y-%m-%d %H:%M:%S'`";
 git push origin master
-spd-say 'backup completed'
+spd-say 'completed'

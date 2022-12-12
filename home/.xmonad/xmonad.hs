@@ -34,7 +34,7 @@ main = do
 kde4Keys (XConfig{modMask = modm}) =
     M.fromList $
         [ ((modm, xK_p), spawn "$(yeganesh -x)")
-        , ((mod4Mask, xK_w), spawn "/home/v0d1ch/code/dotfiles/backup.sh")
+        , ((mod4Mask, xK_w), spawn "cd /home/v0d1ch/code/dotfiles && ./backup.sh")
         ]
 
 
