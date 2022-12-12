@@ -14,10 +14,10 @@ fi
 
 cp  /etc/nixos/configuration.nix .
 cp  /etc/nixos/hardware-configuration.nix .
-cp  $HOME/.xmonad/* .
-cp  $HOME/.doom.d/* .
-cp  $HOME/.emacs.d/* .
-cp  $HOME/.xmobarrc .
+cp  -R $HOME/.xmonad/* .
+cp  -R $HOME/.doom.d/* .
+cp  -R $HOME/.emacs.d/* .
+cp  -R $HOME/.xmobarrc .
 
 
 
