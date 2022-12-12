@@ -14,9 +14,9 @@ fi
 
 cp  /etc/nixos/configuration.nix nix
 cp  /etc/nixos/hardware-configuration.nix nix
-cp  -R $HOME/.xmonad/* home
-cp  -R $HOME/.doom.d/* home
-cp  -R $HOME/.emacs.d/* home
+cp  -R $HOME/.xmonad home
+cp  -R $HOME/.doom.d home
+cp  -R $HOME/.emacs.d home
 cp  -R $HOME/.xmobarrc home
 
 
