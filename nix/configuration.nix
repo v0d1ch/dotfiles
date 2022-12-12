@@ -186,7 +186,6 @@
        zip
        unzip
        jq
-       # silver-searcher
        lsof
        qbittorrent
        nicotine-plus
@@ -210,6 +209,7 @@
        rustup
        zellij
        alacritty
+       speechd
      ];
 
      services.lorri = {
@@ -371,7 +371,6 @@
 
   services.openssh.enable = true;
 
-  # Binary Cache 
   nix.binaryCaches = [ 
     "https://nixcache.reflex-frp.org"
   ];
@@ -391,12 +390,6 @@
   ];
 
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
-
-  # Open ports in the firewall.
-  # networking.firewall.allowedTCPPorts = [ ... ];
-  # networking.firewall.allowedUDPPorts = [ ... ];
-  # Or disable the firewall altogether.
-  # networking.firewall.enable = false;
 
   system.stateVersion = "22.05";
 

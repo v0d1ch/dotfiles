@@ -19,7 +19,7 @@ main = do
         kde4Config
             { modMask = mod4Mask
             , manageHook = manageHook kde4Config
-            , startupHook = myStartupHook
+            , startupHook = startupHookX
             , layoutHook = avoidStruts $ layoutHook def
             , logHook =
                 dynamicLogWithPP
@@ -34,13 +34,13 @@ main = do
 kde4Keys (XConfig{modMask = modm}) =
     M.fromList $
         [ ((modm, xK_p), spawn "$(yeganesh -x)")
-        , ((modm .|. shiftMask, xK_q), spawn "dbus-send --print-reply --dest=org.kde.ksmserver /KSMServer org.kde.KSMServerInterface.logout int32:1 int32:0 int32:1")
+        , ((mod4Mask, xK_w), spawn "/home/v0d1ch/code/dotfiles/backup.sh")
         ]
 
-myStartupHook :: X ()
-myStartupHook = do
+
+startupHookX :: X ()
+startupHookX = do
     spawnOnce "xset r rate 200 50"
     spawnOnce "export SSH_AUTH_SOCK=$(gpgconf --list-dirs agent-ssh-socket)"
     spawnOnce "export EDITOR=emacs"
     spawnOnce "stalonetray &"
-    spawnOnce "/home/v0d1ch/code/dotfiles/backup.sh"
