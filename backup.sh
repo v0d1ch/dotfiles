@@ -12,12 +12,12 @@ fi
 
 
 
-cp  /etc/nixos/configuration.nix .
-cp  /etc/nixos/hardware-configuration.nix .
-cp  -R $HOME/.xmonad/* .
-cp  -R $HOME/.doom.d/* .
-cp  -R $HOME/.emacs.d/* .
-cp  -R $HOME/.xmobarrc .
+cp  /etc/nixos/configuration.nix nix
+cp  /etc/nixos/hardware-configuration.nix nix
+cp  -R $HOME/.xmonad/* home
+cp  -R $HOME/.doom.d/* home
+cp  -R $HOME/.emacs.d/* home
+cp  -R $HOME/.xmobarrc home
 
 
 
