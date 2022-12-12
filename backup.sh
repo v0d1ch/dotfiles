@@ -34,3 +34,4 @@ fi
 git add -u;
 git commit -m "New backup `date +'%Y-%m-%d %H:%M:%S'`";
 git push origin master
+spd-say 'backup completed'
