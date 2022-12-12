@@ -37,7 +37,7 @@ kde4Keys (XConfig{modMask = modm}) =
         , ((mod4Mask, xK_w), spawn "cd /home/v0d1ch/code/dotfiles && ./backup.sh")
         ]
 
-
+-- setup some things when we start xmonad
 startupHookX :: X ()
 startupHookX = do
     spawnOnce "xset r rate 200 50"
