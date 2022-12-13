@@ -210,6 +210,7 @@
        zellij
        alacritty
        speechd
+       btop
      ];
 
      services.lorri = {
