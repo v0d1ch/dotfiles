@@ -37,11 +37,9 @@ kde4Keys (XConfig{modMask = modm}) =
         , ((mod4Mask, xK_w), spawn "cd /home/v0d1ch/code/dotfiles && ./backup.sh")
         ]
 
--- setup some things when we start xmonad
 startupHookX :: X ()
 startupHookX = do
     spawnOnce "xset r rate 200 50"
     spawnOnce "export SSH_AUTH_SOCK=$(gpgconf --list-dirs agent-ssh-socket)"
     spawnOnce "export EDITOR=emacs"
-    spawnOnce "stalonetray &"
-    spawnOnce "xdotool windowraise `xdotool search --all --name xmobar`"
+    spawnOnce "nohup stalonetray >/dev/null 2>&1"
