@@ -44,3 +44,4 @@ startupHookX = do
     spawnOnce "export SSH_AUTH_SOCK=$(gpgconf --list-dirs agent-ssh-socket)"
     spawnOnce "export EDITOR=emacs"
     spawnOnce "stalonetray &"
+    spawnOnce "xdotool windowraise `xdotool search --all --name xmobar`"
