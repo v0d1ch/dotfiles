@@ -21,6 +21,7 @@ main = do
             , manageHook = manageHook kde4Config
             , startupHook = startupHookX
             , layoutHook = avoidStruts $ layoutHook def
+            , terminal = "alacritty"
             , logHook =
                 dynamicLogWithPP
                     xmobarPP
