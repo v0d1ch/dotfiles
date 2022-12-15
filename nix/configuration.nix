@@ -1,5 +1,7 @@
 { config, pkgs, lib, ... }:
 
+let unstable = import <nixos-unstable> { config = { allowUnfree = true; }; };
+in
 {
   imports =
     [ # Include the results of the hardware scan.
@@ -207,10 +209,10 @@
        qt5Full
        eva
        rustup
-       zellij
        alacritty
        speechd
        btop
+       lsix
      ];
 
      services.lorri = {
@@ -346,22 +348,23 @@
   environment.variables.EDITOR = "emacs";
 
   environment.systemPackages = with pkgs; [
-    vim 
-    wget
-    emacsNativeComp
-    google-chrome
-    discord
-    signal-desktop
-    postman
-    viber
-    pam_u2f
-    yubikey-personalization
-    pinentry-curses
-    pinentry-emacs
-    gcc8
-    xorg.libxcb
-    xdotool
-  ];
+      vim 
+      wget
+      emacsNativeComp
+      google-chrome
+      discord
+      signal-desktop
+      postman
+      viber
+      pam_u2f
+      yubikey-personalization
+      pinentry-curses
+      pinentry-emacs
+      gcc8
+      xorg.libxcb
+      xdotool
+      unstable.zellij
+    ];
 
   # programs.mtr.enable = true;
   programs.gnupg.agent = {
