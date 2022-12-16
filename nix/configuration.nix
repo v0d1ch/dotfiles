@@ -213,6 +213,7 @@ in
        speechd
        btop
        lsix
+       simplescreenrecorder
      ];
 
      services.lorri = {
@@ -345,7 +346,7 @@ in
     sudo.u2fAuth = true;
   };
 
-  environment.variables.EDITOR = "emacs";
+  environment.variables.EDITOR = "vim";
 
   environment.systemPackages = with pkgs; [
       vim 

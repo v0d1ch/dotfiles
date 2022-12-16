@@ -42,5 +42,5 @@ startupHookX :: X ()
 startupHookX = do
     spawnOnce "xset r rate 200 50"
     spawnOnce "export SSH_AUTH_SOCK=$(gpgconf --list-dirs agent-ssh-socket)"
-    spawnOnce "export EDITOR=emacs"
+    spawnOnce "export EDITOR=vim"
     spawnOnce "nohup stalonetray >/dev/null 2>&1"
