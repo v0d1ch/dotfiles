@@ -118,6 +118,7 @@ in
     packages = with pkgs; [
      (neovim.override {
         vimAlias = true;
+        viAlias = true;
         withNodeJs = true;
         configure = {
           packages.myPlugins = with pkgs.vimPlugins; {

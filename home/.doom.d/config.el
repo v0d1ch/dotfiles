@@ -88,7 +88,8 @@
 ;; You can also try 'gd' (or 'C-c c d') to jump to their definition and see how
 ;; they are implemented.
 
-(setq doom-theme 'doom-dracula)
+;;(setq doom-theme 'doom-dracula)
+(setq doom-theme 'doom-acario-dark)
 ;;(setq doom-theme 'tsdh-light)
 (setq magit-list-refs-sortby "-creatordate")
 (use-package! evil-escape
