@@ -193,7 +193,7 @@ in
        qbittorrent
        nicotine-plus
        termonad
-       keepassxc
+       unstable.keepassxc
        openvpn
        docker
        docker-compose
@@ -353,7 +353,7 @@ in
       vim 
       wget
       emacsNativeComp
-      google-chrome
+      unstable.google-chrome
       discord
       signal-desktop
       spotify
@@ -368,6 +368,7 @@ in
       xdotool
       unstable.zellij
       rclone
+      drive 
     ];
 
   # programs.mtr.enable = true;
