@@ -356,6 +356,7 @@ in
       google-chrome
       discord
       signal-desktop
+      spotify
       postman
       viber
       pam_u2f
