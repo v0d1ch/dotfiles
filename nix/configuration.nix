@@ -366,6 +366,7 @@ in
       xorg.libxcb
       xdotool
       unstable.zellij
+      rclone
     ];
 
   # programs.mtr.enable = true;
