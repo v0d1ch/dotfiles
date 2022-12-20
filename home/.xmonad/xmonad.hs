@@ -53,4 +53,4 @@ startupHookX = do
     spawnOnce "export SSH_AUTH_SOCK=$(gpgconf --list-dirs agent-ssh-socket)"
     spawnOnce "export EDITOR=vim"
     spawnOnce "nohup stalonetray >/dev/null 2>&1"
-    spawnOnce "nohup rclone mount google_drive: ~/Documents/google-drive-local >/dev/null 2>&1"
+    spawnOnce "nohup (rclone mount google_drive: ~/Documents/google-drive-local) >/dev/null 2>&1"

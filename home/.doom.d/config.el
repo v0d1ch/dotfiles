@@ -89,7 +89,7 @@
 ;; they are implemented.
 
 ;;(setq doom-theme 'doom-dracula)
-(setq doom-theme 'doom-Iosvkem)
+(setq doom-theme 'doom-molokai)
 ;;(setq doom-theme 'tsdh-light)
 (setq magit-list-refs-sortby "-creatordate")
 (use-package! evil-escape

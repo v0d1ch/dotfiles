@@ -269,6 +269,7 @@ in
        enable = true;
        package = pkgs.fish;
        shellInit = '' 
+        nohup (rclone mount google_drive: ~/Documents/google-drive-local) >/dev/null 2>&1
         '';
      };
 
