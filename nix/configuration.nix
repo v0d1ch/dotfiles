@@ -368,7 +368,6 @@ in
       xdotool
       unstable.zellij
       rclone
-      drive 
     ];
 
   # programs.mtr.enable = true;

@@ -25,8 +25,15 @@ main = do
             , logHook =
                 dynamicLogWithPP
                     xmobarPP
-                        { ppOutput = hPutStrLn xmproc
-                        , ppTitle = xmobarColor "black" "" . shorten 50
+                        { ppCurrent  = xmobarColor "yellow" "" . wrap "[" "]"
+                       -- , ppVisible         = xmobarColor "green" "" . wrap "" "" 
+                        , ppHidden          = xmobarColor "gray" "" . wrap "" "" 
+                       -- , ppHiddenNoWindows = xmobarColor "brown" "" 
+                        , ppSep             = " | "
+                        , ppTitle           = xmobarColor "green" "" 
+                        , ppLayout          = xmobarColor  "gray" ""
+                        , ppOutput          = \x -> hPutStrLn xmproc x
+                        , ppOrder           = \(ws : l : t : ex) -> [ws, l, t]
                         }
             , handleEventHook = handleEventHook kde4Config <+> docksEventHook
             , keys = kde4Keys <+> keys desktopConfig
