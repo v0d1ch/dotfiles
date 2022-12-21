@@ -12,7 +12,6 @@ import XMonad.Hooks.Script (execScriptHook)
 import qualified XMonad.StackSet as W
 import XMonad.Util.Run (spawnPipe)
 import XMonad.Util.SpawnOnce (spawnOnce)
-import XMonad.Wallpaper
 
 main = do
     xmproc <- spawnPipe "xmobar"
@@ -54,5 +53,5 @@ startupHookX = do
     spawnOnce "export SSH_AUTH_SOCK=$(gpgconf --list-dirs agent-ssh-socket)"
     spawnOnce "export EDITOR=vim"
     spawnOnce "nohup stalonetray >/dev/null 2>&1"
-    spawnOnce "feh --bg-scale ~/Pictures/nixos.png"
+    spawnOnce "feh --bg-scale ~/Pictures/snowboard.jpg"
 
