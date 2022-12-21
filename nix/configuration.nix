@@ -35,7 +35,7 @@ in
 
   # Enable the GNOME Desktop Environment.
   # services.xserver.displayManager.gdm.enable = true;
-  services.xserver.desktopManager.gnome.enable = true;
+  # services.xserver.desktopManager.gnome.enable = true;
   services.xserver.displayManager.sddm.enable = true;
   services.xserver.displayManager.autoLogin = { enable = true; user = "v0d1ch"; };
   services.xserver.displayManager.defaultSession = "none+xmonad";
@@ -62,6 +62,10 @@ in
   };
 
   virtualisation.docker.enable = true;
+  virtualisation.virtualbox.host.enable = true;
+  virtualisation.virtualbox.guest.enable = true;
+  virtualisation.virtualbox.guest.x11 = true;
+  users.extraGroups.vboxusers.members = [ "v0d1ch" ];
 
   fonts.fonts = with pkgs; [
     fira-code
@@ -91,7 +95,7 @@ in
     enable = true;
     alsa.enable = true;
     alsa.support32Bit = true;
-    pulse.enable = false;
+    pulse.enable = true;
     # If you want to use JACK applications, uncomment this
     # jack.enable = true;
 
@@ -106,6 +110,7 @@ in
   # Define a user account. Don't forget to set a password with ‘passwd’.
 
   users.defaultUserShell = pkgs.fish; 
+
   users.users.v0d1ch = {
     shell = pkgs.fish;
     isNormalUser = true;
@@ -173,6 +178,30 @@ in
     style = "gtk2";
   };
      
+  environment.variables.EDITOR = "vim";
+
+  environment.systemPackages = with pkgs; [
+      vim 
+      wget
+      emacsNativeComp
+      unstable.google-chrome
+      discord
+      signal-desktop
+      spotify
+      postman
+      viber
+      pam_u2f
+      yubikey-personalization
+      pinentry-curses
+      pinentry-emacs
+      gcc8
+      xorg.libxcb
+      xdotool
+      unstable.zellij
+      rclone
+      virtualbox
+    ];
+
   home-manager.users.v0d1ch = { pkgs, ... }: {
   home.packages = with pkgs; [
        firefox
@@ -215,6 +244,7 @@ in
        btop
        lsix
        simplescreenrecorder
+       feh
      ];
 
      services.lorri = {
@@ -268,8 +298,8 @@ in
      programs.fish = {
        enable = true;
        package = pkgs.fish;
+       # nohup rclone mount google_drive: ~/Documents/google-drive-local >/dev/null 2>&1
        shellInit = '' 
-        nohup (rclone mount google_drive: ~/Documents/google-drive-local) >/dev/null 2>&1
         '';
      };
 
@@ -347,29 +377,6 @@ in
     login.u2fAuth = true;
     sudo.u2fAuth = true;
   };
-
-  environment.variables.EDITOR = "vim";
-
-  environment.systemPackages = with pkgs; [
-      vim 
-      wget
-      emacsNativeComp
-      unstable.google-chrome
-      discord
-      signal-desktop
-      spotify
-      postman
-      viber
-      pam_u2f
-      yubikey-personalization
-      pinentry-curses
-      pinentry-emacs
-      gcc8
-      xorg.libxcb
-      xdotool
-      unstable.zellij
-      rclone
-    ];
 
   # programs.mtr.enable = true;
   programs.gnupg.agent = {
