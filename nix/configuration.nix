@@ -222,7 +222,7 @@ in
        qbittorrent
        nicotine-plus
        termonad
-       unstable.keepassxc
+       keepassxc
        openvpn
        docker
        docker-compose
