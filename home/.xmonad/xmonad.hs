@@ -54,4 +54,5 @@ startupHookX = do
     spawnOnce "export EDITOR=vim"
     spawnOnce "nohup stalonetray >/dev/null 2>&1"
     spawnOnce "feh --bg-scale ~/Pictures/snowboard.jpg"
+    spawnOnce "nohup copyq >/dev/null 2>&1"
 

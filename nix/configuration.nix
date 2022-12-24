@@ -245,6 +245,7 @@ in
        lsix
        simplescreenrecorder
        feh
+       copyq
      ];
 
      services.lorri = {
