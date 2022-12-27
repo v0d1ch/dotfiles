@@ -19,7 +19,6 @@ cp  -R $HOME/.ssh home
 cp  -R $HOME/.gnupg home
 cp  -R $HOME/.xmonad home
 cp  -R $HOME/.doom.d home
-cp  -R $HOME/code/* code
 cp  -R $HOME/.xmobarrc home
 
 
