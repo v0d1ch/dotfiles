@@ -302,6 +302,7 @@ in
        package = pkgs.fish;
        # nohup rclone mount google_drive: ~/Documents/google-drive-local >/dev/null 2>&1
        shellInit = '' 
+         source ~/code/scripts/push.sh
         '';
      };
 
