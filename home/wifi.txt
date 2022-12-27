@@ -1,6 +1,0 @@
-nmcli dev status
-nmcli radio wifi
-nmcli radio wifi on
-nmcli dev wifi list
-nmcli dev wifi connect "ssid" password "pass"
-nmcli con delete "ssid"
