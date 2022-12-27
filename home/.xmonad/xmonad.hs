@@ -43,8 +43,8 @@ kde4Keys (XConfig{modMask = modm}) =
     M.fromList $
         [ ((modm, xK_p), spawn "$(yeganesh -x)")
         , ((mod4Mask, xK_w), spawn "cd /home/v0d1ch/code/dotfiles && ./backup.sh")
-        , ((mod4Mask, xK_r), spawn "cd /home/v0d1ch/code/scripts && ./syncRemote.sh")
-        , ((mod4Mask, xK_s), spawn "cd /home/v0d1ch/code/scripts && ./syncLocal.sh")
+        , ((mod4Mask, xK_r), spawn "cd /home/v0d1ch/code/scripts && ./syncToRemote.sh")
+        , ((mod4Mask, xK_s), spawn "cd /home/v0d1ch/code/scripts && ./syncToLocal.sh")
         ]
 
 startupHookX :: X ()

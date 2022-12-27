@@ -246,6 +246,7 @@ in
        simplescreenrecorder
        feh
        copyq
+       meld
      ];
 
      services.lorri = {
