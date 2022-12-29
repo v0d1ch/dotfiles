@@ -206,3 +206,7 @@ visible, hide it. Otherwise, show it."
 
 (after! rustic
   (setq lsp-rust-server 'rust-analyzer))
+
+(map! :leader
+      :desc "helm-register"
+      "hr" #'helm-register)
