@@ -89,7 +89,7 @@
 ;; they are implemented.
 
 ;;(setq doom-theme 'doom-dracula)
-(setq doom-theme 'doom-Iosvkem)
+(setq doom-theme 'doom-molokai)
 ;;(setq doom-theme 'tsdh-light)
 (setq magit-list-refs-sortby "-creatordate")
 (use-package! evil-escape
@@ -143,7 +143,7 @@ visible, hide it. Otherwise, show it."
 (setq-hook! 'haskell-mode-hook +format-with-lsp nil)
 
 ;; Appropriate HLS is assumed to be in scope (by nix-shell)
-(setq lsp-haskell-server-path "haskell-language-server-8.10.7"
+(setq lsp-haskell-server-path "haskell-language-server"
       lsp-enable-file-watchers nil
       lsp-lens-enable nil
       lsp-treemacs-errors-position-params '((bottom))
@@ -206,3 +206,7 @@ visible, hide it. Otherwise, show it."
 
 (after! rustic
   (setq lsp-rust-server 'rust-analyzer))
+
+(map! :leader
+      :desc "helm-register"
+      "hr" #'helm-register)

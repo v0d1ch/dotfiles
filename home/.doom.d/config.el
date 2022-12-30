@@ -143,7 +143,7 @@ visible, hide it. Otherwise, show it."
 (setq-hook! 'haskell-mode-hook +format-with-lsp nil)
 
 ;; Appropriate HLS is assumed to be in scope (by nix-shell)
-(setq lsp-haskell-server-path "haskell-language-server-8.10.7"
+(setq lsp-haskell-server-path "haskell-language-server"
       lsp-enable-file-watchers nil
       lsp-lens-enable nil
       lsp-treemacs-errors-position-params '((bottom))

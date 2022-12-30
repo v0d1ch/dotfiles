@@ -247,7 +247,12 @@ in
        feh
        copyq
        meld
+       cachix
+       haskellPackages.haskell-language-server 
      ];
+
+     # hls version needs to match the ghc version we are currently using
+     # pkgs.haskell-language-server.override { supportedGhcVersions = [ "8107" ]; }
 
      services.lorri = {
       enable = true;
@@ -272,11 +277,11 @@ in
          };
          ignores = [ "TAGS" ];
          # userEmail = "sasa.bogicevic@pm.me";
-         userEmail = "Sasha.Bogicevic@iohk.io";
+         userEmail = "sasha.bogicevic@iohk.io";
          userName = "Sasha Bogicevic";
          signing = { 
            signByDefault = true;
-           key = "A0645C5C181E65AB";
+           key = "8FE67EA9460B6F07";
          };
          extraConfig = {
            pull = {
@@ -411,6 +416,7 @@ in
   ];
 
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
+  nix.trustedUsers = ["root" "v0d1ch"];
 
   system.stateVersion = "22.05";
 
