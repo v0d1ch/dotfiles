@@ -247,12 +247,10 @@ in
        copyq
        meld
        cachix
-       haskellPackages.haskell-language-server 
+      #  haskell.compiler.ghc8107
+      #  (haskell-language-server.override { supportedGhcVersions = [ "8107" ]; })
      ];
-
-     # hls version needs to match the ghc version we are currently using
-     # pkgs.haskell-language-server.override { supportedGhcVersions = [ "8107" ]; }
-
+  
      services.lorri = {
       enable = true;
      }; 
