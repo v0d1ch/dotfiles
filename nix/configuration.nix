@@ -233,7 +233,6 @@ in
        xsel
        htop
        dmenu
-       haskellPackages.haskell-language-server
        haskellPackages.hoogle
        haskellPackages.yeganesh
        qt5Full
