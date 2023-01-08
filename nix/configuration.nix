@@ -48,6 +48,10 @@ in
     ];
   nixpkgs.config.allowUnfree = true;
 
+  nixpkgs.config.permittedInsecurePackages = [
+    "electron-12.2.3"
+  ];
+
   services.xserver.windowManager = {
     xmonad = {
       enable = true;
@@ -179,7 +183,6 @@ in
   };
      
   environment.variables.EDITOR = "vim";
-
   environment.systemPackages = with pkgs; [
       vim 
       wget
@@ -200,6 +203,7 @@ in
       unstable.zellij
       rclone
       virtualbox
+      etcher
     ];
 
   home-manager.users.v0d1ch = { pkgs, ... }: {

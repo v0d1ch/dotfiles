@@ -204,8 +204,8 @@ visible, hide it. Otherwise, show it."
      ;; force update evil keymaps after git-timemachine-mode loaded
      (add-hook 'git-timemachine-mode-hook #'evil-normalize-keymaps)))
 
-(after! rustic
-  (setq lsp-rust-server 'rust-analyzer))
+;; (after! rustic
+;;   (setq lsp-rust-server 'rust-analyzer))
 
 (map! :leader
       :desc "helm-register"
