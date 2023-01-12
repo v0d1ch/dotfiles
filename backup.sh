@@ -18,6 +18,8 @@ cp  /etc/nixos/hardware-configuration.nix nix
 cp  -R $HOME/.xmonad home
 cp  -R $HOME/.doom.d home
 cp  -R $HOME/.xmobarrc home
+cp  -R $HOME/.config/zellij home/zellij
+cp  -R $HOME/.config/alacritty home/alacritty
 
 
 

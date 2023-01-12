@@ -251,7 +251,7 @@ in
        copyq
        meld
        cachix
-      #  haskell.compiler.ghc8107
+       haskell.compiler.ghc8107
       #  (haskell-language-server.override { supportedGhcVersions = [ "8107" ]; })
      ];
   
