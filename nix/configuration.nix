@@ -365,6 +365,7 @@ in
 
           # Because P is used for paste-buffer
           bind N previous-window
+          source-file "/home/v0d1ch/.tmux-themepack/powerline/default/yellow.tmuxtheme"
         '';
 
      };
