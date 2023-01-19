@@ -319,7 +319,7 @@ in
 
      programs.tmux = {
         enable = true;
-        shortcut = "a"; # Use Ctrl-a
+        shortcut = "Space"; # Use Ctrl-a
         baseIndex = 1; # Widows numbers begin with 1
         keyMode = "vi";
         customPaneNavigationAndResize = true;
