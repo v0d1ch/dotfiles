@@ -48,3 +48,4 @@
 ;(unpin! pinned-package another-pinned-package)
 ;; ...Or *all* packages (NOT RECOMMENDED; will likely break things)
 ;(unpin! t)
+(package! lsp-mode :pin "06c28ca780dedea32e150462f1b9aa9c910c2952442fc51a2db09e503ca3b39f3d")

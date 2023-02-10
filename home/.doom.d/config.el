@@ -24,8 +24,8 @@
 ;;
 (setq
  default-font "Hasklig"
- default-font-size 20
- default-nice-size 20
+ default-font-size 22
+ default-nice-size 22
  doom-font-increment 1
  doom-font (font-spec :family default-font
                       :size default-font-size)

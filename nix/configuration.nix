@@ -194,7 +194,6 @@ in
       postman
       viber
       pam_u2f
-      yubikey-personalization
       pinentry-curses
       pinentry-emacs
       gcc8
@@ -202,14 +201,15 @@ in
       xdotool
       unstable.zellij
       rclone
-      virtualbox
       etcher
+      vscode
     ];
 
   home-manager.users.v0d1ch = { pkgs, ... }: {
   home.packages = with pkgs; [
        firefox
        libreoffice
+       virtualbox
        caffeine-ng
        dbeaver
        kazam
@@ -252,6 +252,16 @@ in
        meld
        cachix
        haskell.compiler.ghc8107
+       gnome.eog
+
+       # Yubico's official tools
+       yubikey-manager
+       yubikey-manager-qt
+       yubikey-personalization
+       yubikey-personalization-gui
+       yubico-piv-tool
+       yubioath-desktop
+
       #  (haskell-language-server.override { supportedGhcVersions = [ "8107" ]; })
      ];
   
@@ -383,6 +393,7 @@ in
   };
 
   services.udev.packages = [ pkgs.yubikey-personalization ];  
+  services.pcscd.enable = true;
   security.pam.services = {
     login.u2fAuth = true;
     sudo.u2fAuth = true;
