@@ -421,11 +421,13 @@ in
   nix.settings.trusted-public-keys = [
     "hydra.iohk.io:f/Ea+s+dFdN+3Y/G+FDgSq+a5NEWhJGzdjvKNGv0/EQ="
     "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
+    "loony-tools:pr9m4BkM/5/eSTZlkQyRt57Jz7OMBxNSUiMC4FkcNfk="
   ];
 
   nix.settings.substituters = [
     "https://cache.iog.io"
     "https://cache.nixos.org" 
+    "https://cache.zw3rk.com"
   ];
 
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
