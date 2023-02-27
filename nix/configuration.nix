@@ -50,6 +50,7 @@ in
 
   nixpkgs.config.permittedInsecurePackages = [
     "electron-12.2.3"
+    "qtwebkit-5.212.0-alpha4"
   ];
 
   services.xserver.windowManager = {
@@ -206,6 +207,7 @@ in
     ];
 
   home-manager.users.v0d1ch = { pkgs, ... }: {
+  home.stateVersion = "22.11";
   home.packages = with pkgs; [
        firefox
        libreoffice
@@ -239,7 +241,6 @@ in
        dmenu
        haskellPackages.hoogle
        haskellPackages.yeganesh
-       qt5Full
        eva
        rustup
        alacritty
@@ -410,29 +411,23 @@ in
 
   services.openssh.enable = true;
 
-  nix.binaryCaches = [ 
-    "https://nixcache.reflex-frp.org"
-  ];
-
-  nix.binaryCachePublicKeys = [
-    "ryantrinkle.com-1:JJiAKaRv9mWgpVAz8dwewnZe0AzzEAzPkagE9SP5NWI=" 
-  ];
-
   nix.settings.trusted-public-keys = [
     "hydra.iohk.io:f/Ea+s+dFdN+3Y/G+FDgSq+a5NEWhJGzdjvKNGv0/EQ="
     "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
     "loony-tools:pr9m4BkM/5/eSTZlkQyRt57Jz7OMBxNSUiMC4FkcNfk="
+    "ryantrinkle.com-1:JJiAKaRv9mWgpVAz8dwewnZe0AzzEAzPkagE9SP5NWI=" 
   ];
 
   nix.settings.substituters = [
     "https://cache.iog.io"
     "https://cache.nixos.org" 
     "https://cache.zw3rk.com"
+    "https://nixcache.reflex-frp.org"
   ];
 
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
-  nix.trustedUsers = ["root" "v0d1ch"];
+  nix.settings.trusted-users = ["root" "v0d1ch"];
 
-  system.stateVersion = "22.05";
+  system.stateVersion = "22.11";
 
 }
