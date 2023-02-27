@@ -254,6 +254,7 @@ in
        cachix
        haskell.compiler.ghc8107
        gnome.eog
+       clementine
 
        # Yubico's official tools
        yubikey-manager
