@@ -255,7 +255,7 @@ in
        haskell.compiler.ghc8107
        gnome.eog
        clementine
-       ksnip
+       flameshot 
 
        # Yubico's official tools
        yubikey-manager
