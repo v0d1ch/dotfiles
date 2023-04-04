@@ -53,6 +53,9 @@ in
     "qtwebkit-5.212.0-alpha4"
   ];
 
+  nixpkgs.overlays = [
+    (import (builtins.fetchTarball https://github.com/nix-community/emacs-overlay/archive/master.tar.gz))
+  ];
   services.xserver.windowManager = {
     xmonad = {
       enable = true;
@@ -187,7 +190,8 @@ in
   environment.systemPackages = with pkgs; [
       vim 
       wget
-      emacsNativeComp
+      # emacsNativeComp
+      emacsGcc
       unstable.google-chrome
       discord
       signal-desktop
@@ -204,6 +208,7 @@ in
       rclone
       etcher
       vscode
+      bc
     ];
 
   home-manager.users.v0d1ch = { pkgs, ... }: {
@@ -256,6 +261,7 @@ in
        gnome.eog
        clementine
        flameshot 
+       fx
 
        # Yubico's official tools
        yubikey-manager
