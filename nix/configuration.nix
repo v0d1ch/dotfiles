@@ -99,6 +99,11 @@ in
   sound.enable = true;
   hardware.pulseaudio.enable = false;
   security.rtkit.enable = true;
+
+  services.emacs = { 
+    enable = true;
+  };
+
   services.pipewire = {
     enable = true;
     alsa.enable = true;
@@ -191,7 +196,7 @@ in
       vim 
       wget
       # emacsNativeComp
-      emacsGcc
+      emacsGit
       unstable.google-chrome
       discord
       signal-desktop
@@ -304,6 +309,9 @@ in
            key = "8FE67EA9460B6F07";
          };
          extraConfig = {
+           core = {
+             editor = "emacsclient";
+           };
            pull = {
              rebase = true;
            };
