@@ -93,8 +93,8 @@
 ;;(setq doom-theme 'tsdh-light)
 (setq magit-list-refs-sortby "-creatordate")
 (use-package! evil-escape
-:init
-(setq evil-escape-key-sequence "jk"))
+  :init
+  (setq evil-escape-key-sequence "jk"))
 (setq create-lockfiles nil)
 (setq confirm-kill-emacs nil)
 (setq find-file-visit-truename nil)
@@ -102,7 +102,7 @@
 
 
 (map! :leader
-     ;; :desc "M-x"                   "SPC" #'execute-extended-command
+      ;; :desc "M-x"                   "SPC" #'execute-extended-command
       :desc "Search in project"     "/"   #'+default/search-project
       :desc "Comment lines"         ";"   #'comment-or-uncomment-region
       ;;; <leader> a --- agenda
@@ -155,9 +155,11 @@ visible, hide it. Otherwise, show it."
       ;;lsp-signature-render-documentation 1
       ;;lsp-enable-symbol-highlighting 1
       )
+
 (defun add-autoformat-hook ()
-  (add-hook 'before-save-hook '+format-buffer-h nil 'local))
-(add-hook! ('haskell-mode haskell-cabal-mode) 'add-autoformat-hook)
+  (add-hook 'before-save-hook '+format-buffer-h))
+(add-hook! (haskell-mode haskell-cabal-mode) 'add-autoformat-hook)
+
 
 (set-formatter! 'fourmolu "fourmolu"
   :modes 'haskell-mode
@@ -206,4 +208,3 @@ visible, hide it. Otherwise, show it."
 
 ;; (after! rustic
 ;;   (setq lsp-rust-server 'rust-analyzer))
-
