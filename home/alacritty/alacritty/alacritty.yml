@@ -1,3 +1,6 @@
+import:
+ - ~/.config/alacritty/themes/alacritty-theme/themes/solarized_light.yaml
+
 # Configuration for Alacritty, the GPU enhanced terminal emulator.
 
 # Import additional configuration files

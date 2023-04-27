@@ -89,8 +89,8 @@
 ;; they are implemented.
 
 ;;(setq doom-theme 'doom-dracula)
-(setq doom-theme 'doom-molokai)
-;;(setq doom-theme 'tsdh-light)
+;;(setq doom-theme 'doom-molokai)
+(setq doom-theme 'doom-solarized-light)
 (setq magit-list-refs-sortby "-creatordate")
 (use-package! evil-escape
   :init
@@ -150,11 +150,13 @@ visible, hide it. Otherwise, show it."
       lsp-ui-sideline-diagnostic-max-lines 20
       lsp-ui-imenu-auto-refresh 1
       lsp-headerline-breadcrumb-enable 1
+      lsp-haskell-plugin-stan-global-on nil
       ;;lsp-ui-sideline-show-diagnostics nil
       ;;lsp-diagnostics-flycheck-default-level 'warning
       ;;lsp-signature-render-documentation 1
       ;;lsp-enable-symbol-highlighting 1
       )
+
 
 (defun add-autoformat-hook ()
   (add-hook 'before-save-hook '+format-buffer-h))

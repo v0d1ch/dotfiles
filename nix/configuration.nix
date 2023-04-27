@@ -54,7 +54,11 @@ in
   ];
 
   nixpkgs.overlays = [
-    (import (builtins.fetchTarball https://github.com/nix-community/emacs-overlay/archive/master.tar.gz))
+    (import (builtins.fetchTarball {
+      url = https://github.com/nix-community/emacs-overlay/archive/master.tar.gz;
+      sha256 = "0zdl850f2id6ql022f50yych28lgj3k2vnzr1269xf25ikrmlb2s";
+    }
+    ))
   ];
   services.xserver.windowManager = {
     xmonad = {
@@ -214,6 +218,7 @@ in
       etcher
       vscode
       bc
+      multimarkdown
     ];
 
   home-manager.users.v0d1ch = { pkgs, ... }: {
@@ -392,7 +397,7 @@ in
 
           # Because P is used for paste-buffer
           bind N previous-window
-          source-file "/home/v0d1ch/.tmux-themepack/powerline/default/yellow.tmuxtheme"
+          source-file "/home/v0d1ch/.tmux-themepack/default.tmuxtheme"
         '';
 
      };
