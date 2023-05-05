@@ -88,8 +88,6 @@
 ;; You can also try 'gd' (or 'C-c c d') to jump to their definition and see how
 ;; they are implemented.
 
-;;(setq doom-theme 'doom-dracula)
-;;(setq doom-theme 'doom-molokai)
 (setq doom-theme 'doom-solarized-light)
 (setq magit-list-refs-sortby "-creatordate")
 (use-package! evil-escape
@@ -140,36 +138,29 @@ visible, hide it. Otherwise, show it."
       "h" #'haskell-hoogle-lookup-from-local
       "H" #'haskell-hoogle)
 
-(setq-hook! 'haskell-mode-hook +format-with-lsp nil)
 
-;; Appropriate HLS is assumed to be in scope (by nix-shell)
 (setq lsp-haskell-server-path "haskell-language-server"
-      lsp-enable-file-watchers nil
-      lsp-lens-enable nil
-      lsp-treemacs-errors-position-params '((bottom))
-      lsp-ui-sideline-diagnostic-max-lines 20
-      lsp-ui-imenu-auto-refresh 1
-      lsp-headerline-breadcrumb-enable 1
+      lsp-haskell-importlens-on nil
+      lsp-haskell-plugin-import-lens-code-lens-on nil
+      lsp-haskell-plugin-tactics-global-on nil
       lsp-haskell-plugin-stan-global-on nil
-      ;;lsp-ui-sideline-show-diagnostics nil
-      ;;lsp-diagnostics-flycheck-default-level 'warning
-      ;;lsp-signature-render-documentation 1
-      ;;lsp-enable-symbol-highlighting 1
-      )
+      lsp-response-timeout 30)
 
+(setq-hook! 'haskell-mode-hook +format-with-lsp nil)
 
 (defun add-autoformat-hook ()
   (add-hook 'before-save-hook '+format-buffer-h))
 (add-hook! (haskell-mode haskell-cabal-mode) 'add-autoformat-hook)
 
-
-(set-formatter! 'fourmolu "fourmolu"
+(set-formatter!
+  'fourmolu
+  '("fourmolu"
+    ("--stdin-input-file=%S"))
   :modes 'haskell-mode
   :filter
   (lambda (output errput)
     (list output
           (replace-regexp-in-string "Loaded config from:[^\n]*\n*" "" errput))))
-
 
 ;; Use 'cabal-fmt' for .cabal files
 (set-formatter! 'cabal-fmt "cabal-fmt"

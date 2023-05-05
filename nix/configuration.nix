@@ -154,15 +154,34 @@ in
               completion-nvim
               nvim-lspconfig
               plenary-nvim
-              telescope
               vimagit
               fzf-vim
+              coc-nvim
+              plenary-nvim
+              neogit
+              catppuccin-nvim
+              telescope
+              solarized              
             ]; 
             opt = [];
         };
         customRC = ''
           " vim configuration
-          set background=dark
+          set background=light
+          set whichwrap+=<,>,[,]
+          "prevent enter in autocomplete suggestions to mess things up
+          inoremap <expr> <CR> pumvisible() ? "\<C-Y>" : "\<CR>"
+
+          let g:solarized_italic_comments = v:true
+          let g:solarized_italic_keywords = v:false
+          let g:solarized_italic_functions = v:false
+          let g:solarized_italic_variables = v:false
+          let g:solarized_contrast = v:true
+          let g:solarized_borders = v:false
+          let g:solarized_disable_background = v:false
+
+          colorscheme solarized 
+
           set showcmd
           set clipboard=unnamedplus
           set t_Co=256
@@ -182,7 +201,68 @@ in
           "nerdtree
           map <leader>n :NERDTreeToggle<CR>
           autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
-          nnoremap <Leader>f :Files<CR>
+          nnoremap <Leader>g :Neogit<CR> 
+          nnoremap <Leader>s :Files<CR>
+          nnoremap <Leader>rs :Rg<CR>
+          nnoremap <Leader>b :Buffers<CR>
+          nnoremap <Leader>f :Format<CR> 
+
+          nmap <Leader>d <Plug>(coc-definition)
+          nmap <Leader>t <Plug>(coc-type-definition)
+          nmap <Leader>gr <Plug>(coc-references)
+
+          "xmap <Leader>f  <Plug>(coc-format-selected)
+          "nmap <Leader>f  <Plug>(coc-format-selected)
+
+          " Applying code actions to the selected code block
+          " Example: `<leader>aap` for current paragraph
+          xmap <Leader>a  <Plug>(coc-codeaction-selected)
+          nmap <Leader>a  <Plug>(coc-codeaction-selected)
+          
+          " Remap keys for applying code actions at the cursor position
+          nmap <Leader>ac  <Plug>(coc-codeaction-cursor)
+          " Remap keys for apply code actions affect whole buffer
+          nmap <Leader>as  <Plug>(coc-codeaction-source)
+          " Apply the most preferred quickfix action to fix diagnostic on the current line
+          nmap <Leader>qf  <Plug>(coc-fix-current)
+          
+          " Remap keys for applying refactor code actions
+          nmap <silent> <Leader>re <Plug>(coc-codeaction-refactor)
+          xmap <silent> <Leader>r  <Plug>(coc-codeaction-refactor-selected)
+          nmap <silent> <Leader>r  <Plug>(coc-codeaction-refactor-selected)
+
+
+          " Mappings for CoCList
+          " Show all diagnostics
+          "nnoremap <silent><nowait> <space>a  :<C-u>CocList diagnostics<cr>
+          "" Manage extensions
+          "nnoremap <silent><nowait> <space>e  :<C-u>CocList extensions<cr>
+          "" Show commands
+          "nnoremap <silent><nowait> <space>c  :<C-u>CocList commands<cr>
+          "" Find symbol of current document
+          "nnoremap <silent><nowait> <space>o  :<C-u>CocList outline<cr>
+          "" Search workspace symbols
+          "nnoremap <silent><nowait> <space>s  :<C-u>CocList -I symbols<cr>
+          "" Do default action for next item
+          "nnoremap <silent><nowait> <space>j  :<C-u>CocNext<CR>
+          "" Do default action for previous item
+          "nnoremap <silent><nowait> <space>k  :<C-u>CocPrev<CR>
+          "" Resume latest coc list
+          "nnoremap <silent><nowait> <space>p  :<C-u>CocListResume<CR>
+
+
+          " Add `:Format` command to format current buffer
+          command! -nargs=0 Format :call CocActionAsync('format')
+
+          nnoremap <Leader>K :call ShowDocumentation()<CR>
+
+          function! ShowDocumentation()
+            if CocAction('hasProvider', 'hover')
+              call CocActionAsync('doHover')
+            else
+              call feedkeys('K', 'in')
+            endif
+          endfunction
         '';
         };
       })
