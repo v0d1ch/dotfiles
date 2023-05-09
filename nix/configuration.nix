@@ -145,24 +145,29 @@ in
         configure = {
           packages.myPlugins = with pkgs.vimPlugins; {
             start = [
-              vim-lastplace
-              vim-nix nerdtree
-              haskell-vim 
               fugitive 
+              nerdtree
+              nerdcommenter
+              # vimagit
+              neogit
+
               awesome-vim-colorschemes 
-              nvim-lspconfig 
-              completion-nvim
-              nvim-lspconfig
+              catppuccin-nvim
+              vim-airline
+              vim-airline-themes
+              solarized              
+
+              vim-lastplace
               plenary-nvim
-              vimagit
+              telescope
+              completion-nvim
+
+              vim-nix
+              haskell-vim 
+              rust-tools-nvim 
+              nvim-lspconfig
               fzf-vim
               coc-nvim
-              neogit
-              catppuccin-nvim
-              telescope
-              solarized              
-              nerdcommenter
-              vim-airline
             ]; 
             opt = [];
         };
@@ -180,6 +185,7 @@ in
           let g:solarized_contrast = v:true
           let g:solarized_borders = v:false
           let g:solarized_disable_background = v:false
+          let g:airline_solarized_bg='light'
 
           colorscheme solarized 
 
@@ -235,6 +241,8 @@ in
 
 
           " Mappings for CoCList
+          " show type on hover
+          autocmd CursorHold * silent call CocActionAsync('doHover')
           " Show all diagnostics
           "nnoremap <silent><nowait> <space>a  :<C-u>CocList diagnostics<cr>
           "" Manage extensions
@@ -336,7 +344,6 @@ in
        xsel
        htop
        dmenu
-       haskellPackages.hoogle
        haskellPackages.yeganesh
        eva
        rustup
