@@ -157,11 +157,12 @@ in
               vimagit
               fzf-vim
               coc-nvim
-              plenary-nvim
               neogit
               catppuccin-nvim
               telescope
               solarized              
+              nerdcommenter
+              vim-airline
             ]; 
             opt = [];
         };
@@ -200,6 +201,7 @@ in
           let mapleader = " "
           "nerdtree
           map <leader>n :NERDTreeToggle<CR>
+          map <leader>o :NERDTreeToggle %<CR>
           autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
           nnoremap <Leader>g :Neogit<CR> 
           nnoremap <Leader>s :Files<CR>
@@ -395,7 +397,7 @@ in
          };
          extraConfig = {
            core = {
-             editor = "emacsclient";
+             editor = "vim";
            };
            pull = {
              rebase = true;
