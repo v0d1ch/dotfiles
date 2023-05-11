@@ -205,6 +205,7 @@ in
           let g:solarized_borders = v:false
           let g:solarized_disable_background = v:false
           "let g:airline_solarized_bg='dark'
+          let g:airline_theme='badwolf'
 
           colorscheme solarized 
 
@@ -232,7 +233,7 @@ in
           nnoremap <Leader>s :Files<CR>
           nnoremap <Leader>rs :Rg<CR>
           nnoremap <Leader>b :Buffers<CR>
-          nnoremap <Leader>f :Format<CR> 
+          nnoremap <Leader>f :%!fourmolu -q %<CR>:w<CR> 
 
           nmap <Leader>d <Plug>(coc-definition)
           nmap <Leader>t <Plug>(coc-type-definition)
@@ -413,6 +414,7 @@ in
          aliases = {
            st = "status";
            ca = "commit --amend --no-edit";
+           bl = "branch -r --sort=-committerdate --format='%(HEAD)%(color:yellow)%(refname:short)|%(color:bold green)%(committerdate:relative)|%(color:blue)%(subject)|%(color:magenta)%(authorname)%(color:reset)' --color=always";
            lol = "log --graph --decorate --oneline --abbrev-commit";
            lola = "log --graph --decorate --oneline --abbrev-commit --all";
            hist = "log --pretty=format:'%h %ad | %s%d [%an]' --graph --date=short";
