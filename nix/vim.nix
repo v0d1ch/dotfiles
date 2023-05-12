@@ -98,7 +98,7 @@
           nnoremap <Leader>s :Files<CR>
           nnoremap <Leader>rs :Rg<CR>
           nnoremap <Leader>b :Buffers<CR>
-          nnoremap <Leader>f :%!fourmolu -q %<CR>:w<CR>
+          nnoremap <Leader>f :call FormatCode()<CR>
 
           nmap <Leader>d <Plug>(coc-definition)
           nmap <Leader>t <Plug>(coc-type-definition)
@@ -164,6 +164,12 @@
             else
               call feedkeys('K', 'in')
             endif
+          endfunction
+
+          function! FormatCode()
+             let save_pos = getpos(".")
+             :execute '%!fourmolu -q %'
+             call setpos(".", save_pos)
           endfunction
         '';
         };
