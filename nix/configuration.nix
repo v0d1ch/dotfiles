@@ -60,6 +60,11 @@ in
       sha256 = "0zdl850f2id6ql022f50yych28lgj3k2vnzr1269xf25ikrmlb2s";
     }
     ))
+
+    (import (builtins.fetchTarball {
+      url = https://github.com/nix-community/neovim-nightly-overlay/archive/master.tar.gz;
+      sha256 = "0n9a59nb2ki4bap2pvv365804p5crwzm5viwc0dhvsxqvn2qsnyi";
+    }))
   ];
   services.xserver.windowManager = {
     xmonad = {
@@ -148,6 +153,7 @@ in
      
   environment.variables.EDITOR = "vim";
   environment.systemPackages = with pkgs; [
+      lazygit
       vim 
       wget
       # emacsNativeComp
@@ -175,6 +181,7 @@ in
   home-manager.users.v0d1ch = { pkgs, ... }: {
   home.stateVersion = "22.11";
   home.packages = with pkgs; [
+       spacevim
        firefox
        libreoffice
        virtualbox

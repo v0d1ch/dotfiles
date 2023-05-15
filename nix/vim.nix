@@ -39,6 +39,12 @@
               fzf-vim
               coc-nvim
               haskell-tools-nvim
+              lazygit-nvim
+              tokyonight-nvim 
+              vim-illuminate
+              project-nvim
+              nvim-web-devicons
+              lualine-nvim
             ]; 
             opt = [];
         };
@@ -57,10 +63,12 @@
           " diagnostics appear/become resolved
           set signcolumn=yes
 
-          set background=light
+          set background=dark
           set whichwrap+=<,>,[,]
           "prevent enter in autocomplete suggestions to mess things up
           inoremap <expr> <CR> pumvisible() ? "\<C-Y>" : "\<CR>"
+
+          autocmd FileType gitrebase vnoremap <buffer> <localleader>p :s/\v^(pick\|reword\|edit\|squash\|fixup\|exec\|drop)/pick/<cr>
 
           let g:solarized_italic_comments = v:true
           let g:solarized_italic_keywords = v:false
@@ -69,10 +77,11 @@
           let g:solarized_contrast = v:true
           let g:solarized_borders = v:false
           let g:solarized_disable_background = v:false
-          "let g:airline_solarized_bg='dark'
-          let g:airline_theme='badwolf'
 
-          colorscheme solarized 
+          "let g:airline_solarized_bg='dark'
+          "let g:airline_theme='badwolf'
+
+          colorscheme tokyonight
 
           set showcmd
           set clipboard=unnamedplus
@@ -94,7 +103,8 @@
           map <leader>n :NERDTreeToggle<CR>
           map <leader>o :NERDTreeToggle %<CR>
           autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
-          nnoremap <Leader>g :Neogit<CR> 
+
+          nnoremap <Leader>g :LazyGit<CR> 
           nnoremap <Leader>s :Files<CR>
           nnoremap <Leader>rs :Rg<CR>
           nnoremap <Leader>b :Buffers<CR>
@@ -104,9 +114,7 @@
           nmap <Leader>t <Plug>(coc-type-definition)
           nmap <Leader>gr <Plug>(coc-references)
           nmap <Leader>gi <Plug>(coc-implementation)
-
-          "xmap <Leader>f  <Plug>(coc-format-selected)
-          "nmap <Leader>f  <Plug>(coc-format-selected)
+          nmap <Leader>p :Telescope projects<CR> 
 
           " Applying code actions to the selected code block
           " Example: `<leader>aap` for current paragraph
@@ -123,40 +131,134 @@
           " Remap keys for applying refactor code actions
           nmap <Leader>[ <Plug>(coc-diagnostic-prev)
           nmap <Leader>] <Plug>(coc-diagnostic-next)
-          "nmap <silent> <Leader>re <Plug>(coc-codeaction-refactor)
-          "xmap <silent> <Leader>r  <Plug>(coc-codeaction-refactor-selected)
-          "nmap <silent> <Leader>r  <Plug>(coc-codeaction-refactor-selected)
 
 
           " Mappings for CoCList
-          " show type on hover
-          "autocmd CursorHold * silent call CocActionAsync('doHover')
           nmap <Leader>t :call CocActionAsync('doHover')<CR>
           nmap <Leader>z :CocDiagnostics<CR>
 
-          " Show all diagnostics
-          "nnoremap <silent><nowait> <Leader>z  :<C-u>CocList diagnostics<cr>
           "" Search workspace symbols
           nnoremap <silent><nowait> <Leader>l  :<C-u>CocList -I symbols<cr>
-
-          "" Manage extensions
-          "nnoremap <silent><nowait> <Leader>e  :<C-u>CocList extensions<cr>
-          "" Show commands
-          "nnoremap <silent><nowait> <Leader>c  :<C-u>CocList commands<cr>
-          "" Find symbol of current document
-          "nnoremap <silent><nowait> <Leader>o  :<C-u>CocList outline<cr>
-          "" Do default action for next item
-          "nnoremap <silent><nowait> <Leader>j  :<C-u>CocNext<CR>
-          "" Do default action for previous item
-          "nnoremap <silent><nowait> <Leader>k  :<C-u>CocPrev<CR>
-          "" Resume latest coc list
-          "nnoremap <silent><nowait> <Leader>p  :<C-u>CocListResume<CR>
-
 
           " Add `:Format` command to format current buffer
           command! -nargs=0 Format :call CocActionAsync('format')
 
           nnoremap <Leader>K :call ShowDocumentation()<CR>
+
+          " projects
+          lua << EOF
+            require("project_nvim").setup {
+               -- Manual mode doesn't automatically change your root directory, so you have
+               -- the option to manually do so using `:ProjectRoot` command.
+               manual_mode = false,
+
+               -- Methods of detecting the root directory. **"lsp"** uses the native neovim
+               -- lsp, while **"pattern"** uses vim-rooter like glob pattern matching. Here
+               -- order matters: if one is not detected, the other is used as fallback. You
+               -- can also delete or rearangne the detection methods.
+               detection_methods = { "lsp", "pattern" },
+
+               -- All the patterns used to detect root dir, when **"pattern"** is in
+               -- detection_methods
+               patterns = { ".git", ".cabal"},
+
+               -- Table of lsp clients to ignore by name
+               -- eg: { "efm", ... }
+               ignore_lsp = {},
+
+               -- Don't calculate root dir on specific directories
+               -- Ex: { "~/.cargo/*", ... }
+               exclude_dirs = {},
+
+               -- Show hidden files in telescope
+               show_hidden = false,
+
+               -- When set to false, you will get a message when project.nvim changes your
+               -- directory.
+               silent_chdir = true,
+
+               -- What scope to change the directory, valid options are
+               -- * global (default)
+               -- * tab
+               -- * win
+               scope_chdir = 'global',
+
+               -- Path where project.nvim will store the project history for use in
+               -- telescope
+               datapath = vim.fn.stdpath("data"),
+            }
+
+            require('telescope').load_extension('projects')
+
+            require('lualine').setup {
+              options = {
+                icons_enabled = true,
+                theme = 'auto',
+                component_separators = { left = '', right = ''},
+                section_separators = { left = '', right = ''},
+                disabled_filetypes = {
+                  statusline = {},
+                  winbar = {},
+                },
+                ignore_focus = {},
+                always_divide_middle = true,
+                globalstatus = false,
+                refresh = {
+                  statusline = 1000,
+                  tabline = 1000,
+                  winbar = 1000,
+                }
+              },
+              sections = {
+                lualine_a = {'mode'},
+                lualine_b = {'branch', 'diff','filename'},
+                lualine_c = {'diagnostics',
+
+                   -- Table of diagnostic sources, available sources are:
+                   --   'nvim_lsp', 'nvim_diagnostic', 'nvim_workspace_diagnostic', 'coc', 'ale', 'vim_lsp'.
+                   -- or a function that returns a table as such:
+                   --   { error=error_cnt, warn=warn_cnt, info=info_cnt, hint=hint_cnt }
+                   sources = { 'coc'},
+
+                   -- Displays diagnostics for the defined severity types
+                   sections = { 'error', 'warn', 'info', 'hint' },
+
+                   diagnostics_color = {
+                     -- Same values as the general color option can be used here.
+                     error = 'DiagnosticError', -- Changes diagnostics' error color.
+                     warn  = 'DiagnosticWarn',  -- Changes diagnostics' warn color.
+                     info  = 'DiagnosticInfo',  -- Changes diagnostics' info color.
+                     hint  = 'DiagnosticHint',  -- Changes diagnostics' hint color.
+                   },
+                   symbols = {error = 'E', warn = 'W', info = 'I', hint = 'H'},
+                   colored = true,           -- Displays diagnostics status in color if set to true.
+                   update_in_insert = false, -- Update diagnostics in insert mode.
+                   always_visible = false,   -- Show diagnostics even if there are none.
+
+
+                },
+                lualine_x = {'coc#status', 'encoding', 'fileformat', 'filetype'},
+
+
+
+
+                lualine_y = {'progress'},
+                lualine_z = {'location'}
+              },
+              inactive_sections = {
+                lualine_a = {},
+                lualine_b = {},
+                lualine_c = {'filename'},
+                lualine_x = {'location'},
+                lualine_y = {},
+                lualine_z = {}
+              },
+              tabline = {},
+              winbar = {},
+              inactive_winbar = {},
+              extensions = {}
+            }
+          EOF
 
           function! ShowDocumentation()
             if CocAction('hasProvider', 'hover')
