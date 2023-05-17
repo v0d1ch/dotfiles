@@ -18,8 +18,6 @@
 
               awesome-vim-colorschemes 
               catppuccin-nvim
-              vim-airline
-              vim-airline-themes
               solarized              
 
               vim-lastplace
@@ -82,9 +80,6 @@
           let g:solarized_borders = v:false
           let g:solarized_disable_background = v:false
 
-          "let g:airline_solarized_bg='dark'
-          "let g:airline_theme='badwolf'
-
           colorscheme tokyonight
 
           set showcmd
@@ -108,11 +103,18 @@
           map <leader>o :NERDTreeToggle %<CR>
           autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
 
-          nnoremap <Leader>g :LazyGit<CR> 
-          nnoremap <Leader>s :Files<CR>
-          nnoremap <Leader>rs :Rg<CR>
-          nnoremap <Leader>b :Buffers<CR>
-          nnoremap <Leader>f :call FormatCode()<CR>
+          nnoremap <Leader>g  :LazyGit<CR> 
+          nnoremap <Leader>f  :Telescope find_files<CR>
+          nnoremap <Leader>s  :Telescope live_grep<CR>
+          nnoremap <Leader>rs :Telescope resume<CR>
+          nnoremap <Leader>b  :Buffers<CR>
+          nnoremap <Leader>q  :call FormatCode()<CR>
+          
+          " format on save
+          augroup RunCommandOnWrite
+            autocmd BufWritePost *.hs :call FormatCode()
+          augroup END
+
 
           nmap <Leader>d <Plug>(coc-definition)
           nmap <Leader>t <Plug>(coc-type-definition)
