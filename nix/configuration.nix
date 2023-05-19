@@ -355,7 +355,8 @@ in
 
           # Because P is used for paste-buffer
           bind N previous-window
-          source-file "/home/v0d1ch/.tmux-themepack/default.tmuxtheme"
+          # source-file "/home/v0d1ch/.tmux-themepack/default.tmuxtheme"
+          source-file ~/home/v0d1ch/.tmux/tmux-tokyo-night/tokyonight.tmuxtheme
         '';
 
      };
