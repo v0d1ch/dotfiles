@@ -22,7 +22,6 @@
 
               vim-lastplace
               plenary-nvim
-              nvim-treesitter
               direnv-vim
               telescope-nvim
               telescope-coc-nvim
@@ -45,8 +44,9 @@
               lualine-nvim
               popup-nvim
               comment-nvim 
-              nvim-web-devicons
               alpha-nvim
+              nvim-treesitter
+              nvim-tree-lua
             ]; 
             opt = [];
         };
@@ -100,8 +100,8 @@
           let mapleader = " "
           "nerdtree
           map <leader>n :NERDTreeToggle<CR>
-          map <leader>o :NERDTreeToggle %<CR>
-          autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
+          map <leader>o :NERDTreeFind %<CR>
+          "autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
 
           nnoremap <Leader>g  :LazyGit<CR> 
           nnoremap <Leader>f  :Telescope find_files<CR>
@@ -309,6 +309,31 @@
                   post_hook = nil,
                   }
             require'alpha'.setup(require'alpha.themes.dashboard'.config)
+            require'nvim-treesitter.configs'.setup {}
+
+            -- disable netrw at the very start of your init.lua (strongly advised)
+            vim.g.loaded_netrw = 1
+            vim.g.loaded_netrwPlugin = 1
+            
+            -- set termguicolors to enable highlight groups
+            vim.opt.termguicolors = true
+            
+            -- empty setup using defaults
+            -- require("nvim-tree").setup()
+            
+            -- OR setup with some options
+            require("nvim-tree").setup({
+              -- sort_by = "case_sensitive",
+              view = {
+                width = 30,
+              },
+              renderer = {
+                group_empty = true,
+              },
+              filters = {
+                dotfiles = true,
+              },
+            })
           EOF
 
           function! ShowDocumentation()
