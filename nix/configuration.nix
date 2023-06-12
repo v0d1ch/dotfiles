@@ -177,6 +177,7 @@ in
       vscode
       bc
       multimarkdown
+      trezor-suite
     ];
 
   home-manager.users.v0d1ch = { pkgs, ... }: {
@@ -373,7 +374,10 @@ in
      };
   };
 
-  services.udev.packages = [ pkgs.yubikey-personalization ];  
+  services.udev.packages = 
+    [ pkgs.yubikey-personalization 
+      pkgs.trezor-udev-rules
+    ];  
   services.pcscd.enable = true;
   security.pam.services = {
     login.u2fAuth = true;

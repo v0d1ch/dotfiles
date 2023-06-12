@@ -151,6 +151,7 @@
 
           nnoremap <Leader>K :call ShowDocumentation()<CR>
 
+
           " projects
           lua << EOF
             require("project_nvim").setup {
