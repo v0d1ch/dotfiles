@@ -1,7 +1,17 @@
 { pkgs, ... }:
+
+  let sad = pkgs.vimUtils.buildVimPluginFrom2Nix {
+    name = "sad.nvim";
+    src = pkgs.fetchFromGitHub {
+      owner = "ray-x";
+      repo = "sad.nvim";
+      rev = "869c7f3ca3dcd28fd78023db6a7e1bf8af0f4714";
+      hash = "sha256-uwXldYA7JdZHqoB4qfCnZcQW9YBjlRWmiz8mKb9jHuI=";
+    };
+  };
+  in
 {
   environment.variables = { EDITOR = "vim"; };
-
   environment.systemPackages = with pkgs; [
      (neovim.override {
         vimAlias = true;
@@ -109,6 +119,7 @@
           nnoremap <Leader>rs :Telescope resume<CR>
           nnoremap <Leader>b  :Buffers<CR>
           nnoremap <Leader>q  :call FormatCode()<CR>
+          nnoremap <Leader>w  :lua require("spectre").open_visual({select_word=true})<CR>
           
           " format on save
           augroup RunCommandOnWrite
@@ -121,6 +132,7 @@
           nmap <Leader>gr <Plug>(coc-references)
           nmap <Leader>gi <Plug>(coc-implementation)
           nmap <Leader>p :Telescope projects<CR> 
+          nmap <Leader>j :Telescope current_buffer_fuzzy_find<CR> 
 
           " Applying code actions to the selected code block
           " Example: `<leader>aap` for current paragraph

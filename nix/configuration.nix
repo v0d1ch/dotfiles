@@ -178,6 +178,7 @@ in
       bc
       multimarkdown
       trezor-suite
+      sad
     ];
 
   home-manager.users.v0d1ch = { pkgs, ... }: {
