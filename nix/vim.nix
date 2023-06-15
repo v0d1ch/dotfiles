@@ -1,15 +1,5 @@
 { pkgs, ... }:
 
-  let sad = pkgs.vimUtils.buildVimPluginFrom2Nix {
-    name = "sad.nvim";
-    src = pkgs.fetchFromGitHub {
-      owner = "ray-x";
-      repo = "sad.nvim";
-      rev = "869c7f3ca3dcd28fd78023db6a7e1bf8af0f4714";
-      hash = "sha256-uwXldYA7JdZHqoB4qfCnZcQW9YBjlRWmiz8mKb9jHuI=";
-    };
-  };
-  in
 {
   environment.variables = { EDITOR = "vim"; };
   environment.systemPackages = with pkgs; [
@@ -57,6 +47,7 @@
               nvim-treesitter
               nvim-spectre
               nvim-cursorline
+              telescope-live-grep-args-nvim
             ]; 
             opt = [];
         };
@@ -115,11 +106,13 @@
           "autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
           nnoremap <Leader>g  :LazyGit<CR> 
           nnoremap <Leader>f  :Telescope find_files<CR>
-          nnoremap <Leader>s  :Telescope live_grep<CR>
           nnoremap <Leader>rs :Telescope resume<CR>
           nnoremap <Leader>b  :Buffers<CR>
           nnoremap <Leader>q  :call FormatCode()<CR>
           nnoremap <Leader>w  :lua require("spectre").open_visual({select_word=true})<CR>
+          nnoremap <Leader>s  :lua require('telescope').extensions.live_grep_args.live_grep_args()<CR>
+          "nnoremap <Leader>s  :Telescope live_grep<CR>
+
           
           " format on save
           augroup RunCommandOnWrite
@@ -333,6 +326,27 @@
                 enable = true,
                 min_length = 3,
                 hl = { underline = true },
+              }
+            }
+            local telescope = require("telescope")
+            local lga_actions = require("telescope-live-grep-args.actions")
+            
+            telescope.setup {
+              extensions = {
+                live_grep_args = {
+                  auto_quoting = true, -- enable/disable auto-quoting
+                  -- define mappings, e.g.
+                  mappings = { -- extend mappings
+                    i = {
+                      ["<C-k>"] = lga_actions.quote_prompt(),
+                      ["<C-i>"] = lga_actions.quote_prompt({ postfix = " --iglob " }),
+                    },
+                  },
+                  -- ... also accepts theme settings, for example:
+                  -- theme = "dropdown", -- use dropdown theme
+                  -- theme = { }, -- use own theme spec
+                  -- layout_config = { mirror=true }, -- mirror preview pane
+                }
               }
             }
           EOF
