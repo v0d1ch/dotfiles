@@ -87,6 +87,7 @@
           set showcmd
           set clipboard=unnamedplus
           set t_Co=256
+          set noswapfile
           set number
           set expandtab
           set foldmethod=indent
@@ -111,7 +112,7 @@
           nnoremap <Leader>q  :call FormatCode()<CR>
           nnoremap <Leader>w  :lua require("spectre").open_visual({select_word=true})<CR>
           nnoremap <Leader>s  :lua require('telescope').extensions.live_grep_args.live_grep_args()<CR>
-          "nnoremap <Leader>s  :Telescope live_grep<CR>
+          nnoremap <Leader>j <cmd>lua require('telescope.builtin').grep_string({search = vim.fn.expand("<cword>")})<CR>
 
           
           " format on save
@@ -125,7 +126,6 @@
           nmap <Leader>gr <Plug>(coc-references)
           nmap <Leader>gi <Plug>(coc-implementation)
           nmap <Leader>p :Telescope projects<CR> 
-          nmap <Leader>j :Telescope current_buffer_fuzzy_find<CR> 
 
           " Applying code actions to the selected code block
           " Example: `<leader>aap` for current paragraph

@@ -179,6 +179,9 @@ in
       multimarkdown
       trezor-suite
       sad
+      exfat
+      ntfs3g
+      nvd
     ];
 
   home-manager.users.v0d1ch = { pkgs, ... }: {
