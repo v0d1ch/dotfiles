@@ -12,16 +12,18 @@ Config
   , persistent =       True    -- enable/disable hiding (True = disabled)
   , sepChar      = "%"
   , alignSep     = "}{"
-  , template = " %StdinReader% }{ %multicpu% <fc=#020A19></fc> %memory% <fc=#020A19></fc> %enp6s0% <fc=#020A19></fc> %wlp5s0% <fc=#020A19></fc> %alsa:default:Master% <fc=#020A19></fc> %bat0% <fc=#020A19></fc> %date%"
+  -- %multicpu%
+  , template = " %StdinReader% }{  <fc=#020A19></fc> %memory% <fc=#020A19></fc> %enp6s0% <fc=#020A19></fc> %wlp5s0% <fc=#020A19></fc> %alsa:default:Master% <fc=#020A19></fc> %bat0% <fc=#020A19></fc> %date%"
   , commands =
-      [ Run MultiCpu [ "--template" , "<fc=#666666><icon=/home/v0d1ch/code/sm4tik-xbm-icons/icons/cpu.xbm/></fc> <total0>% <total1>% <total2>% <total3>% <total4>% <total5>% <total6>% <total7>% <total8>% <total9>% <total10>% <total11>% <total12>%"
-                     , "--Low"      , "50"         -- units: %
-                     , "--High"     , "85"         -- units: %
-                     , "--low"      , "#A3BE8C"
-                     , "--normal"   , "#EBCB8B"
-                     , "--high"     , "#BF616A"
-                     ] 10
-      , Run Memory [ "--template" ,"<fc=#666666><icon=/home/v0d1ch/code/sm4tik-xbm-icons/icons/mem.xbm/></fc> <usedratio>%"
+      [
+      -- Run MultiCpu [ "--template" , "<fc=#666666><icon=/home/v0d1ch/code/sm4tik-xbm-icons/icons/cpu.xbm/></fc> <total0>% <total1>% <total2>% <total3>% <total4>% <total5>% <total6>% <total7>% <total8>% <total9>% <total10>% <total11>% <total12>%"
+      --               , "--Low"      , "50"         -- units: %
+      --               , "--High"     , "85"         -- units: %
+      --               , "--low"      , "#A3BE8C"
+      --               , "--normal"   , "#EBCB8B"
+      --               , "--high"     , "#BF616A"
+      --               ] 10
+       Run Memory [ "--template" ,"<fc=#666666><icon=/home/v0d1ch/code/sm4tik-xbm-icons/icons/mem.xbm/></fc> <usedratio>%"
                    , "--Low"      , "20"
                    , "--High"     , "90"
                    , "--low"      , "#A3BE8C"
@@ -30,16 +32,6 @@ Config
                    ] 10
       , Run Network "enp6s0" ["-t", "<fc=#666666><icon=/home/v0d1ch/code/sm4tik-xbm-icons/icons/net_up_01.xbm/></fc> <rx>KB/<tx>KB", "--Low", "10000", "--low", "#888888", "--High", "800000", "--high", "#f90", "--normal", "#5f4"] 10
       , Run Network "wlp5s0" ["-t", "<fc=#666666><icon=/home/v0d1ch/code/sm4tik-xbm-icons/icons/wifi_02.xbm/></fc> <rx>KB/<tx>KB", "--Low", "10000", "--low", "#888888", "--High", "800000", "--high", "#f90", "--normal", "#5f4"] 10
-      , Run BatteryN
-          ["BAT0"]
-          [ "--template" , "<fc=#666666><icon=/home/v0d1ch/code/sm4tik-xbm-icons/icons/bat_full_02.xbm/></fc> <acstatus>"
-          , "--Low"      , "10"        -- units: %
-          , "--High"     , "80"        -- units: %
-          , "--low"      , "#BF616A"
-          , "--normal"   , "#EBCB8B"
-          , "--high"     , "#A3BE8C"
-          ] 50 "bat0"
-      , Run Date "<fc=#EBCB8B>%a, %d %b %I:%M %p</fc>" "date" 10
       , Run StdinReader
       , Run Alsa "default" "Master"
           [ "--template" , "<fc=#666666><icon=/home/v0d1ch/code/sm4tik-xbm-icons/icons/note.xbm/></fc> <status>"
@@ -52,5 +44,15 @@ Config
           , "--mediums", ""
           , "--lows", ""
           ]
+      , Run BatteryN
+          ["BAT0"]
+          [ "--template" , "<fc=#666666><icon=/home/v0d1ch/code/sm4tik-xbm-icons/icons/bat_full_02.xbm/></fc> <acstatus>"
+          , "--Low"      , "10"        -- units: %
+          , "--High"     , "80"        -- units: %
+          , "--low"      , "#BF616A"
+          , "--normal"   , "#EBCB8B"
+          , "--high"     , "#A3BE8C"
+          ] 50 "bat0"
+      , Run Date "<fc=#EBCB8B>%a, %d %b %I:%M %p</fc>" "date" 10
       ]
   }

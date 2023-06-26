@@ -52,6 +52,7 @@ in
   nixpkgs.config.permittedInsecurePackages = [
     "electron-12.2.3"
     "qtwebkit-5.212.0-alpha4"
+    "openssl-1.1.1u"
   ];
 
   nixpkgs.overlays = [
@@ -134,7 +135,6 @@ in
   # Define a user account. Don't forget to set a password with ‘passwd’.
 
   users.defaultUserShell = pkgs.fish; 
-
   users.users.v0d1ch = {
     shell = pkgs.fish;
     isNormalUser = true;
@@ -146,7 +146,7 @@ in
 
   };
   
-  qt5 = {
+  qt = {
     enable = true;
     platformTheme = "gtk2";
     style = "gtk2";
@@ -242,8 +242,8 @@ in
        yubikey-personalization
        yubikey-personalization-gui
        yubico-piv-tool
-       yubioath-desktop
-
+       # yubioath-desktop
+       yubioath-flutter
       #  (haskell-language-server.override { supportedGhcVersions = [ "8107" ]; })
      ];
   
@@ -307,7 +307,6 @@ in
          source ~/code/scripts/push.sh
         '';
      };
-
      programs.fzf = {
        enable = true;
      };
@@ -388,7 +387,7 @@ in
     sudo.u2fAuth = true;
   };
 
-  # programs.mtr.enable = true;
+  programs.fish.enable = true;
   programs.gnupg.agent = {
     enable = true;
     enableSSHSupport = true;
