@@ -48,6 +48,10 @@
               nvim-spectre
               nvim-cursorline
               telescope-live-grep-args-nvim
+              vimtex
+              coc-vimtex
+              vim-latex-live-preview 
+              coc-rust-analyzer
             ]; 
             opt = [];
         };
@@ -68,8 +72,25 @@
 
           set background=light
           set whichwrap+=<,>,[,]
+          set foldmethod=syntax
           "prevent enter in autocomplete suggestions to mess things up
           inoremap <expr> <CR> pumvisible() ? "\<C-Y>" : "\<CR>"
+
+          "latex
+          " Viewer options: One may configure the viewer either by specifying a built-in
+          " viewer method:
+          let g:vimtex_view_method = 'zathura'
+          
+          " Or with a generic interface:
+          let g:vimtex_view_general_viewer = 'okular'
+          let g:vimtex_view_general_options = '--unique file:@pdf\#src:@line@tex'
+          
+          " VimTeX uses latexmk as the default compiler backend. If you use it, which is
+          " strongly recommended, you probably don't need to configure anything. If you
+          " want another compiler backend, you can change it as follows. The list of
+          " supported backends and further explanation is provided in the documentation,
+          " see ":help vimtex-compiler".
+          "let g:vimtex_compiler_method = 'latexrun'
 
           autocmd FileType gitrebase vnoremap <buffer> <localleader>p :s/\v^(pick\|reword\|edit\|squash\|fixup\|exec\|drop)/pick/<cr>
 
@@ -89,6 +110,7 @@
           set t_Co=256
           set noswapfile
           set number
+          set hlsearch
           set expandtab
           set foldmethod=indent
           set foldnestmax=5
@@ -105,6 +127,7 @@
           map <leader>n :NERDTreeToggle<CR>
           map <leader>o :NERDTreeFind %<CR>
           "autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
+          nnoremap * :keepjumps normal! mi*`i<CR>
           nnoremap <Leader>g  :LazyGit<CR> 
           nnoremap <Leader>f  :Telescope find_files<CR>
           nnoremap <Leader>rs :Telescope resume<CR>
@@ -113,12 +136,13 @@
           nnoremap <Leader>w  :lua require("spectre").open_visual({select_word=true})<CR>
           nnoremap <Leader>s  :lua require('telescope').extensions.live_grep_args.live_grep_args()<CR>
           nnoremap <Leader>j <cmd>lua require('telescope.builtin').grep_string({search = vim.fn.expand("<cword>")})<CR>
+          nnoremap <Leader>k  :Telescope current_buffer_fuzzy_find<CR>
 
           
           " format on save
-          augroup RunCommandOnWrite
-            autocmd BufWritePost *.hs :call FormatCode()
-          augroup END
+          "augroup RunCommandOnWrite
+          "  autocmd BufWritePost *.hs :call FormatCode()
+          "augroup END
 
 
           nmap <Leader>d <Plug>(coc-definition)

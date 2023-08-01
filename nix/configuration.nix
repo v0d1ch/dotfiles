@@ -182,6 +182,8 @@ in
       exfat
       ntfs3g
       nvd
+      whatsapp-for-linux
+      texlive.combined.scheme-full
     ];
 
   home-manager.users.v0d1ch = { pkgs, ... }: {
@@ -219,6 +221,7 @@ in
        htop
        dmenu
        haskellPackages.yeganesh
+       haskellPackages.Agda
        eva
        rustup
        alacritty
@@ -304,6 +307,7 @@ in
        package = pkgs.fish;
        # nohup rclone mount google_drive: ~/Documents/google-drive-local >/dev/null 2>&1
        shellInit = '' 
+         direnv hook fish | source
          source ~/code/scripts/push.sh
         '';
      };
