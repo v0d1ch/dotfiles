@@ -145,6 +145,15 @@
             autocmd BufWritePost *.hs :call FormatCode()
           augroup END
 
+          " format cabal files on save
+          augroup RunCommandOnWrite
+            autocmd BufWritePost *.cabal :call FormatCabalCode()
+          augroup END
+
+          " lazygit open file in vim
+          if has('nvim') && executable('nvr')
+            let $GIT_EDITOR = "nvr -cc split --remote-wait +'set bufhidden=wipe'"
+          endif
 
           nmap <Leader>d <Plug>(coc-definition)
           nmap <Leader>t <Plug>(coc-type-definition)
@@ -180,6 +189,9 @@
           command! -nargs=0 Format :call CocActionAsync('format')
 
           nnoremap <Leader>K :call ShowDocumentation()<CR>
+          if has('nvim') && executable('nvr')
+            let $GIT_EDITOR = "nvr -cc split --remote-wait +'set bufhidden=wipe'"
+          endif
 
 
           " projects
@@ -387,6 +399,11 @@
           function! FormatCode()
              let save_pos = getpos(".")
              :execute '%!fourmolu -q %'
+             call setpos(".", save_pos)
+          endfunction
+          function! FormatCabalCode()
+             let save_pos = getpos(".")
+             :execute '%!cabal-fmt -i %'
              call setpos(".", save_pos)
           endfunction
 
