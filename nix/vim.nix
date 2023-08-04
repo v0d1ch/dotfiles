@@ -150,10 +150,6 @@
             autocmd BufWritePost *.cabal :call FormatCabalCode()
           augroup END
 
-          " lazygit open file in vim
-          if has('nvim') && executable('nvr')
-            let $GIT_EDITOR = "nvr -cc split --remote-wait +'set bufhidden=wipe'"
-          endif
 
           nmap <Leader>d <Plug>(coc-definition)
           nmap <Leader>t <Plug>(coc-type-definition)
@@ -189,6 +185,8 @@
           command! -nargs=0 Format :call CocActionAsync('format')
 
           nnoremap <Leader>K :call ShowDocumentation()<CR>
+
+          " lazygit open file in vim
           if has('nvim') && executable('nvr')
             let $GIT_EDITOR = "nvr -cc split --remote-wait +'set bufhidden=wipe'"
           endif

@@ -310,16 +310,17 @@ in
        shellInit = '' 
          direnv hook fish | source
          source ~/code/scripts/push.sh
-         if [ -n "$NVIM_LISTEN_ADDRESS" ]; then
-             alias nvim=nvr -cc split --remote-wait +'set bufhidden=wipe'
-         fi
-         if [ -n "$NVIM_LISTEN_ADDRESS" ]; then
-             export VISUAL="nvr -cc split --remote-wait +'set bufhidden=wipe'"
-             export EDITOR="nvr -cc split --remote-wait +'set bufhidden=wipe'"
+
+         if [ -n "$NVIM_LISTEN_ADDRESS" ];
+             alias nvim="nvr -cc split --remote-wait +'set bufhidden=wipe'"
+         end 
+         if [ -n "$NVIM_LISTEN_ADDRESS" ]; 
+             set -x VISUAL "nvr -cc split --remote-wait +'set bufhidden=wipe'"
+             set -x EDITOR "nvr -cc split --remote-wait +'set bufhidden=wipe'"
          else
-             export VISUAL="nvim"
-             export EDITOR="nvim"
-         fi
+             set -x VISUAL "nvim"
+             set -x EDITOR "nvim"
+         end 
         '';
      };
      programs.fzf = {
