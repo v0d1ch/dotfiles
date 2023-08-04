@@ -10,7 +10,7 @@
         configure = {
           packages.myPlugins = with pkgs.vimPlugins; {
             start = [
-              fugitive 
+              vim-fugitive 
               nerdtree
               nerdcommenter
               # vimagit
@@ -52,6 +52,7 @@
               coc-vimtex
               vim-latex-live-preview 
               coc-rust-analyzer
+              gitv 
             ]; 
             opt = [];
         };
@@ -140,9 +141,9 @@
 
           
           " format on save
-          "augroup RunCommandOnWrite
-          "  autocmd BufWritePost *.hs :call FormatCode()
-          "augroup END
+          augroup RunCommandOnWrite
+            autocmd BufWritePost *.hs :call FormatCode()
+          augroup END
 
 
           nmap <Leader>d <Plug>(coc-definition)

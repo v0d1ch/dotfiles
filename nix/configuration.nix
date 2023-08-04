@@ -351,8 +351,8 @@ in
           bind p paste-buffer
           bind-key -T copy-mode-vi 'v' send -X begin-selection
           bind-key -T copy-mode-vi 'C-v' send -X rectangle-toggle
-          #bind-key -T copy-mode-vi 'y' send -X copy-pipe-and-cancel
-          bind-key -T copy-mode-vi 'y' send -X copy-pipe-and-cancel 'xclip -in -selection clipboard'
+          #bind-key -T copy-mode-vi 'y' send -X copy-pipe
+          bind-key -T copy-mode-vi 'y' send -X copy-pipe 'xclip -in -selection clipboard'
           bind-key -T copy-mode-vi 'Space' send -X halfpage-down
           bind-key -T copy-mode-vi 'Bspace' send -X halfpage-up
           bind-key -Tcopy-mode-vi 'Escape' send -X cancel
