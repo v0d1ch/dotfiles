@@ -71,7 +71,7 @@
           " diagnostics appear/become resolved
           set signcolumn=yes
 
-          set background=light
+          set background=dark
           set whichwrap+=<,>,[,]
           set foldmethod=syntax
           "prevent enter in autocomplete suggestions to mess things up
@@ -103,8 +103,8 @@
           let g:solarized_borders = v:false
           let g:solarized_disable_background = v:false
 
-          " colorscheme tokyonight
-          colorscheme PaperColor 
+          colorscheme tokyonight
+          " colorscheme PaperColor 
 
           set showcmd
           set clipboard=unnamedplus

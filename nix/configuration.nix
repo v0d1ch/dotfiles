@@ -310,17 +310,6 @@ in
        shellInit = '' 
          direnv hook fish | source
          source ~/code/scripts/push.sh
-
-         if [ -n "$NVIM_LISTEN_ADDRESS" ];
-             alias nvim="nvr -cc split --remote-wait +'set bufhidden=wipe'"
-         end 
-         if [ -n "$NVIM_LISTEN_ADDRESS" ]; 
-             set -x VISUAL "nvr -cc split --remote-wait +'set bufhidden=wipe'"
-             set -x EDITOR "nvr -cc split --remote-wait +'set bufhidden=wipe'"
-         else
-             set -x VISUAL "nvim"
-             set -x EDITOR "nvim"
-         end 
         '';
      };
      programs.fzf = {
@@ -330,7 +319,7 @@ in
 
      programs.tmux = {
         enable = true;
-        shortcut = "Space"; # Use Ctrl-a
+        shortcut = "Space"; # Use Ctrl-space
         baseIndex = 1; # Widows numbers begin with 1
         keyMode = "vi";
         customPaneNavigationAndResize = true;
@@ -376,7 +365,9 @@ in
 
           # Because P is used for paste-buffer
           bind N previous-window
-          source-file "/home/v0d1ch/.tmux/tmux-tomorrow/tomorrow.tmux"
+
+          # source-file "/home/v0d1ch/.tmux/tmux-tomorrow/tomorrow.tmux"
+          source-file "/home/v0d1ch/.tmux/tmux-tokyo-night/tokyonight.tmuxtheme"
         '';
 
      };
