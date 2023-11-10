@@ -1,430 +1,617 @@
-{ pkgs, ... }:
-
+{ config, pkgs, ... }:
+let unstable = import <nixos-unstable> { config = { allowUnfree = true; }; };
+in
 {
-  environment.variables = { EDITOR = "vim"; };
+  imports =
+    [ # Include the results of the hardware scan.
+      ./hardware-configuration.nix
+      ./vim.nix
+      <home-manager/nixos>
+    ];
+
+  # Bootloader.
+  boot.loader.systemd-boot.enable = true;
+  boot.loader.efi.canTouchEfiVariables = true;
+  boot.loader.efi.efiSysMountPoint = "/boot/efi";
+
+  networking.hostName = "nixos"; # Define your hostname.
+  # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
+
+  # Configure network proxy if necessary
+  # networking.nameservers = ["8.8.8.8"];
+  # networking.proxy.default = "http://user:password@proxy:port/";
+  # networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain";
+
+  # Enable networking
+  networking.networkmanager.enable = true;
+
+  # Set your time zone.
+  time.timeZone = "Europe/Belgrade";
+
+  # Select internationalisation properties.
+  i18n.defaultLocale = "en_US.UTF-8";
+
+  # Enable the X11 windowing system.
+  services.xserver.enable = true;
+  services.xserver.videoDrivers = ["kvm-amd"];
+
+  # Enable the GNOME Desktop Environment.
+  # services.xserver.displayManager.gdm.enable = true;
+  services.xserver.desktopManager.gnome.enable = true;
+  services.xserver.displayManager.sddm.enable = true;
+  services.xserver.displayManager.autoLogin = { enable = true; user = "v0d1ch"; };
+  services.xserver.displayManager.defaultSession = "none+xmonad";
+  services.xserver.dpi = 180;
+  services.xserver.displayManager.session = [
+      {
+        manage = "desktop";
+        name = "xsession";
+        start = ''exec $HOME/.xsession'';
+      }
+  ];
+
+  # Configure keymap in X11
+  services.xserver = {
+    layout = "us";
+    xkbVariant = "";
+  };
+
+  # Enable CUPS to print documents.
+  services.printing.enable = true;
+
+  # Enable sound with pipewire.
+  sound.enable = true;
+  hardware.pulseaudio.enable = false;
+  security.rtkit.enable = true;
+  services.pipewire = {
+    enable = true;
+    alsa.enable = true;
+    alsa.support32Bit = true;
+    pulse.enable = true;
+    # If you want to use JACK applications, uncomment this
+    #jack.enable = true;
+
+    # use the example session manager (no others are packaged yet so this is enabled by default,
+    # no need to redefine it in your config for now)
+    #media-session.enable = true;
+  };
+
+  # Enable touchpad support (enabled default in most desktopManager).
+  # services.xserver.libinput.enable = true;
+
+  # Define a user account. Don't forget to set a password with ‘passwd’.
+  users.defaultUserShell = pkgs.zsh; 
+  users.users.v0d1ch = {
+    shell = pkgs.zsh;
+    isNormalUser = true;
+    description = "Sasha Bogicevic";
+    extraGroups = [ "networkmanager" "wheel" "docker" ];
+    openssh.authorizedKeys.keys = [
+        "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDnCLEXU8AQIhF2EsUK0JCtmzEa/Byd+2vvsHKtr+csB/CSjBMqxCYo8o647XEfLR0WRMCUaB8zJzpCJ5IPy/uyxHvarDfFpYzUwO29Q0wPFJq2P46zjLLcMKg9rUrY8Eii3tKqy9A6PtnaCBNwHhni5aZmHT92Wx4/XgaVGSb4TEXPErCQiT6wyvf21lXeKxjipojYXCL/nrN5jBBiJ53VFSt7myj0TWgkcDDvGJVuE7mgUTEySlmfwQwLd/42PoSuitN4e86SzuCN4AFa4cGQeJRGJ+aDsF3JhNOBuDYjFlMJseooMdvR9DhTq263M+D7w3fpJBmRBXLdXj3GoHpvXh6L4LxP08dd6D4AdcDPZHwEkpd1pDaGQL/PuTDqpug7x5/OWVcLNVlnG0AXGlEFOVBQ4pUNwQ+xHvI1pMKl0I4JYBPEU/Ul2qX37tVhwQol3k9n5U/K8iJGTEyOO/ipr4uz2uQoeyVOXRSObl+pjlzGYfF7IG7/idcNfYUg6Tk= v0d1ch@nixos"
+      ];
+
+  };
+  
+# qt = {
+#   enable = true;
+#   platformTheme = "gtk2";
+#   style = "gtk2";
+# };
+
+
+  # Allow unfree packages
+  nixpkgs.config.allowUnfree = true;
+  nixpkgs.config.permittedInsecurePackages = [
+    "electron-12.2.3"
+    "qtwebkit-5.212.0-alpha4"
+    "openssl-1.1.1u"
+    "vscode-1.73.1"
+  ];
+
+  environment.variables = {
+    EDITOR = "vim";
+    GDK_SCALE = "2";
+    GDK_DPI_SCALE = "0.5";
+  };
+
+  
   environment.systemPackages = with pkgs; [
-     (neovim.override {
-        vimAlias = true;
-        viAlias = true;
-        withNodeJs = true;
-        configure = {
-          packages.myPlugins = with pkgs.vimPlugins; {
-            start = [
-              vim-fugitive 
-              nerdtree
-              nerdcommenter
-              # vimagit
-              neogit
+      lazygit
+      vim 
+      neovim-remote
+      wget
+      # emacsNativeComp
+      # emacsGit
+      unstable.google-chrome
+      discord
+      signal-desktop
+      spotify
+      postman
+      viber
+      pam_u2f
+      pinentry-curses
+      pinentry-emacs
+      gcc8
+      xorg.libxcb
+      xdotool
+      unstable.zellij
+      rclone
+      etcher
+      bc
+      multimarkdown
+      trezor-suite
+      sad
+      exfat
+      ntfs3g
+      nvd
+      whatsapp-for-linux
+      texlive.combined.scheme-full
+      qt5.full
+      qtcreator
+      brightnessctl
+      acpi
+      libnotify
+      dbus
+      wireshark
+      nmap
+      ettercap
+      steam-run
+      protonvpn-gui
+      protonvpn-cli
+      networkmanagerapplet
+  ];
 
-              awesome-vim-colorschemes 
-              catppuccin-nvim
-              solarized              
-
-              vim-lastplace
-              plenary-nvim
-              direnv-vim
-              telescope-nvim
-              telescope-coc-nvim
-              telescope_hoogle
-              completion-nvim
-
-              vim-nix
-              vim-cool
-              haskell-vim 
-              rust-tools-nvim 
-              nvim-lspconfig
-              fzf-vim
-              coc-nvim
-              haskell-tools-nvim
-              lazygit-nvim
-              tokyonight-nvim 
-              project-nvim
-              nvim-web-devicons
-              lualine-nvim
-              popup-nvim
-              comment-nvim 
-              alpha-nvim
-              nvim-spectre
-              nvim-cursorline
-              telescope-live-grep-args-nvim
-              vimtex
-              coc-vimtex
-              vim-latex-live-preview 
-              coc-rust-analyzer
-              gitv 
-              rust-tools-nvim
-              rust-vim
-            ]; 
-            opt = [];
-        };
-        customRC = ''
-          " vim configuration
-          set encoding=utf-8
-          " Some servers have issues with backup files, see #649
-          set nobackup
-          set nowritebackup
-          
-          " Having longer updatetime (default is 4000 ms = 4s) leads to noticeable
-          " delays and poor user experience
-          set updatetime=300
-          
-          " Always show the signcolumn, otherwise it would shift the text each time
-          " diagnostics appear/become resolved
-          set signcolumn=yes
-
-          set background=light
-          set whichwrap+=<,>,[,]
-          set foldmethod=syntax
-          "prevent enter in autocomplete suggestions to mess things up
-          inoremap <expr> <CR> pumvisible() ? "\<C-Y>" : "\<CR>"
-
-          "latex
-          " Viewer options: One may configure the viewer either by specifying a built-in
-          " viewer method:
-          let g:vimtex_view_method = 'zathura'
-          
-          " Or with a generic interface:
-          let g:vimtex_view_general_viewer = 'okular'
-          let g:vimtex_view_general_options = '--unique file:@pdf\#src:@line@tex'
-          
-          " VimTeX uses latexmk as the default compiler backend. If you use it, which is
-          " strongly recommended, you probably don't need to configure anything. If you
-          " want another compiler backend, you can change it as follows. The list of
-          " supported backends and further explanation is provided in the documentation,
-          " see ":help vimtex-compiler".
-          "let g:vimtex_compiler_method = 'latexrun'
-
-          autocmd FileType gitrebase vnoremap <buffer> <localleader>p :s/\v^(pick\|reword\|edit\|squash\|fixup\|exec\|drop)/pick/<cr>
-
-          let g:solarized_italic_comments = v:true
-          let g:solarized_italic_keywords = v:false
-          let g:solarized_italic_functions = v:false
-          let g:solarized_italic_variables = v:false
-          let g:solarized_contrast = v:true
-          let g:solarized_borders = v:false
-          let g:solarized_disable_background = v:false
-
-          " colorscheme tokyonight
-          colorscheme PaperColor 
-
-          set showcmd
-          set clipboard=unnamedplus
-          set t_Co=256
-          set noswapfile
-          set number
-          set hlsearch
-          set expandtab
-          set foldmethod=indent
-          set foldnestmax=5
-          set foldlevelstart=99
-          set foldcolumn=0
-          set list
-          set listchars=tab:>-
-          let g:better_whitespace_enabled=1
-          let g:strip_whitespace_on_save=1
-          imap jk <Esc>
-
-          let g:coc_data_home = $HOME . '/.config/coc'
-          let g:rustc_path = $HOME."/.nix-profile/bin/rustc"
-
-          let mapleader = " "
-          "nerdtree
-          map <leader>n :NERDTreeToggle<CR>
-          map <leader>o :NERDTreeFind %<CR>
-          "autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
-          nnoremap * :keepjumps normal! mi*`i<CR>
-          nnoremap <Leader>g  :LazyGit<CR> 
-          nnoremap <Leader>f  :Telescope find_files<CR>
-          nnoremap <Leader>rs :Telescope resume<CR>
-          nnoremap <Leader>b  :Buffers<CR>
-          nnoremap <Leader>q  :call FormatCode()<CR>
-          nnoremap <Leader>w  :lua require("spectre").open_visual({select_word=true})<CR>
-          nnoremap <Leader>cw :lua require("spectre").open_file_search({select_word=true})<CR>
-          nnoremap <Leader>s  :lua require('telescope').extensions.live_grep_args.live_grep_args()<CR>
-          nnoremap <Leader>j <cmd>lua require('telescope.builtin').grep_string({search = vim.fn.expand("<cword>")})<CR>
-          nnoremap <Leader>k  :Telescope current_buffer_fuzzy_find<CR>
-          "nnoremap <Leader>q  :CocRestart<CR> 
-
-          
-          " format on save
-          augroup RunCommandOnWrite
-             autocmd BufWritePost *.hs :call FormatCode()
-          augroup END
-
-          " format cabal files on save
-          augroup RunCommandOnWrite
-            autocmd BufWritePost *.cabal :call FormatCabalCode()
-          augroup END
+  fonts.fonts = with pkgs; [
+    fira-code
+    fira-code-symbols
+    dina-font
+    open-sans
+    ubuntu_font_family
+    hasklig
+    iosevka
+    font-awesome
+    nerdfonts
+  ];
 
 
-          nmap <Leader>d <Plug>(coc-definition)
-          nmap <Leader>t <Plug>(coc-type-definition)
-          nmap <Leader>gr <Plug>(coc-references)
-          nmap <Leader>gi <Plug>(coc-implementation)
-          nmap <Leader>p :Telescope projects<CR> 
+  # HOME
+  home-manager.useGlobalPkgs = true;
 
-          " Applying code actions to the selected code block
-          " Example: `<leader>aap` for current paragraph
-          xmap <Leader>a  <Plug>(coc-codeaction-selected)
-          nmap <Leader>a  <Plug>(coc-codeaction-selected)
-          
-          " Remap keys for applying code actions at the cursor position
-          nmap <Leader>ac  <Plug>(coc-codeaction-cursor)
-          " Remap keys for apply code actions affect whole buffer
-          nmap <Leader>as  <Plug>(coc-codeaction-source)
-          " Apply the most preferred quickfix action to fix diagnostic on the current line
-          nmap <Leader>qf  <Plug>(coc-fix-current)
-          
-          " Remap keys for applying refactor code actions
-          nmap <Leader>[ <Plug>(coc-diagnostic-prev)
-          nmap <Leader>] <Plug>(coc-diagnostic-next)
+  home-manager.users.v0d1ch = { pkgs, ... }: {
 
+    home.stateVersion = "22.11";
+    home.packages = with pkgs; [
+         spacevim
+         firefox
+         libreoffice
+         virtualbox
+         caffeine-ng
+         dbeaver
+         kazam
+         vokoscreen
+         kdenlive
+         xscreensaver
+         trayer
+         arandr
+         xclip
+         zip
+         unzip
+         websocat
+         curl
+         jq
+         lsof
+         qbittorrent
+         nicotine-plus
+         termonad
+         unstable.keepassxc
+         openvpn
+         openresolv
+         docker
+         docker-compose
+         xmobar
+         ripgrep
+         fd
+         lorri
+         xsel
+         htop
+         dmenu
+         haskellPackages.yeganesh
+         haskellPackages.Agda
+         eva
+         rustup
+         alacritty
+         speechd
+         btop
+         lsix
+         simplescreenrecorder
+         feh
+         copyq
+         meld
+         cachix
+         haskell.compiler.ghc8107
+         gnome.eog
+         gnome.gnome-terminal
+         gnome.gnome-settings-daemon
+         gnome.dconf-editor
+         clementine
+         flameshot 
+         fx
+         dstat
+         dunst
+         thefuck
 
-          " Mappings for CoCList
-          nmap <Leader>t :call CocActionAsync('doHover')<CR>
-          nmap <Leader>z :CocDiagnostics<CR>
+         # Yubico's official tools
+         yubikey-manager
+         yubikey-manager-qt
+         yubikey-personalization
+         yubikey-personalization-gui
+         yubico-piv-tool
+         # yubioath-desktop
+         # yubioath-flutter
+        #  (haskell-language-server.override { supportedGhcVersions = [ "8107" ]; })
+       ];
 
-          "" Search workspace symbols
-          nnoremap <silent><nowait> <Leader>l  :<C-u>CocList -I symbols<cr>
+       services.lorri = {
+         enable = true;
+       };
+       
+       services.gpg-agent = {
+       enable = true;
+       enableSshSupport = true;
+       defaultCacheTtl = 1800;
+     };
+     services.dunst = {
+       enable = true;
+       iconTheme = {
+         name = "Adwaita";
+         package = pkgs.gnome3.adwaita-icon-theme;
+         size = "16x16";
+       };
+       settings = {
+         global = {
+           monitor = 0;
+           # geometry = "600x50-50+65";
+           shrink = "yes";
+           transparency = 10;
+           padding = 16;
+           horizontal_padding = 16;
+           # font = "JetBrainsMono Nerd Font 10";
+           line_height = 4;
+           format = ''<b>%s</b>\n%b'';
+         };
+       };
+     };
+     programs.git = {
+         enable = true;
+         aliases = {
+           st = "status";
+           ca = "commit --amend --no-edit";
+           bl = "branch -r --sort=-committerdate --format='%(HEAD)%(color:yellow)%(refname:short)|%(color:bold green)%(committerdate:relative)|%(color:blue)%(subject)|%(color:magenta)%(authorname)%(color:reset)' --color=always";
+           lol = "log --graph --decorate --oneline --abbrev-commit";
+           lola = "log --graph --decorate --oneline --abbrev-commit --all";
+           hist = "log --pretty=format:'%h %ad | %s%d [%an]' --graph --date=short";
+           lg = "log --color --graph --pretty=format:'%Cred%h$Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --";
+           recent = "for-each-ref --sort=committerdate refs/heads/ --format='%(HEAD) %(color:yellow)%(refname:short)%(color:reset) - %(color:red)%(objectname:short)%(color:reset) - %(contents:subject) - %(authorname) (%(color:green)%(committerdate:relative)%(color:reset))'";
+           work = "log --pretty=format:'%h%x09%an%x09%ad%x09%s'";
+         };
+         ignores = [ "TAGS" ];
+         # userEmail = "sasa.bogicevic@pm.me";
+         userEmail = "sasha.bogicevic@iohk.io";
+         userName = "Sasha Bogicevic";
+         signing = { 
+           signByDefault = true;
+           key = "8FE67EA9460B6F07";
+         };
+         extraConfig = {
+           core = {
+             editor = "vim";
+           };
+           pull = {
+             rebase = true;
+           };
+         };
+     };
 
-          " Add `:Format` command to format current buffer
-          command! -nargs=0 Format :call CocActionAsync('format')
+     programs.vscode = {
+       enable = true;
+       extensions = with pkgs.vscode-extensions; [
+         dracula-theme.theme-dracula
+         vscodevim.vim
+         yzhang.markdown-all-in-one
+         haskell.haskell
+         justusadam.language-haskell
+         eamodio.gitlens
+       ];
+     };
 
-          nnoremap <Leader>K :call ShowDocumentation()<CR>
+      programs.starship = {
+       enable = true;
+       enableFishIntegration = true;
+       settings = {
+         add_newline = true;
+       };
+     };
 
-          " lazygit open file in vim
-          if has('nvim') && executable('nvr')
-            let $GIT_EDITOR = "nvr -cc split --remote-wait +'set bufhidden=wipe'"
-          endif
+     programs.direnv = {
+       enable = true;
+       nix-direnv.enable = true;
+     };
+     # programs.fish = {
+     #   enable = true;
+     #   package = pkgs.fish;
+     #   # nohup rclone mount google_drive: ~/Documents/google-drive-local >/dev/null 2>&1
+     #   # source ~/code/scripts/push.sh
+     #   shellInit = '' 
+     #     export WINIT_X11_SCALE_FACTOR=1
+     #     direnv hook fish | source
+     #    '';
+     # };
 
+     programs.zsh = {
+       enable = true;
+       dotDir = ".config/zsh";
+       shellAliases = {
+         ll = "ls -l --color=tty";
+       };
 
-          " projects
-          lua << EOF
-            require("project_nvim").setup {
-               -- Manual mode doesn't automatically change your root directory, so you have
-               -- the option to manually do so using `:ProjectRoot` command.
-               manual_mode = false,
+       history = {
+             size = 10000000;
+             save = 10000000;
+             share = true;
+             path = "$HOME/.zsh_history";
+           };
+       enableAutosuggestions = true;
+       enableCompletion = true;
+       initExtra = ''
+            bindkey '^F' autosuggest-accept
+            bindkey '^U' backward-kill-line
+            bindkey '^A' beginning-of-line
+            bindkey '^E' end-of-line
+            bindkey -v
+            setopt magic_equal_subst
+            eval $(thefuck --alias)
+            autopair-init
+            zstyle -e ':completion:*' special-dirs true
 
-               -- Methods of detecting the root directory. **"lsp"** uses the native neovim
-               -- lsp, while **"pattern"** uses vim-rooter like glob pattern matching. Here
-               -- order matters: if one is not detected, the other is used as fallback. You
-               -- can also delete or rearangne the detection methods.
-               detection_methods = { "lsp", "pattern" },
-
-               -- All the patterns used to detect root dir, when **"pattern"** is in
-               -- detection_methods
-               patterns = { ".git", ".cabal"},
-
-               -- Table of lsp clients to ignore by name
-               -- eg: { "efm", ... }
-               ignore_lsp = {},
-
-               -- Don't calculate root dir on specific directories
-               -- Ex: { "~/.cargo/*", ... }
-               exclude_dirs = {},
-
-               -- Show hidden files in telescope
-               show_hidden = false,
-
-               -- When set to false, you will get a message when project.nvim changes your
-               -- directory.
-               silent_chdir = true,
-
-               -- What scope to change the directory, valid options are
-               -- * global (default)
-               -- * tab
-               -- * win
-               scope_chdir = 'global',
-
-               -- Path where project.nvim will store the project history for use in
-               -- telescope
-               datapath = vim.fn.stdpath("data"),
-            }
-
-            require('telescope').load_extension('projects')
-
-            require('lualine').setup {
-              options = {
-                icons_enabled = true,
-                theme = 'auto',
-                component_separators = { left = '', right = ''},
-                section_separators = { left = '', right = ''},
-                disabled_filetypes = {
-                  statusline = {},
-                  winbar = {},
-                },
-                ignore_focus = {},
-                always_divide_middle = true,
-                globalstatus = false,
-                refresh = {
-                  statusline = 1000,
-                  tabline = 1000,
-                  winbar = 1000,
-                }
-              },
-              sections = {
-                lualine_a = {'mode'},
-                lualine_b = {'branch', 'diff','filename'},
-                lualine_c = {'diagnostics',
-
-                   -- Table of diagnostic sources, available sources are:
-                   --   'nvim_lsp', 'nvim_diagnostic', 'nvim_workspace_diagnostic', 'coc', 'ale', 'vim_lsp'.
-                   -- or a function that returns a table as such:
-                   --   { error=error_cnt, warn=warn_cnt, info=info_cnt, hint=hint_cnt }
-                   sources = { 'coc'},
-
-                   -- Displays diagnostics for the defined severity types
-                   sections = { 'error', 'warn', 'info', 'hint' },
-
-                   diagnostics_color = {
-                     -- Same values as the general color option can be used here.
-                     error = 'DiagnosticError', -- Changes diagnostics' error color.
-                     warn  = 'DiagnosticWarn',  -- Changes diagnostics' warn color.
-                     info  = 'DiagnosticInfo',  -- Changes diagnostics' info color.
-                     hint  = 'DiagnosticHint',  -- Changes diagnostics' hint color.
-                   },
-                   symbols = {error = 'E', warn = 'W', info = 'I', hint = 'H'},
-                   colored = true,           -- Displays diagnostics status in color if set to true.
-                   update_in_insert = false, -- Update diagnostics in insert mode.
-                   always_visible = false,   -- Show diagnostics even if there are none.
-
-
-                },
-                lualine_x = {'coc#status', 'encoding', 'fileformat', 'filetype'},
-
-
-
-
-                lualine_y = {'progress'},
-                lualine_z = {'location'}
-              },
-              inactive_sections = {
-                lualine_a = {},
-                lualine_b = {},
-                lualine_c = {'filename'},
-                lualine_x = {'location'},
-                lualine_y = {},
-                lualine_z = {}
-              },
-              tabline = {},
-              winbar = {},
-              inactive_winbar = {},
-              extensions = {}
-            }
-
-            require('Comment').setup{
-              ---Add a space b/w comment and the line
-                  padding = true,
-                  ---Whether the cursor should stay at its position
-                  sticky = true,
-                  ---Lines to be ignored while (un)comment
-                  ignore = nil,
-                  ---LHS of toggle mappings in NORMAL mode
-                  toggler = {
-                      ---Line-comment toggle keymap
-                      line = 'gcc',
-                      ---Block-comment toggle keymap
-                      block = 'gbc',
-                  },
-                  ---LHS of operator-pending mappings in NORMAL and VISUAL mode
-                  opleader = {
-                      ---Line-comment keymap
-                      line = 'gc',
-                      ---Block-comment keymap
-                      block = 'gb',
-                  },
-                  ---LHS of extra mappings
-                  extra = {
-                      ---Add comment on the line above
-                      above = 'gcO',
-                      ---Add comment on the line below
-                      below = 'gco',
-                      ---Add comment at the end of line
-                      eol = 'gcA',
-                  },
-                  ---Enable keybindings
-                  ---NOTE: If given `false` then the plugin won't create any mappings
-                  mappings = {
-                      ---Operator-pending mapping; `gcc` `gbc` `gc[count]{motion}` `gb[count]{motion}`
-                      basic = true,
-                      ---Extra mapping; `gco`, `gcO`, `gcA`
-                      extra = true,
-                  },
-                  ---Function to call before (un)comment
-                  pre_hook = nil,
-                  ---Function to call after (un)comment
-                  post_hook = nil,
-                  }
-            require'alpha'.setup(require'alpha.themes.dashboard'.config)
-            require('spectre').setup()
-            require('nvim-cursorline').setup {
-              cursorline = {
-                enable = true,
-                timeout = 1000,
-                number = false,
-              },
-              cursorword = {
-                enable = true,
-                min_length = 3,
-                hl = { underline = true },
-              }
-            }
-            local telescope = require("telescope")
-            local lga_actions = require("telescope-live-grep-args.actions")
-            
-            telescope.setup {
-              extensions = {
-                live_grep_args = {
-                  auto_quoting = true, -- enable/disable auto-quoting
-                  -- define mappings, e.g.
-                  mappings = { -- extend mappings
-                    i = {
-                      ["<C-k>"] = lga_actions.quote_prompt(),
-                      ["<C-i>"] = lga_actions.quote_prompt({ postfix = " --iglob " }),
-                    },
-                  },
-                  -- ... also accepts theme settings, for example:
-                  -- theme = "dropdown", -- use dropdown theme
-                  -- theme = { }, -- use own theme spec
-                  -- layout_config = { mirror=true }, -- mirror preview pane
-                }
-              }
-            }
-            local rt = require("rust-tools")
-            
-            rt.setup({
-              server = {
-                on_attach = function(_, bufnr)
-                  -- Hover actions
-                  vim.keymap.set("n", "<C-space>", rt.hover_actions.hover_actions, { buffer = bufnr })
-                  -- Code action groups
-                  vim.keymap.set("n", "<Leader>a", rt.code_action_group.code_action_group, { buffer = bufnr })
-                end,
-              },
-            })
-          EOF
-
-          function! ShowDocumentation()
-            if CocAction('hasProvider', 'hover')
-              call CocActionAsync('doHover')
-            else
-              call feedkeys('K', 'in')
-            endif
-          endfunction
-
-          function! FormatCode()
-             let save_pos = getpos(".")
-             :execute '%!fourmolu -q %'
-             call setpos(".", save_pos)
-          endfunction
-
-          function! FormatCabalCode()
-             :execute '%!cabal-fmt -i %'
-          endfunction
 
         '';
-        };
-      })
+       plugins = with pkgs; [
+          {
+            name = "formarks";
+            src = fetchFromGitHub {
+              owner = "wfxr";
+              repo = "formarks";
+              rev = "8abce138218a8e6acd3c8ad2dd52550198625944";
+              sha256 = "1wr4ypv2b6a2w9qsia29mb36xf98zjzhp3bq4ix6r3cmra3xij90";
+            };
+            file = "formarks.plugin.zsh";
+          }
+          {
+            name = "zsh-syntax-highlighting";
+            src = fetchFromGitHub {
+              owner = "zsh-users";
+              repo = "zsh-syntax-highlighting";
+              rev = "0.6.0";
+              sha256 = "0zmq66dzasmr5pwribyh4kbkk23jxbpdw4rjxx0i7dx8jjp2lzl4";
+            };
+            file = "zsh-syntax-highlighting.zsh";
+          }
+          {
+            name = "zsh-abbrev-alias";
+            src = fetchFromGitHub {
+              owner = "momo-lab";
+              repo = "zsh-abbrev-alias";
+              rev = "637f0b2dda6d392bf710190ee472a48a20766c07";
+              sha256 = "16saanmwpp634yc8jfdxig0ivm1gvcgpif937gbdxf0csc6vh47k";
+            };
+            file = "abbrev-alias.plugin.zsh";
+          }
+          {
+            name = "zsh-autopair";
+            src = fetchFromGitHub {
+              owner = "hlissner";
+              repo = "zsh-autopair";
+              rev = "34a8bca0c18fcf3ab1561caef9790abffc1d3d49";
+              sha256 = "1h0vm2dgrmb8i2pvsgis3lshc5b0ad846836m62y8h3rdb3zmpy1";
+            };
+            file = "autopair.zsh";
+          }
+          {
+            name = "zsh-autocomplete";
+            src = fetchFromGitHub {
+              owner = "marlonrichert";
+              repo = "zsh-autocomplete";
+              rev = "6d059a3634c4880e8c9bb30ae565465601fb5bd2";
+              sha256 = "1h0vm2dgrmb8i2pvsgis3lshc5b0ad846836m62y8h3rdb3zmpy1";
+            };
+          }
+          {
+           # will source zsh-autosuggestions.plugin.zsh
+           name = "zsh-autosuggestions";
+           src = pkgs.fetchFromGitHub {
+             owner = "zsh-users";
+             repo = "zsh-autosuggestions";
+             rev = "v0.4.0";
+             sha256 = "0z6i9wjjklb4lvr7zjhbphibsyx51psv50gm07mbb0kj9058j6kc";
+           };
+         }
+         {
+            name = "powerlevel10k";
+            src = pkgs.zsh-powerlevel10k;
+            file = "share/zsh-powerlevel10k/powerlevel10k.zsh-theme";
+         }
+         {
+            name = "powerlevel10k-config";
+            src = lib.cleanSource ./p10k-config;
+            file = "p10k.zsh";
+         }
+       ];
+     };
 
+     programs.fzf = {
+       enable = true;
+     };
+
+
+     programs.tmux = {
+        enable = true;
+        shortcut = "Space"; # Use Ctrl-space
+        baseIndex = 1; # Widows numbers begin with 1
+        keyMode = "vi";
+        customPaneNavigationAndResize = true;
+        aggressiveResize = true;
+        historyLimit = 100000;
+        resizeAmount = 5;
+        escapeTime = 0;
+        plugins = with pkgs.tmuxPlugins; [
+          resurrect
+          sensible
+          # yank
+          #   {
+          #     plugin = dracula;
+          #     extraConfig = ''
+          #        set -g @dracula-show-battery false
+          #        set -g @dracula-show-location false
+          #        set -g @dracula-show-powerline true
+          #        set -g @dracula-refresh-rate 10
+          #        set -g @dracula-cpu-usage-label "CPU"
+          #        set -g @dracula-ram-usage-label "RAM"
+          #        set -g @dracula-git-show-current-symbol ✓
+          #     '';
+          # }
+        ];
+        extraConfig = ''
+          set -g default-terminal "tmux-256color"
+          set -ga terminal-overrides ",*256col*:Tc"
+          # Fix environment variables
+          set-option -g update-environment "SSH_AUTH_SOCK \
+                                            SSH_CONNECTION \
+                                            DISPLAY"
+
+          # Mouse works as expected
+          set-option -g mouse on
+
+          # Use default shell
+          set-option -g default-shell ''${SHELL}
+          set -g status-bg black
+          set -g status-fg white
+
+          # Extra Vi friendly stuff
+          # y and p as in vim
+          bind Escape copy-mode
+          unbind p
+          bind p paste-buffer
+          bind-key -T copy-mode-vi 'v' send -X begin-selection
+          bind-key -T copy-mode-vi 'C-v' send -X rectangle-toggle
+          #bind-key -T copy-mode-vi 'y' send -X copy-pipe
+          bind-key -T copy-mode-vi 'y' send -X copy-pipe 'xclip -in -selection clipboard'
+          bind-key -T copy-mode-vi 'Space' send -X halfpage-down
+          bind-key -T copy-mode-vi 'Bspace' send -X halfpage-up
+          bind-key -Tcopy-mode-vi 'Escape' send -X cancel
+
+          # easy-to-remember split pane commands
+          bind | split-window -h -c "#{pane_current_path}"
+          bind - split-window -v -c "#{pane_current_path}"
+          bind c new-window -c "#{pane_current_path}"
+
+          # Because P is used for paste-buffer
+          bind N previous-window
+
+          # source-file "/home/v0d1ch/.tmux/tmux-tomorrow/tomorrow.tmux"
+          # source-file "/home/v0d1ch/.tmux/tmux-tokyo-night/tokyonight.tmuxtheme"
+        '';
+
+     };
+
+     services.stalonetray = {
+        enable = true;
+        config = {
+         geometry = "5x1-800+0";
+         decorations = null;
+         icon_size = 25;
+         slot_size = 35;
+         sticky = true;
+         background = "#2E3440";
+         icon_gravity = "W";
+        };
+     };
+  };
+  # END HOME
+
+  services.udev.packages = 
+    [ pkgs.yubikey-personalization 
+      pkgs.trezor-udev-rules
+    ];  
+  services.pcscd.enable = true;
+  security.pam.services = {
+    login.u2fAuth = true;
+    sudo.u2fAuth = true;
+  };
+
+  # programs.fish.enable = true;
+  programs.zsh.enable = true;
+  programs.dconf.enable = true;
+  programs.gnupg.agent = {
+    enable = true;
+    enableSSHSupport = true;
+    pinentryFlavor = "gtk2";
+  };
+
+  services.dbus.packages = [ pkgs.gcr ];
+
+  services.openssh.enable = true;
+
+  nix.settings.trusted-public-keys = [
+    "hydra.iohk.io:f/Ea+s+dFdN+3Y/G+FDgSq+a5NEWhJGzdjvKNGv0/EQ="
+    "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
+    "loony-tools:pr9m4BkM/5/eSTZlkQyRt57Jz7OMBxNSUiMC4FkcNfk="
+    "ryantrinkle.com-1:JJiAKaRv9mWgpVAz8dwewnZe0AzzEAzPkagE9SP5NWI=" 
   ];
+
+  nix.settings.substituters = [
+    "https://cache.iog.io"
+    "https://cache.nixos.org" 
+    "https://cache.zw3rk.com"
+    "https://nixcache.reflex-frp.org"
+  ];
+
+  nix.settings.experimental-features = [ "nix-command" "flakes" ];
+  nix.settings.trusted-users = ["root" "v0d1ch"];
+  
+  nixpkgs.overlays = [
+    (import (builtins.fetchTarball {
+      url = https://github.com/nix-community/emacs-overlay/archive/master.tar.gz;
+      sha256 = "08jfk327cwgqc9kalc5kii7dx3alm8w4fq19s0fss7iragb25nvy";
+    }
+    ))
+
+    (import (builtins.fetchTarball {
+      url = https://github.com/nix-community/neovim-nightly-overlay/archive/master.tar.gz;
+      sha256 = "01vx0jqkz5wkiilvyd98a6vnihbxlms0grcrqnyq4sqkdagip492";
+    }))
+  ];
+
+  services.xserver.windowManager = {
+    xmonad = {
+      enable = true;
+      enableContribAndExtras = true;
+      extraPackages = haskellPackages: [
+        haskellPackages.dbus
+        haskellPackages.List
+        haskellPackages.monad-logger
+        haskellPackages.xmonad
+      ];
+     };
+  };
+
+
+  virtualisation.docker.enable = true;
+
+  # virtualisation.virtualbox.host.enable = true;
+  # virtualisation.virtualbox.guest.enable = true;
+  # virtualisation.virtualbox.guest.x11 = true;
+  # users.extraGroups.vboxusers.members = [ "v0d1ch" ];
+
+  system.stateVersion = "22.11";
+
 }
