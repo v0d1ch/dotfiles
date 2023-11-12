@@ -15,6 +15,7 @@ in
   boot.loader.efi.efiSysMountPoint = "/boot/efi";
 
   networking.hostName = "nixos"; # Define your hostname.
+  networking.enableIPv6 = false;
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
 
   # Configure network proxy if necessary
@@ -31,8 +32,6 @@ in
   # Select internationalisation properties.
   i18n.defaultLocale = "en_US.UTF-8";
 
-  # Enable the X11 windowing system.
-  services.xserver.enable = true;
   services.xserver.videoDrivers = ["kvm-amd"];
 
   # Enable the GNOME Desktop Environment.
@@ -50,10 +49,12 @@ in
       }
   ];
 
-  # Configure keymap in X11
   services.xserver = {
-    layout = "us";
+    enable = true;
     xkbVariant = "";
+    exportConfiguration = true; 
+    layout = "us,rs";
+    xkbOptions = "eurosign:e, compose:menu, grp:alt_space_toggle";
   };
 
   # Enable CUPS to print documents.
@@ -68,16 +69,8 @@ in
     alsa.enable = true;
     alsa.support32Bit = true;
     pulse.enable = true;
-    # If you want to use JACK applications, uncomment this
-    #jack.enable = true;
-
-    # use the example session manager (no others are packaged yet so this is enabled by default,
-    # no need to redefine it in your config for now)
-    #media-session.enable = true;
   };
 
-  # Enable touchpad support (enabled default in most desktopManager).
-  # services.xserver.libinput.enable = true;
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.defaultUserShell = pkgs.zsh; 
@@ -92,13 +85,6 @@ in
 
   };
   
-# qt = {
-#   enable = true;
-#   platformTheme = "gtk2";
-#   style = "gtk2";
-# };
-
-
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
   nixpkgs.config.permittedInsecurePackages = [
@@ -120,9 +106,8 @@ in
       vim 
       neovim-remote
       wget
-      # emacsNativeComp
-      # emacsGit
       unstable.google-chrome
+      unstable.chromium
       discord
       signal-desktop
       spotify
@@ -159,6 +144,10 @@ in
       protonvpn-gui
       protonvpn-cli
       networkmanagerapplet
+      unstable.gnomecast
+      unstable.vlc
+      xkblayout-state
+      killall
   ];
 
   fonts.fonts = with pkgs; [
@@ -246,14 +235,12 @@ in
          yubikey-personalization
          yubikey-personalization-gui
          yubico-piv-tool
-         # yubioath-desktop
-         # yubioath-flutter
-        #  (haskell-language-server.override { supportedGhcVersions = [ "8107" ]; })
        ];
 
        services.lorri = {
          enable = true;
        };
+
        
        services.gpg-agent = {
        enable = true;
@@ -336,16 +323,6 @@ in
        enable = true;
        nix-direnv.enable = true;
      };
-     # programs.fish = {
-     #   enable = true;
-     #   package = pkgs.fish;
-     #   # nohup rclone mount google_drive: ~/Documents/google-drive-local >/dev/null 2>&1
-     #   # source ~/code/scripts/push.sh
-     #   shellInit = '' 
-     #     export WINIT_X11_SCALE_FACTOR=1
-     #     direnv hook fish | source
-     #    '';
-     # };
 
      programs.zsh = {
        enable = true;
@@ -466,19 +443,6 @@ in
         plugins = with pkgs.tmuxPlugins; [
           resurrect
           sensible
-          # yank
-          #   {
-          #     plugin = dracula;
-          #     extraConfig = ''
-          #        set -g @dracula-show-battery false
-          #        set -g @dracula-show-location false
-          #        set -g @dracula-show-powerline true
-          #        set -g @dracula-refresh-rate 10
-          #        set -g @dracula-cpu-usage-label "CPU"
-          #        set -g @dracula-ram-usage-label "RAM"
-          #        set -g @dracula-git-show-current-symbol ✓
-          #     '';
-          # }
         ];
         extraConfig = ''
           set -g default-terminal "tmux-256color"
@@ -526,7 +490,7 @@ in
      services.stalonetray = {
         enable = true;
         config = {
-         geometry = "5x1-800+0";
+         geometry = "5x1-900+0";
          decorations = null;
          icon_size = 25;
          slot_size = 35;
@@ -543,6 +507,9 @@ in
       pkgs.trezor-udev-rules
     ];  
   services.pcscd.enable = true;
+
+  services.avahi.enable = true;
+
   security.pam.services = {
     login.u2fAuth = true;
     sudo.u2fAuth = true;
