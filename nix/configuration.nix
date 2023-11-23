@@ -6,8 +6,8 @@ in
   imports =
     [ # Include the results of the hardware scan.
       ./hardware-configuration.nix
-      ./vim.nix
       <home-manager/nixos> 
+      ./nvim
     ];
 
   # Bootloader.
@@ -16,6 +16,7 @@ in
   boot.loader.efi.efiSysMountPoint = "/boot/efi";
 
   networking.hostName = "nixos"; # Define your hostname.
+
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
 
   # Configure network proxy if necessary
@@ -32,7 +33,6 @@ in
   i18n.defaultLocale = "en_US.utf8";
 
   # Enable the X11 windowing system.
-  services.xserver.enable = true;
 
   # Enable the GNOME Desktop Environment.
   # services.xserver.displayManager.gdm.enable = true;
@@ -55,18 +55,7 @@ in
     "openssl-1.1.1u"
   ];
 
-  nixpkgs.overlays = [
-    (import (builtins.fetchTarball {
-      url = https://github.com/nix-community/emacs-overlay/archive/master.tar.gz;
-      sha256 = "0zdl850f2id6ql022f50yych28lgj3k2vnzr1269xf25ikrmlb2s";
-    }
-    ))
-
-    (import (builtins.fetchTarball {
-      url = https://github.com/nix-community/neovim-nightly-overlay/archive/master.tar.gz;
-      sha256 = "0n9a59nb2ki4bap2pvv365804p5crwzm5viwc0dhvsxqvn2qsnyi";
-    }))
-  ];
+  nixpkgs.overlays = [ ];
   services.xserver.windowManager = {
     xmonad = {
       enable = true;
@@ -100,8 +89,11 @@ in
 
   # Configure keymap in X11
   services.xserver = {
-    layout = "us";
     xkbVariant = "";
+    enable = true;
+    exportConfiguration = true; 
+    layout = "us,rs";
+    xkbOptions = "eurosign:e, compose:menu";
   };
 
   # Enable CUPS to print documents.
@@ -134,9 +126,14 @@ in
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
 
-  users.defaultUserShell = pkgs.fish; 
+  users.defaultUserShell = pkgs.zsh; 
+
+  services.tailscale.enable = true; 
+  services.tailscale.useRoutingFeatures = "server";
+
+  # services.openssh.ports = [ 22 443 62495];
   users.users.v0d1ch = {
-    shell = pkgs.fish;
+    shell = pkgs.zsh;
     isNormalUser = true;
     description = "Sasha Bogicevic";
     extraGroups = [ "networkmanager" "wheel" "docker" ];
@@ -152,17 +149,14 @@ in
     style = "gtk2";
   };
      
-  environment.variables.EDITOR = "vim";
+  environment.variables.EDITOR = "nvim";
   environment.systemPackages = with pkgs; [
       lazygit
-      vim 
-      neovim-remote
+      unstable.neovim
       wget
-      # emacsNativeComp
-      emacsGit
       unstable.google-chrome
       discord
-      signal-desktop
+      unstable.signal-desktop
       spotify
       postman
       viber
@@ -185,228 +179,17 @@ in
       nvd
       whatsapp-for-linux
       texlive.combined.scheme-full
+      thefuck
+      xkblayout-state
+      killall
     ];
 
-  home-manager.users.v0d1ch = { pkgs, ... }: {
-  home.stateVersion = "22.11";
-  home.packages = with pkgs; [
-       spacevim
-       firefox
-       libreoffice
-       virtualbox
-       caffeine-ng
-       dbeaver
-       kazam
-       vokoscreen
-       kdenlive
-       xscreensaver
-       trayer
-       arandr
-       xclip
-       zip
-       unzip
-       jq
-       lsof
-       qbittorrent
-       nicotine-plus
-       termonad
-       keepassxc
-       openvpn
-       docker
-       docker-compose
-       xmobar
-       ripgrep
-       fd
-       lorri
-       xsel
-       htop
-       dmenu
-       haskellPackages.yeganesh
-       haskellPackages.Agda
-       eva
-       rustup
-       alacritty
-       speechd
-       btop
-       lsix
-       simplescreenrecorder
-       feh
-       copyq
-       meld
-       cachix
-       haskell.compiler.ghc8107
-       gnome.eog
-       clementine
-       flameshot 
-       fx
-       dunst
-
-       # Yubico's official tools
-       yubikey-manager
-       yubikey-manager-qt
-       yubikey-personalization
-       yubikey-personalization-gui
-       yubico-piv-tool
-       # yubioath-desktop
-       yubioath-flutter
-      #  (haskell-language-server.override { supportedGhcVersions = [ "8107" ]; })
-     ];
-  
-     services.lorri = {
-      enable = true;
-     }; 
-
-     services.gpg-agent = {
-       enable = true;
-       enableSshSupport = true;
-       defaultCacheTtl = 1800;
-     };
-
-     services.dunst = {
-       enable = true;
-       iconTheme = {
-         name = "Adwaita";
-         package = pkgs.gnome3.adwaita-icon-theme;
-         size = "16x16";
-       };
-       settings = {
-         global = {
-           monitor = 0;
-           # geometry = "600x50-50+65";
-           shrink = "yes";
-           transparency = 10;
-           padding = 16;
-           horizontal_padding = 16;
-           # font = "JetBrainsMono Nerd Font 10";
-           line_height = 4;
-           format = ''<b>%s</b>\n%b'';
-         };
-       };
-     };
-
-     programs.git = {
-         enable = true;
-         aliases = {
-           st = "status";
-           ca = "commit --amend --no-edit";
-           bl = "branch -r --sort=-committerdate --format='%(HEAD)%(color:yellow)%(refname:short)|%(color:bold green)%(committerdate:relative)|%(color:blue)%(subject)|%(color:magenta)%(authorname)%(color:reset)' --color=always";
-           lol = "log --graph --decorate --oneline --abbrev-commit";
-           lola = "log --graph --decorate --oneline --abbrev-commit --all";
-           hist = "log --pretty=format:'%h %ad | %s%d [%an]' --graph --date=short";
-           lg = "log --color --graph --pretty=format:'%Cred%h$Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --";
-           recent = "for-each-ref --sort=committerdate refs/heads/ --format='%(HEAD) %(color:yellow)%(refname:short)%(color:reset) - %(color:red)%(objectname:short)%(color:reset) - %(contents:subject) - %(authorname) (%(color:green)%(committerdate:relative)%(color:reset))'";
-           work = "log --pretty=format:'%h%x09%an%x09%ad%x09%s'";
-         };
-         ignores = [ "TAGS" ];
-         # userEmail = "sasa.bogicevic@pm.me";
-         userEmail = "sasha.bogicevic@iohk.io";
-         userName = "Sasha Bogicevic";
-         signing = { 
-           signByDefault = true;
-           key = "8FE67EA9460B6F07";
-         };
-         extraConfig = {
-           core = {
-             editor = "vim";
-           };
-           pull = {
-             rebase = true;
-           };
-         };
-     };
-
-     programs.starship = {
-       enable = true;
-       enableFishIntegration = true;
-       settings = {
-         add_newline = true;
-       };
-     };
-
-     programs.direnv = {
-       enable = true;
-       nix-direnv.enable = true;
-     };
-     programs.fish = {
-       enable = true;
-       package = pkgs.fish;
-       # nohup rclone mount google_drive: ~/Documents/google-drive-local >/dev/null 2>&1
-       shellInit = '' 
-         direnv hook fish | source
-         source ~/code/scripts/push.sh
-        '';
-     };
-     programs.fzf = {
-       enable = true;
-     };
-
-
-     programs.tmux = {
-        enable = true;
-        shortcut = "Space"; # Use Ctrl-space
-        baseIndex = 1; # Widows numbers begin with 1
-        keyMode = "vi";
-        customPaneNavigationAndResize = true;
-        aggressiveResize = true;
-        historyLimit = 100000;
-        resizeAmount = 5;
-        escapeTime = 0;
-        plugins = with pkgs; [
-          tmuxPlugins.resurrect
-          tmuxPlugins.yank
-        ];
-        extraConfig = ''
-          set -g default-terminal "tmux-256color"
-          set -ga terminal-overrides ",*256col*:Tc"
-          # Fix environment variables
-          set-option -g update-environment "SSH_AUTH_SOCK \
-                                            SSH_CONNECTION \
-                                            DISPLAY"
-
-          # Mouse works as expected
-          set-option -g mouse on
-
-          # Use default shell
-          set-option -g default-shell ''${SHELL}
-
-          # Extra Vi friendly stuff
-          # y and p as in vim
-          bind Escape copy-mode
-          unbind p
-          bind p paste-buffer
-          bind-key -T copy-mode-vi 'v' send -X begin-selection
-          bind-key -T copy-mode-vi 'C-v' send -X rectangle-toggle
-          #bind-key -T copy-mode-vi 'y' send -X copy-pipe
-          bind-key -T copy-mode-vi 'y' send -X copy-pipe 'xclip -in -selection clipboard'
-          bind-key -T copy-mode-vi 'Space' send -X halfpage-down
-          bind-key -T copy-mode-vi 'Bspace' send -X halfpage-up
-          bind-key -Tcopy-mode-vi 'Escape' send -X cancel
-
-          # easy-to-remember split pane commands
-          bind | split-window -h -c "#{pane_current_path}"
-          bind - split-window -v -c "#{pane_current_path}"
-          bind c new-window -c "#{pane_current_path}"
-
-          # Because P is used for paste-buffer
-          bind N previous-window
-
-          # source-file "/home/v0d1ch/.tmux/tmux-tomorrow/tomorrow.tmux"
-          source-file "/home/v0d1ch/.tmux/tmux-tokyo-night/tokyonight.tmuxtheme"
-        '';
-
-     };
-
-     services.stalonetray = {
-        enable = true;
-        config = {
-         geometry = "5x1-500+0";
-         decorations = null;
-         icon_size = 12;
-         sticky = true;
-         background = "#2E3440";
-        };
-     };
-  };
+    home-manager.users.v0d1ch = { ... }: {
+         imports = [ ./home.nix ];
+    };
+    home-manager.users.root = { ... }: {
+         imports = [ ./home.nix ];
+    };
 
   services.udev.packages = 
     [ pkgs.yubikey-personalization 
@@ -418,7 +201,7 @@ in
     sudo.u2fAuth = true;
   };
 
-  programs.fish.enable = true;
+  programs.zsh.enable = true;
   programs.gnupg.agent = {
     enable = true;
     enableSSHSupport = true;
