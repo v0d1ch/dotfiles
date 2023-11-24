@@ -36,7 +36,9 @@ if [[ $gs == *"modified"* ]]; then
   git add --all;
   git commit -m "New backup `date +'%Y-%m-%d %H:%M:%S'`";
   git push origin master
-  spd-say 'completed'
+  spd-say "completed"
+else
+  spd-say "nothing changed"
 fi
 
 
