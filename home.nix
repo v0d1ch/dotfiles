@@ -3,7 +3,6 @@
 let unstable = import <nixos-unstable> { config = { allowUnfree = true; }; };
 in
 {
-
    home.stateVersion = "22.11";
      home.packages = with pkgs; [
          spacevim
@@ -58,6 +57,7 @@ in
          flameshot
          fx
          dunst
+         thefuck
 
          # Yubico's official tools
          yubikey-manager
@@ -66,7 +66,7 @@ in
          yubikey-personalization-gui
          yubico-piv-tool
          # yubioath-desktop
-         yubioath-flutter
+         # yubioath-flutter
          #  (haskell-language-server.override { supportedGhcVersions = [ "8107" ]; })
          protonvpn-gui
      ];

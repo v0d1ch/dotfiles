@@ -55,12 +55,7 @@ in
       alsa-tools
       alsa-utils
       sox
-      thefuck
-      vscode
     ];
 
   };
 }
-
-
-
