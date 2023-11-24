@@ -196,11 +196,6 @@ in
 
   virtualisation.docker.enable = true;
 
-  # virtualisation.virtualbox.host.enable = true;
-  # virtualisation.virtualbox.guest.enable = true;
-  # virtualisation.virtualbox.guest.x11 = true;
-  # users.extraGroups.vboxusers.members = [ "v0d1ch" ];
-
   system.stateVersion = "22.11";
 
 }
