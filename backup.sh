@@ -17,6 +17,8 @@ host=$(cat /etc/hostname)
 cp  /etc/nixos/configuration.nix $host
 cp  /etc/nixos/hardware-configuration.nix $host
 cp  /etc/nixos/nvim/* nvim
+cp  /etc/nixos/home.nix . 
+cp  /etc/nixos/system-packages.nix . 
 cp  -R $HOME/.xmonad/* home/.xmonad
 cp  -R $HOME/.xmobarrc home
 cp  -R $HOME/.config/alacritty home/alacritty
