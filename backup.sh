@@ -13,15 +13,12 @@ fi
 
 
 
-cp  /etc/nixos/configuration.nix nix
-cp  /etc/nixos/hardware-configuration.nix nix
-cp  /etc/nixos/vim.nix nix
-cp  -R $HOME/.xmonad home
-cp  -R $HOME/.config/doom home
+cp  /etc/nixos/configuration.nix ${hostname}
+cp  /etc/nixos/hardware-configuration.nix ${hostname}
+cp  /etc/nixos/nvim/* nvim
+cp  -R $HOME/.xmonad/* home/.xmonad
 cp  -R $HOME/.xmobarrc home
 cp  -R $HOME/.config/alacritty home/alacritty
-cp  -R $HOME/.tmux-themepack
-
 
 
 # Check git status
@@ -35,7 +32,7 @@ fi
 
 
 # push to Github
-git add --all;
-git commit -m "New backup `date +'%Y-%m-%d %H:%M:%S'`";
-git push origin master
+# git add --all;
+# git commit -m "New backup `date +'%Y-%m-%d %H:%M:%S'`";
+# git push origin master
 spd-say 'completed'
