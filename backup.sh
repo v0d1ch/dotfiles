@@ -31,12 +31,12 @@ gs="$(git status | grep -i "modified")"
 
 # If there is a new change
 if [[ $gs == *"modified"* ]]; then
-  echo "push"
+  spd-say "pushing"
+  # push to Github
+  git add --all;
+  git commit -m "New backup `date +'%Y-%m-%d %H:%M:%S'`";
+  git push origin master
+  spd-say 'completed'
 fi
 
 
-# push to Github
-git add --all;
-git commit -m "New backup `date +'%Y-%m-%d %H:%M:%S'`";
-git push origin master
-spd-say 'completed'
