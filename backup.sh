@@ -19,6 +19,7 @@ cp  /etc/nixos/hardware-configuration.nix $host
 cp  /etc/nixos/nvim/* nvim
 cp  /etc/nixos/home.nix . 
 cp  /etc/nixos/system-packages.nix . 
+cp  /etc/nixos/p10k.zsh . 
 cp  -R $HOME/.xmonad/* home/.xmonad
 cp  -R $HOME/.xmobarrc home
 cp  -R $HOME/.config/alacritty home/alacritty
