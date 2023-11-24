@@ -3,14 +3,13 @@ let unstable = import <nixos-unstable> { config = { allowUnfree = true; }; };
 in
 {
   imports =
-    [ # Include the results of the hardware scan.
+    [ 
       ./hardware-configuration.nix
       <home-manager/nixos>
       ./system-packages.nix
       ./nvim
     ];
 
-  # Bootloader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
   boot.loader.efi.efiSysMountPoint = "/boot/efi";
@@ -18,11 +17,6 @@ in
   networking.hostName = "nixos-yoga"; # Define your hostname.
   networking.enableIPv6 = false;
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
-
-  # Configure network proxy if necessary
-  # networking.nameservers = ["8.8.8.8"];
-  # networking.proxy.default = "http://user:password@proxy:port/";
-  # networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain";
 
   # Enable networking
   networking.networkmanager.enable = true;
@@ -58,17 +52,13 @@ in
     xkbOptions = "eurosign:e, compose:menu, grp:alt_space_toggle";
   };
 
-  # Enable CUPS to print documents.
   services.printing.enable = true;
 
-  # Enable sound with pipewire.
   sound.enable = true;
-
 
   security.rtkit.enable = true;
 
   hardware.pulseaudio.enable = false;
-  # hardware.pulseaudio.support32Bit = true;
 
   boot.extraModprobeConfig = ''
     options snd slots=snd-hda-intel enable=0,1
