@@ -22,7 +22,6 @@ in
 
      programs.neovim = {
        enable = true;
-       defaultEditor = true;
        viAlias = true;
        vimAlias = true;
        withNodeJs = true;
@@ -30,7 +29,8 @@ in
             nvim-lspconfig
             nvim-treesitter.withAllGrammars
             plenary-nvim
-            (fromGitHub "9316e40b915f92ea11102933630e799f58772f56" "master" "NeogitOrg/neogit")
+            # (fromGitHub "9316e40b915f92ea11102933630e799f58772f56" "master" "NeogitOrg/neogit")
+            (fromGitHub "3be926866a6fdee86f53c13455c9b106f85ca3dc" "master" "NeogitOrg/neogit")
             nerdtree
             nerdcommenter
             awesome-vim-colorschemes

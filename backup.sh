@@ -11,10 +11,11 @@ else
   exit 1
 fi
 
+host=$(cat /etc/hostname)
 
 
-cp  /etc/nixos/configuration.nix ${hostname}
-cp  /etc/nixos/hardware-configuration.nix ${hostname}
+cp  /etc/nixos/configuration.nix $host
+cp  /etc/nixos/hardware-configuration.nix $host
 cp  /etc/nixos/nvim/* nvim
 cp  -R $HOME/.xmonad/* home/.xmonad
 cp  -R $HOME/.xmobarrc home
@@ -32,7 +33,7 @@ fi
 
 
 # push to Github
-# git add --all;
-# git commit -m "New backup `date +'%Y-%m-%d %H:%M:%S'`";
-# git push origin master
+git add --all;
+git commit -m "New backup `date +'%Y-%m-%d %H:%M:%S'`";
+git push origin master
 spd-say 'completed'
