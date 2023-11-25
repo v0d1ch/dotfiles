@@ -7,6 +7,7 @@ in
     environment.systemPackages = with pkgs; [
       lazygit
       unstable.neovim
+      unstable.neovide
       wget
       unstable.google-chrome
       unstable.chromium
