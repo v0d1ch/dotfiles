@@ -16,6 +16,8 @@ vim.cmd[[
           set background=dark
           set whichwrap+=<,>,[,]
           set foldmethod=syntax
+	  set guifont=monospace\ NF:h14
+
           "prevent enter in autocomplete suggestions to mess things up
           inoremap <expr> <CR> pumvisible() ? "\<C-Y>" : "\<CR>"
 
