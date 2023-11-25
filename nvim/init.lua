@@ -16,7 +16,6 @@ vim.cmd[[
           set background=dark
           set whichwrap+=<,>,[,]
           set foldmethod=syntax
-	  set guifont=monospace\ NF:h14
 
           "prevent enter in autocomplete suggestions to mess things up
           inoremap <expr> <CR> pumvisible() ? "\<C-Y>" : "\<CR>"
@@ -430,6 +429,29 @@ vim.cmd[[
 
             -- setup must be called before loading
             vim.cmd.colorscheme "catppuccin-mocha"
+
+            -- Put anything you want to happen only in Neovide here
+	    if vim.g.neovide then
+	       vim.o.guifont = "monospace:h8" 
+	       -- vim.keymap.set('n', '<C-s>', ':w<CR>') -- Save
+               -- vim.keymap.set('v', '<C-c>', '"+y') -- Copy
+               -- vim.keymap.set('n', '<C-v>', '"+P') -- Paste normal mode
+               -- vim.keymap.set('v', '<C-v>', '"+P') -- Paste visual mode
+               vim.keymap.set('c', '<C-v>', '<C-R>+') -- Paste command mode
+               vim.keymap.set('i', '<C-v>', '<ESC>l"+Pli') -- Paste insert mode
+
+               vim.g.neovide_scale_factor = 1.0
+               local change_scale_factor = function(delta)
+                 vim.g.neovide_scale_factor = vim.g.neovide_scale_factor * delta
+               end
+               vim.keymap.set("n", "<C-=>", function()
+                 change_scale_factor(1.25)
+               end)
+               vim.keymap.set("n", "<C-->", function()
+                 change_scale_factor(1/1.25)
+               end)
+            end
+
 
 
             local neogit = require('neogit')
