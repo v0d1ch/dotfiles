@@ -432,7 +432,7 @@ vim.cmd[[
 
             -- Put anything you want to happen only in Neovide here
 	    if vim.g.neovide then
-	       vim.o.guifont = "monospace:h8" 
+	       vim.o.guifont = "monospace:h10" 
 	       -- vim.keymap.set('n', '<C-s>', ':w<CR>') -- Save
                -- vim.keymap.set('v', '<C-c>', '"+y') -- Copy
                -- vim.keymap.set('n', '<C-v>', '"+P') -- Paste normal mode

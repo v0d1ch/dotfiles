@@ -53,7 +53,7 @@ in
   nixpkgs.config.permittedInsecurePackages = [
     "electron-12.2.3"
     "qtwebkit-5.212.0-alpha4"
-    "openssl-1.1.1u"
+    "openssl-1.1.1w"
   ];
 
   nixpkgs.overlays = [ ];
@@ -114,6 +114,11 @@ in
     alsa.enable = true;
     alsa.support32Bit = true;
     pulse.enable = true;
+    # If you want to use JACK applications, uncomment this
+    # jack.enable = true;
+
+    # use the example session manager (no others are packaged yet so this is enabled by default,
+    # no need to redefine it in your config for now)
     #media-session.enable = true;
   };
 
@@ -148,10 +153,10 @@ in
   environment.variables.EDITOR = "nvim";
 
   home-manager.users.v0d1ch = { ... }: {
-    imports = [ ./home.nix ];
+       imports = [ ./home.nix ];
   };
   home-manager.users.root = { ... }: {
-    imports = [ ./home.nix ];
+       imports = [ ./home.nix ];
   };
 
   services.udev.packages = 

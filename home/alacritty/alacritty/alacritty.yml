@@ -1,4 +1,3 @@
- 
 # Configuration for Alacritty, the GPU enhanced terminal emulator.
 
 # Import additional configuration files
@@ -9,8 +8,8 @@
 #
 # All imports must either be absolute paths starting with `/`, or paths relative
 # to the user's home directory starting with `~/`.
-#import:
-#  - /path/to/alacritty.yml
+import:
+  - ~/.config/alacritty/themes/alacritty/catppuccin-mocha.yml 
 
 # Any items in the `env` entry below will be added as
 # environment variables. Some entries may override variables
@@ -138,12 +137,12 @@ font:
     #style: Regular
 
   # Bold font face
-  bold:
+  #bold:
     # Font family
     #
     # If the bold family is not specified, it will fall back to the
     # value specified for the normal font.
-    family: monospace
+    #family: monospace
 
     # The `style` can be specified to pick a specific face.
     #style: Bold
@@ -171,7 +170,7 @@ font:
     #style: Bold Italic
 
   # Point size
-  size: 9.0
+  size: 12.0
 
   # Offset is the extra space around each character. `offset.y` can be thought
   # of as modifying the line spacing, and `offset.x` as modifying the letter
