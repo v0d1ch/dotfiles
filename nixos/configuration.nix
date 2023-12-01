@@ -5,10 +5,10 @@ in
 {
   imports =
     [ # Include the results of the hardware scan.
-      ./hardware-configuration.nix
+      /home/v0d1ch/code/dotfiles/nixos/hardware-configuration.nix
       <home-manager/nixos> 
-      ./system-packages.nix
-      ./nvim
+      /home/v0d1ch/code/dotfiles/system-packages.nix
+      /home/v0d1ch/code/dotfiles/nvim
     ];
 
   # Bootloader.
@@ -153,10 +153,10 @@ in
   environment.variables.EDITOR = "nvim";
 
   home-manager.users.v0d1ch = { ... }: {
-       imports = [ ./home.nix ];
+       imports = [ /home/v0d1ch/code/dotfiles/home.nix ];
   };
   home-manager.users.root = { ... }: {
-       imports = [ ./home.nix ];
+       imports = [ /home/v0d1ch/code/dotfiles/home.nix ];
   };
 
   services.udev.packages = 
