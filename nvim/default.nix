@@ -29,8 +29,8 @@ in
             nvim-lspconfig
             nvim-treesitter.withAllGrammars
             plenary-nvim
-            # (fromGitHub "9316e40b915f92ea11102933630e799f58772f56" "master" "NeogitOrg/neogit")
-            (fromGitHub "3be926866a6fdee86f53c13455c9b106f85ca3dc" "master" "NeogitOrg/neogit")
+            (fromGitHub "f59b0e9648254ccc125e5ddb411711a8438476b3" "master" "NeogitOrg/neogit")
+            (fromGitHub "3dc498c9777fe79156f3d32dddd483b8b3dbd95f" "master" "sindrets/diffview-nvim")
             nerdtree
             nerdcommenter
             awesome-vim-colorschemes
@@ -70,7 +70,7 @@ in
             gitv
             rust-tools-nvim
             rust-vim
-            diffview-nvim
+            
             catppuccin-nvim
             kanagawa-nvim
        ];
