@@ -30,7 +30,7 @@ in
             nvim-treesitter.withAllGrammars
             plenary-nvim
             (fromGitHub "f59b0e9648254ccc125e5ddb411711a8438476b3" "master" "NeogitOrg/neogit")
-            (fromGitHub "3dc498c9777fe79156f3d32dddd483b8b3dbd95f" "master" "sindrets/diffview-nvim")
+            (fromGitHub "3dc498c9777fe79156f3d32dddd483b8b3dbd95f" "main" "sindrets/diffview.nvim")
             nerdtree
             nerdcommenter
             awesome-vim-colorschemes
