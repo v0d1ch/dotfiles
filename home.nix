@@ -250,7 +250,7 @@ lor:magenta)%(authorname)%(color:reset)' --color=always";
          }
          {
             name = "powerlevel10k-config";
-            src = lib.cleanSource ./p10k-config;
+            src = lib.cleanSource /home/v0d1ch/code/dotfiles/p10k-config;
             file = "p10k.zsh";
          }
        ];

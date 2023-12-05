@@ -1,10 +1,10 @@
 Config
-  { font = "xft:Hasklig:size=11:antialias=true"
+  { font = "xft:Hasklig-16"
   , bgColor =      "#2E3440"
   , fgColor =      "#D8DEE9"
   , border =       BottomB
   , borderColor =  "#646464"
-  , position = Top
+  , position = TopH 45
   , hideOnStart = False
   , allDesktops =      True    -- show on all desktops
   , overrideRedirect = True    -- set the Override Redirect flag (Xlib)
@@ -12,10 +12,10 @@ Config
   , persistent =       True    -- enable/disable hiding (True = disabled)
   , sepChar      = "%"
   , alignSep     = "}{"
-  -- %multicpu%
-  , template = " %StdinReader% }{  <fc=#020A19></fc> %memory% <fc=#020A19></fc> <fc=#020A19></fc> %keyboard% <fc=#020A19></fc> %enp6s0% <fc=#020A19></fc> %wlp5s0% <fc=#020A19></fc> %alsa:default:Master% <fc=#020A19></fc> %bat0% <fc=#020A19></fc> %date%"
+  , template = " %StdinReader% }{  <fc=#020A19></fc> %memory% <fc=#020A19></fc> %keyboard% <fc=#020A19></fc> %wlp2s0% <fc=#020A19></fc> %alsa:default:Master% <fc=#020A19></fc> %battery% <fc=#020A19></fc> %date%"
   , commands =
       [
+
        Run Memory [ "--template" ,"<fc=#666666><icon=/home/v0d1ch/code/sm4tik-xbm-icons/icons/mem.xbm/></fc> <usedratio>%"
                    , "--Low"      , "20"
                    , "--High"     , "90"
@@ -23,9 +23,10 @@ Config
                    , "--normal"   , "#EBCB8B"
                    , "--high"     , "#BF616A"
                    ] 10
-      , Run Com "sh" ["-c", "xkblayout-state print '%s'" ] "keyboard" 30
-      , Run Network "enp6s0" ["-t", "<fc=#666666><icon=/home/v0d1ch/code/sm4tik-xbm-icons/icons/net_up_01.xbm/></fc> <rx>KB/<tx>KB", "--Low", "10000", "--low", "#888888", "--High", "800000", "--high", "#f90", "--normal", "#5f4"] 10
-      , Run Network "wlp5s0" ["-t", "<fc=#666666><icon=/home/v0d1ch/code/sm4tik-xbm-icons/icons/wifi_02.xbm/></fc> <rx>KB/<tx>KB", "--Low", "10000", "--low", "#888888", "--High", "800000", "--high", "#f90", "--normal", "#5f4"] 10
+      -- , Run Network "enp5s0f3u1u1" ["-t", "<fc=#666666><icon=/home/v0d1ch/code/sm4tik-xbm-icons/icons/net_up_01.xbm/></fc> <rx>KB/<tx>KB", "--Low", "10000", "--low", "#888888", "--High", "800000", "--high", "#f90", "--normal", "#5f4"] 10
+
+      , Run Com "sh" ["-c", "xkblayout-state print '%s'"] "keyboard" 30
+      , Run Network "wlp2s0" ["-t", "<fc=#666666><icon=/home/v0d1ch/code/sm4tik-xbm-icons/icons/wifi_02.xbm/></fc> <rx>KB/<tx>KB", "--Low", "10000", "--low", "#888888", "--High", "800000", "--high", "#f90", "--normal", "#5f4"] 10
       , Run StdinReader
       , Run Alsa "default" "Master"
           [ "--template" , "<fc=#666666><icon=/home/v0d1ch/code/sm4tik-xbm-icons/icons/note.xbm/></fc> <status>"
@@ -38,15 +39,15 @@ Config
           , "--mediums", ""
           , "--lows", ""
           ]
-      , Run BatteryN
-          ["BAT0"]
-          [ "--template" , "<fc=#666666><icon=/home/v0d1ch/code/sm4tik-xbm-icons/icons/bat_full_02.xbm/></fc> <acstatus>"
-          , "--Low"      , "10"        -- units: %
-          , "--High"     , "80"        -- units: %
-          , "--low"      , "#BF616A"
-          , "--normal"   , "#EBCB8B"
-          , "--high"     , "#A3BE8C"
-          ] 50 "bat0"
+      , Run Battery [
+          "-t", "<acstatus>: <left>% - <timeleft>",
+          "--",
+          --"-c", "charge_full",
+          "-O", "AC",
+          "-o", "Bat",
+          "-h", "green",
+          "-l", "red"
+          ] 10
       , Run Date "<fc=#EBCB8B>%a, %d %b %I:%M %p</fc>" "date" 10
       ]
   }

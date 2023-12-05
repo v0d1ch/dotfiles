@@ -76,7 +76,7 @@ in
        ];
        extraConfig = ''
          lua << EOF
-           ${builtins.readFile ./init.lua}
+           ${builtins.readFile /home/v0d1ch/code/dotfiles/init.lua}
        '';
      };
    };
