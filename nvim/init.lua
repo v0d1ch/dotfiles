@@ -461,7 +461,7 @@ vim.cmd[[
                   telescope = true
               },
               status = {
-                  recent_commit_count = 30,
+                  recent_commit_count = 100,
               },
             }
 
