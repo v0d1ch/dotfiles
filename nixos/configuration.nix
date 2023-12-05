@@ -17,9 +17,6 @@ in
   boot.loader.efi.efiSysMountPoint = "/boot/efi";
 
   networking.hostName = "nixos"; # Define your hostname.
-  nixPath = [
-      "nixos-config=/home/v0d1ch/code/dotfiles/${variables.hostname}/configuration.nix"
-    ];
 
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
 
