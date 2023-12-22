@@ -13,6 +13,9 @@ vim.cmd[[
           " diagnostics appear/become resolved
           set signcolumn=yes
 
+          " reload the file if it changes on disk
+          set autoread
+
           set background=dark
           set whichwrap+=<,>,[,]
           set foldmethod=syntax
