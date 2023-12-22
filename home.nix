@@ -131,7 +131,7 @@ lor:magenta)%(authorname)%(color:reset)' --color=always";
          };
          extraConfig = {
            core = {
-             editor = "nvim";
+             editor = "vim -f";
            };
            pull = {
              rebase = true;
