@@ -69,6 +69,8 @@ in
          # yubioath-flutter
          #  (haskell-language-server.override { supportedGhcVersions = [ "8107" ]; })
          protonvpn-gui
+         keybase
+         keybase-gui
      ];
 
 
@@ -289,7 +291,7 @@ lor:magenta)%(authorname)%(color:reset)' --color=always";
 
           # Use default shell
           set-option -g default-shell ''${SHELL}
-          set -g status-bg red
+          set -g status-bg black 
           set -g status-fg white
 
           # Extra Vi friendly stuff
