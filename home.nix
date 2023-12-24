@@ -71,6 +71,7 @@ in
          protonvpn-gui
          unstable.keybase
          unstable.keybase-gui
+         unstable.kbfs
      ];
 
 
