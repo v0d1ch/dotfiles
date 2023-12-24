@@ -69,8 +69,8 @@ in
          # yubioath-flutter
          #  (haskell-language-server.override { supportedGhcVersions = [ "8107" ]; })
          protonvpn-gui
-         keybase
-         keybase-gui
+         unstable.keybase
+         unstable.keybase-gui
      ];
 
 
@@ -130,6 +130,8 @@ lor:magenta)%(authorname)%(color:reset)' --color=always";
          signing = {
            signByDefault = true;
            key = "8FE67EA9460B6F07";
+           # key = "9F24F037728301FA";
+
          };
          extraConfig = {
            core = {
