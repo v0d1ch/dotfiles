@@ -129,6 +129,7 @@ in
 
   users.defaultUserShell = pkgs.zsh; 
 
+  services.keybase.enable = true; 
   services.tailscale.enable = true; 
   services.tailscale.useRoutingFeatures = "server";
 

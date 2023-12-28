@@ -149,6 +149,8 @@ in
   services.dbus.packages = [ pkgs.gcr ];
 
   services.openssh.enable = true;
+
+  services.keybase.enable = true; 
   services.tailscale.enable = true;
 
   nix.settings.trusted-public-keys = [
