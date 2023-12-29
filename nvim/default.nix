@@ -26,7 +26,7 @@ in
        vimAlias = true;
        withNodeJs = true;
        plugins = with pkgs.vimPlugins; [
-            (fromGitHub "bbb3c19a9f55a36f844b862c3bea21781aef8644" "master" "NeogitOrg/neogit")
+            (fromGitHub "3718664bb62e89930f0c3c836188c2a4f44fa119" "master" "NeogitOrg/neogit")
             (fromGitHub "3dc498c9777fe79156f3d32dddd483b8b3dbd95f" "main" "sindrets/diffview.nvim")
             (fromGitHub "11a4d42244755505b66b15cd4496a150432eb5e3" "master" "rhysd/conflict-marker.vim")
             (fromGitHub "36ff7abb6b60980338344982ad4cdf03f7961ecd" "master" "mbbill/undotree")
