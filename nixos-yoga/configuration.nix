@@ -151,6 +151,7 @@ in
   services.openssh.enable = true;
 
   services.keybase.enable = true; 
+  services.kbfs.enable = true; 
   services.tailscale.enable = true;
 
   nix.settings.trusted-public-keys = [
