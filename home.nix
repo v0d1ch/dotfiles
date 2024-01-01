@@ -68,7 +68,7 @@ in
          # yubioath-desktop
          # yubioath-flutter
          #  (haskell-language-server.override { supportedGhcVersions = [ "8107" ]; })
-         protonvpn-gui
+         unstable.protonvpn-gui
          unstable.keybase
          unstable.keybase-gui
          unstable.kbfs
