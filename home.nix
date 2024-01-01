@@ -27,6 +27,7 @@ in
          termonad
          keepassxc
          openvpn
+         openresolv
          docker
          docker-compose
          xmobar
