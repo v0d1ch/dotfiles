@@ -74,6 +74,7 @@ in
          unstable.keybase-gui
          unstable.kbfs
          unstable.anytype
+         unstable.slack
      ];
 
 
