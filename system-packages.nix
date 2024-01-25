@@ -5,12 +5,15 @@ in
 {
   config = {
     environment.systemPackages = with pkgs; [
+      neovim
+      neovide
+      unstable.zellij
+      unstable.gnomecast
+      unstable.vlc
+      google-chrome
+      libstdcxx5
       lazygit
-      unstable.neovim
-      unstable.neovide
       wget
-      unstable.google-chrome
-      unstable.chromium
       discord
       signal-desktop
       spotify
@@ -19,10 +22,9 @@ in
       pam_u2f
       pinentry-curses
       pinentry-emacs
-      gcc8
+      gcc9
       xorg.libxcb
       xdotool
-      unstable.zellij
       rclone
       etcher
       bc
@@ -47,8 +49,6 @@ in
       protonvpn-gui
       protonvpn-cli
       networkmanagerapplet
-      unstable.gnomecast
-      unstable.vlc
       xkblayout-state
       killall
       wireplumber
