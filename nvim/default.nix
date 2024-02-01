@@ -6,7 +6,7 @@ let
         <home-manager/nixos>
       ];
 
-    fromGitHub = rev: ref: repo: pkgs.vimUtils.buildVimPluginFrom2Nix {
+    fromGitHub = rev: ref: repo: pkgs.vimUtils.buildVimPlugin {
        pname = "${lib.strings.sanitizeDerivationName repo}";
        version = ref;
        src = builtins.fetchGit {
@@ -26,7 +26,7 @@ in
        vimAlias = true;
        withNodeJs = true;
        plugins = with pkgs.vimPlugins; [
-            (fromGitHub "3718664bb62e89930f0c3c836188c2a4f44fa119" "master" "NeogitOrg/neogit")
+            (fromGitHub "ce0c369ccdba3f644a3b28f4c053421f435352c9" "master" "NeogitOrg/neogit")
             (fromGitHub "3dc498c9777fe79156f3d32dddd483b8b3dbd95f" "main" "sindrets/diffview.nvim")
             (fromGitHub "11a4d42244755505b66b15cd4496a150432eb5e3" "master" "rhysd/conflict-marker.vim")
             (fromGitHub "36ff7abb6b60980338344982ad4cdf03f7961ecd" "master" "mbbill/undotree")

@@ -5,8 +5,8 @@ in
 {
   config = {
     environment.systemPackages = with pkgs; [
-      neovim
-      neovide
+      unstable.neovim
+      unstable.neovide
       unstable.zellij
       unstable.gnomecast
       unstable.vlc
@@ -17,7 +17,6 @@ in
       discord
       signal-desktop
       spotify
-      postman
       viber
       pam_u2f
       pinentry-curses

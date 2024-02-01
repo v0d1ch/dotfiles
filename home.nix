@@ -25,7 +25,6 @@ in
          qbittorrent
          nicotine-plus
          termonad
-         keepassxc
          openvpn
          openresolv
          docker
@@ -59,7 +58,7 @@ in
          fx
          dunst
          thefuck
-
+        
          # Yubico's official tools
          yubikey-manager
          yubikey-manager-qt
@@ -75,6 +74,7 @@ in
          unstable.kbfs
          unstable.anytype
          unstable.slack
+         unstable.keepassxc
      ];
 
 
