@@ -89,6 +89,7 @@ in
   nixpkgs.config.allowUnfree = true;
   nixpkgs.config.permittedInsecurePackages = [
     "electron-12.2.3"
+    "electron-19.1.9"
     "qtwebkit-5.212.0-alpha4"
     "openssl-1.1.1w"
     "vscode-1.73.1"
@@ -102,7 +103,7 @@ in
 
   
 
-  fonts.fonts = with pkgs; [
+  fonts.packages = with pkgs; [
     fira-code
     fira-code-symbols
     dina-font
@@ -116,7 +117,6 @@ in
 
 
   # HOME
-  home-manager.useGlobalPkgs = true;
   home-manager.users.v0d1ch = { ... }: {
     imports = [ /home/v0d1ch/code/dotfiles/home.nix ];
   };

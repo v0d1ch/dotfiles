@@ -75,6 +75,7 @@ in
          unstable.anytype
          unstable.slack
          unstable.keepassxc
+         unstable.discord
      ];
 
 

@@ -30,7 +30,7 @@ in
             (fromGitHub "3dc498c9777fe79156f3d32dddd483b8b3dbd95f" "main" "sindrets/diffview.nvim")
             (fromGitHub "11a4d42244755505b66b15cd4496a150432eb5e3" "master" "rhysd/conflict-marker.vim")
             (fromGitHub "36ff7abb6b60980338344982ad4cdf03f7961ecd" "master" "mbbill/undotree")
-            (fromGitHub "6ef8c54fb526bf3a0bc4efb0b2fe8e6d9a7daed2" "release" "lewis6991/gitsigns.nvim")
+            (fromGitHub "2c2463dbd82eddd7dbab881c3a62cfbfbe3c67ae" "main" "lewis6991/gitsigns.nvim")
 
             nvim-lspconfig
             nvim-treesitter.withAllGrammars

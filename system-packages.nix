@@ -6,7 +6,7 @@ in
   config = {
     environment.systemPackages = with pkgs; [
       unstable.neovim
-      unstable.neovide
+      neovide
       unstable.zellij
       unstable.gnomecast
       unstable.vlc
@@ -14,7 +14,6 @@ in
       libstdcxx5
       lazygit
       wget
-      discord
       signal-desktop
       spotify
       viber
@@ -55,6 +54,7 @@ in
       alsa-tools
       alsa-utils
       sox
+      lua
     ];
 
   };
