@@ -114,7 +114,6 @@ in
 
 
      programs.git = {
-         enable = true;
          aliases = {
            st = "status";
            ca = "commit --amend --no-edit";
@@ -145,6 +144,7 @@ lor:magenta)%(authorname)%(color:reset)' --color=always";
            pull = {
              rebase = true;
            };
+           rerere.enable = true;
          };
      };
 
