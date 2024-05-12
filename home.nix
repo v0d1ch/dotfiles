@@ -144,7 +144,9 @@ lor:magenta)%(authorname)%(color:reset)' --color=always";
            pull = {
              rebase = true;
            };
-           rerere.enable = true;
+           rerere = {
+             enabled = true;
+           };
          };
      };
 

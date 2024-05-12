@@ -55,6 +55,7 @@ in
       alsa-utils
       sox
       lua
+      screen
     ];
 
   };
