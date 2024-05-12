@@ -88,7 +88,7 @@ vim.cmd[[
           nnoremap <Leader>s  :lua require('telescope').extensions.live_grep_args.live_grep_args()<CR>
           nnoremap <Leader>j <cmd>lua require('telescope.builtin').grep_string({search = vim.fn.expand("<cword>")})<CR>
           nnoremap <Leader>k  :Telescope current_buffer_fuzzy_find<CR>
-          nnoremap <Leader>q  :CocRestart<CR> 
+          nnoremap <Leader>q  :Telescope grep_string<CR>
           nnoremap <C-s> :Scratch<CR>
           
           " format on save
