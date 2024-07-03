@@ -377,7 +377,7 @@ vim.cmd[[
                     },
                   },
                   -- ... also accepts theme settings, for example:
-                  theme = "dropdown", -- use dropdown theme
+                  theme = "ivy", -- use dropdown theme
                   -- theme = { }, -- use own theme spec
                   -- layout_config = { mirror=true }, -- mirror preview pane
                 }

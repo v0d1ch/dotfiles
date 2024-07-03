@@ -74,7 +74,7 @@ in
          unstable.kbfs
          unstable.anytype
          unstable.slack
-         unstable.keepassxc
+         keepassxc
          unstable.discord
      ];
 

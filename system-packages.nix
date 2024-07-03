@@ -5,6 +5,7 @@ in
 {
   config = {
     environment.systemPackages = with pkgs; [
+      git
       unstable.neovim
       neovide
       unstable.zellij
