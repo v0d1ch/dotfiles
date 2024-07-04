@@ -137,6 +137,8 @@ vim.cmd[[
 
           nnoremap <Leader>K :call ShowDocumentation()<CR>
 
+          au BufNewFile,BufRead *.agda setf agda
+
           " lazygit open file in vim
           if has('nvim') && executable('nvr')
             let $GIT_EDITOR = "nvr -cc split --remote-wait +'set bufhidden=wipe'"

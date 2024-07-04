@@ -28,6 +28,7 @@ in
             (fromGitHub "6ef8c54fb526bf3a0bc4efb0b2fe8e6d9a7daed2" "release" "lewis6991/gitsigns.nvim")
             (fromGitHub "0754163b9d070d4a99d60ecb45f060bc5f97e281" "release" "github/copilot.vim")
             (fromGitHub "5e50cc0e96e8a8ffc6fd10d627d65b8d1354b5da" "master" "lervag/vimtex")
+            (fromGitHub "4a0f475aaef756702222bdd5b01e25f814f5691f" "master" "derekelkins/agda-vim")
 
             nvim-lspconfig
             nvim-treesitter.withAllGrammars
