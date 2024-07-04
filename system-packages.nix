@@ -1,16 +1,14 @@
 { config, pkgs, ... }:
 
-let unstable = import <nixos-unstable> { config = { allowUnfree = true; }; };
-in
 {
   config = {
     environment.systemPackages = with pkgs; [
       git
-      unstable.neovim
+      neovim
       neovide
-      unstable.zellij
-      unstable.gnomecast
-      unstable.vlc
+      zellij
+      gnomecast
+      vlc
       google-chrome
       libstdcxx5
       lazygit
@@ -25,7 +23,6 @@ in
       xorg.libxcb
       xdotool
       rclone
-      etcher
       bc
       multimarkdown
       trezor-suite
@@ -57,6 +54,8 @@ in
       sox
       lua
       screen
+      slack
+      discord
     ];
 
   };

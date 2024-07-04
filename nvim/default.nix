@@ -1,11 +1,6 @@
 { pkgs, lib, ...}:
 
 let 
-    imports =
-      [ 
-        <home-manager/nixos>
-      ];
-
     fromGitHub = rev: ref: repo: pkgs.vimUtils.buildVimPlugin {
        pname = "${lib.strings.sanitizeDerivationName repo}";
        version = ref;
@@ -83,7 +78,7 @@ in
        ];
        extraConfig = ''
          lua << EOF
-           ${builtins.readFile /home/v0d1ch/code/dotfiles/nvim/init.lua}
+           ${builtins.readFile ./init.lua}
        '';
      };
    };

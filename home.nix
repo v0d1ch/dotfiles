@@ -1,7 +1,5 @@
 { config, pkgs, lib, ... }: 
 
-let unstable = import <nixos-unstable> { config = { allowUnfree = true; }; };
-in
 {
    home.stateVersion = "22.11";
      home.packages = with pkgs; [
@@ -10,7 +8,6 @@ in
          libreoffice
          virtualbox
          caffeine-ng
-         dbeaver
          kazam
          vokoscreen
          kdenlive
@@ -40,7 +37,7 @@ in
          haskellPackages.Agda
          eva
          rustup
-         unstable.alacritty
+         alacritty
          speechd
          btop
          lsix
@@ -68,14 +65,11 @@ in
          # yubioath-desktop
          # yubioath-flutter
          #  (haskell-language-server.override { supportedGhcVersions = [ "8107" ]; })
-         unstable.protonvpn-gui
-         unstable.keybase
-         unstable.keybase-gui
-         unstable.kbfs
-         unstable.anytype
-         unstable.slack
+         protonvpn-gui
+         keybase
+         keybase-gui
+         kbfs
          keepassxc
-         unstable.discord
      ];
 
 
@@ -178,7 +172,7 @@ lor:magenta)%(authorname)%(color:reset)' --color=always";
              share = true;
              path = "$HOME/.zsh_history";
            };
-       enableAutosuggestions = true;
+       autosuggestion.enable = true;
        enableCompletion = true;
        initExtra = ''
             bindkey '^F' autosuggest-accept
@@ -261,7 +255,7 @@ lor:magenta)%(authorname)%(color:reset)' --color=always";
          }
          {
             name = "powerlevel10k-config";
-            src = lib.cleanSource /home/v0d1ch/code/dotfiles/p10k-config;
+            src = lib.cleanSource ./p10k-config;
             file = "p10k.zsh";
          }
        ];

@@ -1,10 +1,9 @@
 {
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-22.11";
-    unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
-    home-manager.url = "github:nix-community/home-manager";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-24.05";
+    home-manager.url = "github:nix-community/home-manager/release-24.05";
   };
-  outputs = inputs@{ self, nixpkgs, unstable, ... }: {
+  outputs = inputs@{ self, nixpkgs,  ... }: {
     nixosConfigurations.nixos = nixpkgs.lib.nixosSystem {
       system = "x86_64-linux";
       modules = [inputs.home-manager.nixosModules.default ./nixos/configuration.nix ];

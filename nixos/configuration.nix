@@ -35,9 +35,9 @@
   # Enable the GNOME Desktop Environment.
   # services.xserver.displayManager.gdm.enable = true;
   services.xserver.desktopManager.gnome.enable = true;
-  services.xserver.displayManager.sddm.enable = true;
-  services.xserver.displayManager.autoLogin = { enable = true; user = "v0d1ch"; };
-  services.xserver.displayManager.defaultSession = "none+xmonad";
+  services.displayManager.sddm.enable = true;
+  services.displayManager.autoLogin = { enable = true; user = "v0d1ch"; };
+  services.displayManager.defaultSession = "none+xmonad";
   services.xserver.displayManager.session = [
       {
         manage = "desktop";
@@ -67,12 +67,10 @@
   };
 
   virtualisation.docker.enable = true;
-  virtualisation.virtualbox.host.enable = true;
-  virtualisation.virtualbox.guest.enable = true;
-  virtualisation.virtualbox.guest.x11 = true;
+
   users.extraGroups.vboxusers.members = [ "v0d1ch" ];
 
-  fonts.fonts = with pkgs; [
+  fonts.packages = with pkgs; [
     fira-code
     fira-code-symbols
     dina-font
@@ -86,11 +84,11 @@
 
   # Configure keymap in X11
   services.xserver = {
-    xkbVariant = "";
+    xkb.variant = "";
     enable = true;
     exportConfiguration = true; 
-    layout = "us,rs";
-    xkbOptions = "eurosign:e, compose:menu";
+    xkb.layout = "us,rs";
+    xkb.options = "eurosign:e, compose:menu";
   };
 
   # Enable CUPS to print documents.
@@ -145,10 +143,10 @@
   environment.variables.EDITOR = "nvim";
 
   home-manager.users.v0d1ch = { ... }: {
-       imports = [ /home/v0d1ch/code/dotfiles/home.nix ];
+       imports = [ ../home.nix ];
   };
   home-manager.users.root = { ... }: {
-       imports = [ /home/v0d1ch/code/dotfiles/home.nix ];
+       imports = [ ../home.nix ];
   };
 
   services.udev.packages = 
@@ -165,7 +163,7 @@
   programs.gnupg.agent = {
     enable = true;
     enableSSHSupport = true;
-    pinentryFlavor = "gtk2";
+    pinentryPackage = pkgs.pinentry-gtk2;
   };
 
   services.dbus.packages = [ pkgs.gcr ];

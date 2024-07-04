@@ -29,9 +29,9 @@
   # Enable the GNOME Desktop Environment.
   # services.xserver.displayManager.gdm.enable = true;
   services.xserver.desktopManager.gnome.enable = true;
-  services.xserver.displayManager.sddm.enable = true;
-  services.xserver.displayManager.autoLogin = { enable = true; user = "v0d1ch"; };
-  services.xserver.displayManager.defaultSession = "none+xmonad";
+  services.displayManager.sddm.enable = true;
+  services.displayManager.autoLogin = { enable = true; user = "v0d1ch"; };
+  services.displayManager.defaultSession = "none+xmonad";
   services.xserver.dpi = 180;
   services.xserver.displayManager.session = [
       {
@@ -43,10 +43,10 @@
 
   services.xserver = {
     enable = true;
-    xkbVariant = "";
+    xkb.variant = "";
     exportConfiguration = true; 
-    layout = "us,rs";
-    xkbOptions = "eurosign:e, compose:menu, grp:alt_space_toggle";
+    xkb.layout = "us,rs";
+    xkb.options = "eurosign:e, compose:menu, grp:alt_space_toggle";
   };
 
   services.printing.enable = true;
@@ -100,7 +100,7 @@
 
   
 
-  fonts.fonts = with pkgs; [
+  fonts.packages = with pkgs; [
     fira-code
     fira-code-symbols
     dina-font
@@ -140,7 +140,7 @@
   programs.gnupg.agent = {
     enable = true;
     enableSSHSupport = true;
-    pinentryFlavor = "gtk2";
+    pinentryPackage = pkgs.pinentry-gtk2;
   };
 
   services.dbus.packages = [ pkgs.gcr ];
