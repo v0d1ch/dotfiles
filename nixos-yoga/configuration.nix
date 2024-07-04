@@ -115,10 +115,10 @@
 
   # HOME
   home-manager.users.v0d1ch = { ... }: {
-    imports = [ /home/v0d1ch/code/dotfiles/home.nix ];
+    imports = [ ../home.nix ];
   };
   home-manager.users.root = { ... }: {
-    imports = [ /home/v0d1ch/code/dotfiles/home.nix ];
+    imports = [ ../home.nix ];
   };
 
   services.udev.packages = 
