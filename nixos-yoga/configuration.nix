@@ -1,13 +1,10 @@
 { config, pkgs, ... }:
-let unstable = import <nixos-unstable> { config = { allowUnfree = true; }; };
-in
 {
   imports =
     [ 
       ./hardware-configuration.nix
-      <home-manager/nixos>
-      /home/v0d1ch/code/dotfiles/system-packages.nix
-      /home/v0d1ch/code/dotfiles/nvim
+      ../system-packages.nix
+      ../nvim
     ];
 
   boot.loader.systemd-boot.enable = true;
@@ -103,7 +100,7 @@ in
 
   
 
-  fonts.packages = with pkgs; [
+  fonts.fonts = with pkgs; [
     fira-code
     fira-code-symbols
     dina-font

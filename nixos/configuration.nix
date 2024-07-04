@@ -1,14 +1,11 @@
 { config, pkgs, lib, ... }:
 
-let unstable = import <nixos-unstable> { config = { allowUnfree = true; }; };
-in
 {
   imports =
     [ # Include the results of the hardware scan.
-      /home/v0d1ch/code/dotfiles/nixos/hardware-configuration.nix
-      <home-manager/nixos> 
-      /home/v0d1ch/code/dotfiles/system-packages.nix
-      /home/v0d1ch/code/dotfiles/nvim
+      ./hardware-configuration.nix
+      ../system-packages.nix
+      ../nvim
     ];
 
   # Bootloader.
@@ -75,7 +72,7 @@ in
   virtualisation.virtualbox.guest.x11 = true;
   users.extraGroups.vboxusers.members = [ "v0d1ch" ];
 
-  fonts.packages = with pkgs; [
+  fonts.fonts = with pkgs; [
     fira-code
     fira-code-symbols
     dina-font
@@ -145,12 +142,6 @@ in
 
   };
   
-  qt = {
-    enable = true;
-    platformTheme = "gtk2";
-    style = "gtk2";
-  };
-     
   environment.variables.EDITOR = "nvim";
 
   home-manager.users.v0d1ch = { ... }: {
