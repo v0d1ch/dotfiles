@@ -1,7 +1,8 @@
 { config, pkgs, lib, ... }: 
 
 {
-   home.stateVersion = "22.11";
+   home.stateVersion = "24.05";
+     home.enableNixpkgsReleaseCheck = false;
      home.packages = with pkgs; [
          spacevim
          firefox
