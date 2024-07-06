@@ -29,6 +29,7 @@ in
             (fromGitHub "0754163b9d070d4a99d60ecb45f060bc5f97e281" "release" "github/copilot.vim")
             (fromGitHub "5e50cc0e96e8a8ffc6fd10d627d65b8d1354b5da" "master" "lervag/vimtex")
             (fromGitHub "4a0f475aaef756702222bdd5b01e25f814f5691f" "master" "derekelkins/agda-vim")
+            (fromGitHub "32236a8b376d9311dec9b5fe795ca99d32060b13" "master" "dyng/ctrlsf.vim")
             nvim-lspconfig
             nvim-treesitter.withAllGrammars
             plenary-nvim
