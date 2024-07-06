@@ -83,8 +83,8 @@ vim.cmd[[
           nnoremap <Leader>rs :Telescope resume<CR>
           nnoremap <Leader>b  :Buffers<CR>
           nnoremap <Leader>q  :call FormatCode()<CR>
-          nnoremap <Leader>w  :lua require("spectre").open_visual({select_word=true})<CR>
-          nnoremap <Leader>cw :lua require("spectre").open_file_search({select_word=true})<CR>
+          " nnoremap <Leader>w  :lua require("spectre").open_visual({select_word=true})<CR>
+          " nnoremap <Leader>cw :lua require("spectre").open_file_search({select_word=true})<CR>
           nnoremap <Leader>s  :lua require('telescope').extensions.live_grep_args.live_grep_args()<CR>
           nnoremap <Leader>j <cmd>lua require('telescope.builtin').grep_string({search = vim.fn.expand("<cword>")})<CR>
           nnoremap <Leader>k  :Telescope current_buffer_fuzzy_find<CR>
@@ -344,7 +344,7 @@ vim.cmd[[
                   post_hook = nil,
                   }
             require'alpha'.setup(require'alpha.themes.dashboard'.config)
-            require('spectre').setup()
+            -- require('spectre').setup()
             require('nvim-cursorline').setup {
               cursorline = {
                 enable = true,

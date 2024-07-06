@@ -21,7 +21,7 @@ in
        vimAlias = true;
        withNodeJs = true;
        plugins = with pkgs.vimPlugins; [
-            (fromGitHub "bc0c609e3568a171e0549b449aa1b2b4b5b20e8c" "master" "NeogitOrg/neogit")
+            (fromGitHub "a20031fb5d7d12148764764059243135085e5c9b" "master" "NeogitOrg/neogit")
             (fromGitHub "3dc498c9777fe79156f3d32dddd483b8b3dbd95f" "main" "sindrets/diffview.nvim")
             (fromGitHub "11a4d42244755505b66b15cd4496a150432eb5e3" "master" "rhysd/conflict-marker.vim")
             (fromGitHub "36ff7abb6b60980338344982ad4cdf03f7961ecd" "master" "mbbill/undotree")
@@ -29,7 +29,6 @@ in
             (fromGitHub "0754163b9d070d4a99d60ecb45f060bc5f97e281" "release" "github/copilot.vim")
             (fromGitHub "5e50cc0e96e8a8ffc6fd10d627d65b8d1354b5da" "master" "lervag/vimtex")
             (fromGitHub "4a0f475aaef756702222bdd5b01e25f814f5691f" "master" "derekelkins/agda-vim")
-
             nvim-lspconfig
             nvim-treesitter.withAllGrammars
             plenary-nvim
@@ -61,7 +60,7 @@ in
             popup-nvim
             comment-nvim
             alpha-nvim
-            nvim-spectre
+            # nvim-spectre
             nvim-cursorline
             telescope-live-grep-args-nvim
             telescope-fzf-native-nvim

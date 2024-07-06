@@ -49,8 +49,8 @@
          cachix
          haskell.compiler.ghc8107
          haskellPackages.cabal-install
-         gnome.eog
-         gnome.gnome-terminal
+         eog
+         gnome-terminal
          clementine
          flameshot
          fx
@@ -88,7 +88,7 @@
        enable = true;
        iconTheme = {
          name = "Adwaita";
-         package = pkgs.gnome3.adwaita-icon-theme;
+         package = pkgs.adwaita-icon-theme;
          size = "16x16";
        };
        settings = {
