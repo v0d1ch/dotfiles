@@ -26,6 +26,7 @@
       bc
       multimarkdown
       trezor-suite
+      trezorctl
       sad
       exfat
       ntfs3g

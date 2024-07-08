@@ -149,6 +149,8 @@
        imports = [ ../home.nix ];
   };
 
+  services.trezord.enable = true;
+
   services.udev.packages = 
     [ pkgs.yubikey-personalization 
       pkgs.trezor-udev-rules
