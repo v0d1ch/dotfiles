@@ -57,6 +57,7 @@
       screen
       slack
       discord
+      anytype
     ];
 
   };
