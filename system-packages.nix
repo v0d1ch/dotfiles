@@ -59,6 +59,8 @@
       discord
       anytype
       git-absorb
+      obsidian
+      ollama
     ];
 
   };
