@@ -58,6 +58,7 @@
       slack
       discord
       anytype
+      git-absorb
     ];
 
   };
