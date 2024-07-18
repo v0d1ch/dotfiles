@@ -567,3 +567,12 @@ vim.cmd[[
               },
             }
 
+            require("obsidian").setup({
+               workspaces = {
+                 {
+                   name = "v0d1ch",
+                   path = "~/Documents/v0d1ch",
+                 },
+               },
+            })
+
