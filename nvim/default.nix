@@ -50,7 +50,6 @@ in
             vim-cool
             haskell-vim
             rust-tools-nvim
-            nvim-lspconfig
             fzf-vim
             coc-nvim
             haskell-tools-nvim
