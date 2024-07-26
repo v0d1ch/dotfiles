@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ config, pkgs, nixvim, ... }:
 
 {
   config = {
@@ -61,6 +61,7 @@
       git-absorb
       obsidian
       ollama
+      nixvim.packages.${system}.default
     ];
 
   };

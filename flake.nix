@@ -2,15 +2,18 @@
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     home-manager.url = "github:nix-community/home-manager/release-24.05";
+    nixvim.url = "github:v0d1ch/dotfiles?dir=neovim";
   };
-  outputs = inputs@{ self, nixpkgs,  ... }: {
+  outputs = attrs@{ self, nixpkgs,  ... }: {
     nixosConfigurations.nixos = nixpkgs.lib.nixosSystem {
       system = "x86_64-linux";
-      modules = [inputs.home-manager.nixosModules.default ./nixos/configuration.nix ];
+      specialArgs = attrs;
+      modules = [./nixos/configuration.nix ];
     };
     nixosConfigurations.nixos-yoga = nixpkgs.lib.nixosSystem {
       system = "x86_64-linux";
-      modules = [ inputs.home-manager.nixosModules.default ./nixos-yoga/configuration.nix ];
+      specialArgs = attrs;
+      modules = [ ./nixos-yoga/configuration.nix ];
     };
   };
 }
