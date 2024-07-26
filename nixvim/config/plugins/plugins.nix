@@ -3,4 +3,6 @@
   plugins.lsp.enable = true;
   plugins.lsp.servers.hls.enable = true;
   plugins.coq-nvim.enable = true;
+  plugins.undotree.enable = true;
+  plugins.vimtex.enable = true;
 }

@@ -56,6 +56,7 @@
          fx
          dunst
          thefuck
+         zathura
         
          # Yubico's official tools
          yubikey-manager
