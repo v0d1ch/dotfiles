@@ -315,19 +315,14 @@
         "tokyodark": "tokyodark"
       },
       "locked": {
-        "dir": "nixvim",
-        "lastModified": 1721994365,
-        "narHash": "sha256-YnCZWxXVxkQ6Sz9FExr9+rmUncbYLojJsHu3KqA4ebY=",
-        "owner": "v0d1ch",
-        "repo": "dotfiles",
-        "rev": "0b574f36900c084bfc36886c77a6ed38b7e8ed6e",
-        "type": "github"
+        "lastModified": 1,
+        "narHash": "sha256-8J5Vnb/AVjFQ0ssXw0qZ29ByzTLL8eTXz5AdVaUw9ng=",
+        "path": "/nix/store/7v6xl6jlvfk7dzmdh9aa889md3jmwkca-source/nixvim",
+        "type": "path"
       },
       "original": {
-        "dir": "nixvim",
-        "owner": "v0d1ch",
-        "repo": "dotfiles",
-        "type": "github"
+        "path": "/nix/store/7v6xl6jlvfk7dzmdh9aa889md3jmwkca-source/nixvim",
+        "type": "path"
       }
     },
     "nixvim_2": {
