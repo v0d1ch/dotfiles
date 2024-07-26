@@ -1,4 +1,0 @@
-{
-
-  colorschemes.tokyonight.enable = true;
-}

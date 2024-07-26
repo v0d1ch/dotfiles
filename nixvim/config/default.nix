@@ -4,10 +4,10 @@
     [ ./options/options.nix
       ./options/keymap.nix
       ./autocmd.nix
-      # ./options/colorscheme.nix 
       ./plugins/tokyodark.nix 
       ./plugins/bufferline.nix
       ./plugins/treesitter.nix
+      ./plugins/nvim-tree.nix
       ./plugins/gitsigns.nix
       ./plugins/ufo.nix
       ./plugins/comment.nix

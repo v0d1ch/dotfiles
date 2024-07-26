@@ -315,16 +315,16 @@
         "tokyodark": "tokyodark"
       },
       "locked": {
-        "dir": "neovim",
-        "lastModified": 1721988211,
-        "narHash": "sha256-mzTKOxeR6iJKQSt81i41NsOXaVgpBRsfxjFsIXXw54w=",
+        "dir": "nixvim",
+        "lastModified": 1721994365,
+        "narHash": "sha256-YnCZWxXVxkQ6Sz9FExr9+rmUncbYLojJsHu3KqA4ebY=",
         "owner": "v0d1ch",
         "repo": "dotfiles",
-        "rev": "c37e9a002b430468592b80f4e24e1a0c09d9be26",
+        "rev": "0b574f36900c084bfc36886c77a6ed38b7e8ed6e",
         "type": "github"
       },
       "original": {
-        "dir": "neovim",
+        "dir": "nixvim",
         "owner": "v0d1ch",
         "repo": "dotfiles",
         "type": "github"
