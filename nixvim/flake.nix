@@ -13,6 +13,10 @@
       url = "github:dyng/ctrlsf.vim";
       flake = false;
     };
+    ctrlp = {
+      url = "github:kien/ctrlp.vim";
+      flake = false;
+    };
   };
 
   outputs =

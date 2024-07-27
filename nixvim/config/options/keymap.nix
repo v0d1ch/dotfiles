@@ -19,11 +19,10 @@
     {
       mode = "n";
       key = "<leader>n";
-      action = "<cmd>:NvimTreeToggle<cr>";
+      action = "<cmd>:Oil<cr>";
       options = {
-        desc = "NvimTree toggle";
+        desc = "Oil toggle";
       };
     }
-
   ];
 }

@@ -8,6 +8,7 @@
       ./plugins/bufferline.nix
       ./plugins/treesitter.nix
       ./plugins/nvim-tree.nix
+      ./plugins/oil.nix
       ./plugins/gitsigns.nix
       ./plugins/ufo.nix
       ./plugins/comment.nix

@@ -1,5 +1,21 @@
 {
   "nodes": {
+    "ctrlp": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1448843516,
+        "narHash": "sha256-uVo4qbhsLtV1g7TC92jJzyxtKbPnZc2CKW4y8lKM/9s=",
+        "owner": "kien",
+        "repo": "ctrlp.vim",
+        "rev": "564176f01d7f3f7f8ab452ff4e1f5314de7b0981",
+        "type": "github"
+      },
+      "original": {
+        "owner": "kien",
+        "repo": "ctrlp.vim",
+        "type": "github"
+      }
+    },
     "ctrlsf": {
       "flake": false,
       "locked": {
@@ -308,6 +324,7 @@
     },
     "nixvim": {
       "inputs": {
+        "ctrlp": "ctrlp",
         "ctrlsf": "ctrlsf",
         "flake-parts": "flake-parts",
         "nixpkgs": "nixpkgs_3",
@@ -316,12 +333,12 @@
       },
       "locked": {
         "lastModified": 1,
-        "narHash": "sha256-ad69l0n71q834GBHsKxyUwtFPNJ/9fJcIy069+jpF/U=",
-        "path": "/nix/store/6zfpvg6cy0a0zkkz212l22pyzg36862w-source/nixvim",
+        "narHash": "sha256-ONstgEmbxGA9V7nuqDDYjQHsDCp2HrKb70fj44BBeIw=",
+        "path": "/nix/store/6vrpw00xz06zz3idyrmrwrhlsb8zf1s2-source/nixvim",
         "type": "path"
       },
       "original": {
-        "path": "/nix/store/6zfpvg6cy0a0zkkz212l22pyzg36862w-source/nixvim",
+        "path": "/nix/store/6vrpw00xz06zz3idyrmrwrhlsb8zf1s2-source/nixvim",
         "type": "path"
       }
     },

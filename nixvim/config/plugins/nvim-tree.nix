@@ -4,7 +4,7 @@ let
 in {
 
   plugins.nvim-tree = { 
-        enable = true;
+        enable = false;
   };
 
   keymaps = [
