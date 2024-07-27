@@ -316,12 +316,12 @@
       },
       "locked": {
         "lastModified": 1,
-        "narHash": "sha256-JwEAZ7IfHMcMm+aerGsvyj6MYhIQLXOtyRvL+VTQxno=",
-        "path": "/nix/store/i00zspwrj6lbijxrl8gj5s8p66fzkg2q-source/nixvim",
+        "narHash": "sha256-ad69l0n71q834GBHsKxyUwtFPNJ/9fJcIy069+jpF/U=",
+        "path": "/nix/store/6zfpvg6cy0a0zkkz212l22pyzg36862w-source/nixvim",
         "type": "path"
       },
       "original": {
-        "path": "/nix/store/i00zspwrj6lbijxrl8gj5s8p66fzkg2q-source/nixvim",
+        "path": "/nix/store/6zfpvg6cy0a0zkkz212l22pyzg36862w-source/nixvim",
         "type": "path"
       }
     },

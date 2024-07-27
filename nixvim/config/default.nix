@@ -18,6 +18,7 @@
       ./plugins/coc-nvim.nix
       ./plugins/copilot.nix
       ./plugins/project.nix
+      ./plugins/obsidian.nix
       ./plugins/plugins.nix
     ];
 }

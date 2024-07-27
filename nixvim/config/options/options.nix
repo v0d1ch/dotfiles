@@ -15,7 +15,7 @@
     ignorecase = true;
     smartcase = true;
 
-    noswapfile = true;
+    swapfile = false;
 
     # Tab defaults (might get overwritten by an LSP server)
     tabstop = 4;
@@ -52,14 +52,6 @@
   };
 
   globals.mapleader = " ";
-
-  # autoCmd = [
-  #   {
-  #     event = [ "BufEnter" "BufWinEnter" ];
-  #     pattern = [ "*.md" "*.mdx" ];
-  #     command = "MarkdownPreviewToggle";
-  #   }
-  # ];
 
   highlight = {
     Comment.fg = "#ff00ff";

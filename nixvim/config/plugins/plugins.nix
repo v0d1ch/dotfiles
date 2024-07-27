@@ -5,4 +5,6 @@
   plugins.coq-nvim.enable = true;
   plugins.undotree.enable = true;
   plugins.vimtex.enable = true;
+  plugins.cmp.enable = true;
+  plugins.markdown-preview.enable = true;
 }
