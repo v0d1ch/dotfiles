@@ -156,7 +156,9 @@
       git-absorb
       obsidian
       ollama
+      texliveFull
       nixvim.packages.${system}.default
+     
     ];
   
 
