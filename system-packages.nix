@@ -1,10 +1,9 @@
-{ config, pkgs, nixvim, ... }:
+{ config, pkgs, nixvim,  ... }:
 
 {
   config = {
     environment.systemPackages = with pkgs; [
       git
-      neovim
       neovide
       zellij
       gnomecast
