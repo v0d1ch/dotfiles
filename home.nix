@@ -187,8 +187,7 @@ lor:magenta)%(authorname)%(color:reset)' --color=always";
             autopair-init
             zstyle -e ':completion:*' special-dirs true
             set +o prompt_cr +o prompt_sp
-
-
+            source ${pkgs.spaceship-prompt}/share/zsh/themes/spaceship.zsh-theme;
         '';
        plugins = with pkgs; [
           {
@@ -250,11 +249,11 @@ lor:magenta)%(authorname)%(color:reset)' --color=always";
              sha256 = "0z6i9wjjklb4lvr7zjhbphibsyx51psv50gm07mbb0kj9058j6kc";
            };
          }
-         {
-            name = "powerlevel10k";
-            src = pkgs.zsh-powerlevel10k;
-            file = "share/zsh-powerlevel10k/powerlevel10k.zsh-theme";
-         }
+         # {
+         #    name = "powerlevel10k";
+         #    src = pkgs.zsh-powerlevel10k;
+         #    file = "share/zsh-powerlevel10k/powerlevel10k.zsh-theme";
+         # }
          {
             name = "powerlevel10k-config";
             src = lib.cleanSource ./p10k-config;
