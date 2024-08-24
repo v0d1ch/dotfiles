@@ -60,6 +60,7 @@
       git-absorb
       obsidian
       ollama
+      mediainfo
       nixvim.packages.${system}.default
     ];
 

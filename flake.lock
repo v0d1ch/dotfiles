@@ -250,11 +250,11 @@
     },
     "nixpkgs": {
       "locked": {
-        "lastModified": 1719956923,
-        "narHash": "sha256-nNJHJ9kfPdzYsCOlHOnbiiyKjZUW5sWbwx3cakg3/C4=",
+        "lastModified": 1716542732,
+        "narHash": "sha256-0Y9fRr0CUqWT4KgBITmaGwlnNIGMYuydu2L8iLTfHU4=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "706eef542dec88cc0ed25b9075d3037564b2d164",
+        "rev": "d12251ef6e8e6a46e05689eeccd595bdbd3c9e60",
         "type": "github"
       },
       "original": {
@@ -278,11 +278,11 @@
     },
     "nixpkgs_2": {
       "locked": {
-        "lastModified": 1720031269,
-        "narHash": "sha256-rwz8NJZV+387rnWpTYcXaRNvzUSnnF9aHONoJIYmiUQ=",
+        "lastModified": 1724224976,
+        "narHash": "sha256-Z/ELQhrSd7bMzTO8r7NZgi9g5emh+aRKoCdaAv5fiO0=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "9f4128e00b0ae8ec65918efeba59db998750ead6",
+        "rev": "c374d94f1536013ca8e92341b540eba4c22f9c62",
         "type": "github"
       },
       "original": {
@@ -347,14 +347,15 @@
         "nixvim": "nixvim_2",
         "nvim-lspconfig": "nvim-lspconfig",
         "session-manager": "session-manager",
-        "tokyodark": "tokyodark"
+        "tokyodark": "tokyodark",
+        "tree-sitter-haskell": "tree-sitter-haskell"
       },
       "locked": {
-        "lastModified": 1723128576,
-        "narHash": "sha256-n5xXjYMbonJfnpmKsn1cQCKDzRfmwf0sAZYSIQ6sliA=",
+        "lastModified": 1724337320,
+        "narHash": "sha256-VDJdmx5ek5hPqcu65m9q0hVXK/fHHQLQ6WZevy2/FPQ=",
         "owner": "v0d1ch",
         "repo": "nixvim",
-        "rev": "3c02dbc72121f5bea3bb29e7ac0fe8adbc463c3c",
+        "rev": "808b48d2d00ba840cf3ed71b0fa23c61159a573b",
         "type": "github"
       },
       "original": {
@@ -473,6 +474,22 @@
       "original": {
         "owner": "tiagovla",
         "repo": "tokyodark.nvim",
+        "type": "github"
+      }
+    },
+    "tree-sitter-haskell": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1714926227,
+        "narHash": "sha256-huO0Ly9JYQbT64o/AjdZrE9vghQ5vT+/iQl50o4TJ0I=",
+        "owner": "tree-sitter",
+        "repo": "tree-sitter-haskell",
+        "rev": "a50070d5bb5bd5c1281740a6102ecf1f4b0c4f19",
+        "type": "github"
+      },
+      "original": {
+        "owner": "tree-sitter",
+        "repo": "tree-sitter-haskell",
         "type": "github"
       }
     },
