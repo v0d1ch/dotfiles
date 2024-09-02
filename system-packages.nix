@@ -3,6 +3,7 @@
 {
   config = {
     environment.systemPackages = with pkgs; [
+      vim
       git
       neovide
       zellij
