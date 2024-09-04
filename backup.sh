@@ -22,7 +22,7 @@ cp  /etc/nixos/system-packages.nix .
 cp  /etc/nixos/p10k.zsh . 
 cp  -R $HOME/.xmonad/* home/.xmonad
 cp  -R $HOME/.xmobarrc home
-cp  -R $HOME/.config/alacritty home/alacritty
+cp  -R $HOME/.config/alacritty/* home/alacritty
 
 
 # Check git status
