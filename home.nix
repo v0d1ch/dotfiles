@@ -129,8 +129,9 @@ lor:magenta)%(authorname)%(color:reset)' --color=always";
          userName = "Sasha Bogicevic";
          signing = {
            signByDefault = true;
-           key = "8FE67EA9460B6F07";
-           # key = "9F24F037728301FA";
+           key = "8FE67EA9460B6F07"; # iohk 1
+           # key = "E621E55F53768A36"; iohk 2
+           # key = "9F24F037728301FA"; keybase
 
          };
          extraConfig = {
