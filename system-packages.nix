@@ -63,6 +63,7 @@
       ollama
       mediainfo
       nixvim.packages.${system}.default
+      keymapp
     ];
 
   };
