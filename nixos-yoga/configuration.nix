@@ -180,6 +180,7 @@
      };
   };
 
+  hardware.keyboard.zsa.enable = true;
 
   virtualisation.docker.enable = true;
 

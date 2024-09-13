@@ -64,6 +64,7 @@
       mediainfo
       nixvim.packages.${system}.default
       keymapp
+      wally-cli
     ];
 
   };
