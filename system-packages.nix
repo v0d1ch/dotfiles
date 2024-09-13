@@ -1,32 +1,33 @@
-{ config, pkgs, nixvim,  ... }:
+{ config, pkgs, ... }:
 
+let unstable = import <nixos-unstable> { config = { allowUnfree = true; }; };
+in
 {
   config = {
     environment.systemPackages = with pkgs; [
-      vim
-      git
-      neovide
-      zellij
-      gnomecast
-      vlc
-      google-chrome
-      libstdcxx5
       lazygit
+      unstable.neovim
+      unstable.neovide
       wget
+      unstable.google-chrome
+      unstable.chromium
+      discord
       signal-desktop
       spotify
+      postman
       viber
       pam_u2f
       pinentry-curses
       pinentry-emacs
-      gcc9
+      gcc8
       xorg.libxcb
       xdotool
+      unstable.zellij
       rclone
+      etcher
       bc
       multimarkdown
       trezor-suite
-      trezorctl
       sad
       exfat
       ntfs3g
@@ -46,6 +47,8 @@
       protonvpn-gui
       protonvpn-cli
       networkmanagerapplet
+      unstable.gnomecast
+      unstable.vlc
       xkblayout-state
       killall
       wireplumber
@@ -53,18 +56,6 @@
       alsa-tools
       alsa-utils
       sox
-      lua
-      screen
-      slack
-      discord
-      anytype
-      git-absorb
-      obsidian
-      ollama
-      mediainfo
-      nixvim.packages.${system}.default
-      keymapp
-      wally-cli
     ];
 
   };

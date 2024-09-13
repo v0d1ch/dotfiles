@@ -1,14 +1,16 @@
 { config, pkgs, lib, ... }: 
 
+let unstable = import <nixos-unstable> { config = { allowUnfree = true; }; };
+in
 {
-   home.stateVersion = "24.05";
-     home.enableNixpkgsReleaseCheck = false;
+   home.stateVersion = "22.11";
      home.packages = with pkgs; [
          spacevim
          firefox
          libreoffice
          virtualbox
          caffeine-ng
+         dbeaver
          kazam
          vokoscreen
          kdenlive
@@ -23,8 +25,8 @@
          qbittorrent
          nicotine-plus
          termonad
+         keepassxc
          openvpn
-         openresolv
          docker
          docker-compose
          xmobar
@@ -38,7 +40,7 @@
          haskellPackages.Agda
          eva
          rustup
-         alacritty
+         unstable.alacritty
          speechd
          btop
          lsix
@@ -49,15 +51,14 @@
          cachix
          haskell.compiler.ghc8107
          haskellPackages.cabal-install
-         eog
-         gnome-terminal
+         gnome.eog
+         gnome.gnome-terminal
          clementine
          flameshot
          fx
          dunst
          thefuck
-         zathura
-        
+
          # Yubico's official tools
          yubikey-manager
          yubikey-manager-qt
@@ -68,10 +69,6 @@
          # yubioath-flutter
          #  (haskell-language-server.override { supportedGhcVersions = [ "8107" ]; })
          protonvpn-gui
-         keybase
-         keybase-gui
-         kbfs
-         keepassxc
      ];
 
 
@@ -89,7 +86,7 @@
        enable = true;
        iconTheme = {
          name = "Adwaita";
-         package = pkgs.adwaita-icon-theme;
+         package = pkgs.gnome3.adwaita-icon-theme;
          size = "16x16";
        };
        settings = {
@@ -110,6 +107,7 @@
 
 
      programs.git = {
+         enable = true;
          aliases = {
            st = "status";
            ca = "commit --amend --no-edit";
@@ -129,20 +127,14 @@ lor:magenta)%(authorname)%(color:reset)' --color=always";
          userName = "Sasha Bogicevic";
          signing = {
            signByDefault = true;
-           key = "8FE67EA9460B6F07"; # iohk 1
-           # key = "E621E55F53768A36"; iohk 2
-           # key = "9F24F037728301FA"; keybase
-
+           key = "8FE67EA9460B6F07";
          };
          extraConfig = {
            core = {
-             editor = "vim -f";
+             editor = "nvim";
            };
            pull = {
              rebase = true;
-           };
-           rerere = {
-             enabled = true;
            };
          };
      };
@@ -175,7 +167,7 @@ lor:magenta)%(authorname)%(color:reset)' --color=always";
              share = true;
              path = "$HOME/.zsh_history";
            };
-       autosuggestion.enable = true;
+       enableAutosuggestions = true;
        enableCompletion = true;
        initExtra = ''
             bindkey '^F' autosuggest-accept
@@ -188,7 +180,8 @@ lor:magenta)%(authorname)%(color:reset)' --color=always";
             autopair-init
             zstyle -e ':completion:*' special-dirs true
             set +o prompt_cr +o prompt_sp
-            source ${pkgs.spaceship-prompt}/share/zsh/themes/spaceship.zsh-theme;
+
+
         '';
        plugins = with pkgs; [
           {
@@ -250,14 +243,14 @@ lor:magenta)%(authorname)%(color:reset)' --color=always";
              sha256 = "0z6i9wjjklb4lvr7zjhbphibsyx51psv50gm07mbb0kj9058j6kc";
            };
          }
-         # {
-         #    name = "powerlevel10k";
-         #    src = pkgs.zsh-powerlevel10k;
-         #    file = "share/zsh-powerlevel10k/powerlevel10k.zsh-theme";
-         # }
+         {
+            name = "powerlevel10k";
+            src = pkgs.zsh-powerlevel10k;
+            file = "share/zsh-powerlevel10k/powerlevel10k.zsh-theme";
+         }
          {
             name = "powerlevel10k-config";
-            src = lib.cleanSource ./p10k-config;
+            src = lib.cleanSource /home/v0d1ch/code/dotfiles/p10k-config;
             file = "p10k.zsh";
          }
        ];
@@ -296,7 +289,7 @@ lor:magenta)%(authorname)%(color:reset)' --color=always";
 
           # Use default shell
           set-option -g default-shell ''${SHELL}
-          set -g status-bg black 
+          set -g status-bg red
           set -g status-fg white
 
           # Extra Vi friendly stuff

@@ -13,9 +13,6 @@ vim.cmd[[
           " diagnostics appear/become resolved
           set signcolumn=yes
 
-          " reload the file if it changes on disk
-          set autoread
-
           set background=dark
           set whichwrap+=<,>,[,]
           set foldmethod=syntax
@@ -83,13 +80,14 @@ vim.cmd[[
           nnoremap <Leader>rs :Telescope resume<CR>
           nnoremap <Leader>b  :Buffers<CR>
           nnoremap <Leader>q  :call FormatCode()<CR>
-          " nnoremap <Leader>w  :lua require("spectre").open_visual({select_word=true})<CR>
-          " nnoremap <Leader>cw :lua require("spectre").open_file_search({select_word=true})<CR>
+          nnoremap <Leader>w  :lua require("spectre").open_visual({select_word=true})<CR>
+          nnoremap <Leader>cw :lua require("spectre").open_file_search({select_word=true})<CR>
           nnoremap <Leader>s  :lua require('telescope').extensions.live_grep_args.live_grep_args()<CR>
           nnoremap <Leader>j <cmd>lua require('telescope.builtin').grep_string({search = vim.fn.expand("<cword>")})<CR>
           nnoremap <Leader>k  :Telescope current_buffer_fuzzy_find<CR>
-          nnoremap <Leader>q  :Telescope grep_string<CR>
-          nnoremap <C-s> :Scratch<CR>
+          nnoremap <Leader>q  :CocRestart<CR> 
+	  nnoremap <C-s> :Scratch<CR>
+
           
           " format on save
           augroup RunCommandOnWrite
@@ -137,13 +135,11 @@ vim.cmd[[
 
           nnoremap <Leader>K :call ShowDocumentation()<CR>
 
-          au BufNewFile,BufRead *.agda setf agda
-
           " lazygit open file in vim
           if has('nvim') && executable('nvr')
             let $GIT_EDITOR = "nvr -cc split --remote-wait +'set bufhidden=wipe'"
           endif
-  
+	  
           function! ShowDocumentation()
             if CocAction('hasProvider', 'hover')
               call CocActionAsync('doHover')
@@ -177,15 +173,7 @@ vim.cmd[[
           autocmd BufNewFile [Scratch] call s:ScratchMarkBuffer()
           command! Scratch call s:ScratchGenerator()
 
-
-          highlight ConflictMarkerBegin guibg=#2f7366
-          highlight ConflictMarkerOurs guibg=#2e5049
-          highlight ConflictMarkerTheirs guibg=#344f69
-          highlight ConflictMarkerEnd guibg=#2f628e
-          highlight ConflictMarkerCommonAncestorsHunk guibg=#754a81
-
-
-         ]]
+	  ]]
 
             require("project_nvim").setup {
                -- Manual mode doesn't automatically change your root directory, so you have
@@ -344,7 +332,7 @@ vim.cmd[[
                   post_hook = nil,
                   }
             require'alpha'.setup(require'alpha.themes.dashboard'.config)
-            -- require('spectre').setup()
+            require('spectre').setup()
             require('nvim-cursorline').setup {
               cursorline = {
                 enable = true,
@@ -362,13 +350,6 @@ vim.cmd[[
             
             telescope.setup {
               extensions = {
-                fzf = {
-                       fuzzy = true,                    -- false will only do exact matching
-                       override_generic_sorter = true,  -- override the generic sorter
-                       override_file_sorter = true,     -- override the file sorter
-                       case_mode = "smart_case",        -- or "ignore_case" or "respect_case"
-                                                        -- the default case_mode is "smart_case"
-                },
                 live_grep_args = {
                   auto_quoting = true, -- enable/disable auto-quoting
                   -- define mappings, e.g.
@@ -379,7 +360,7 @@ vim.cmd[[
                     },
                   },
                   -- ... also accepts theme settings, for example:
-                  theme = "ivy", -- use dropdown theme
+                  -- theme = "dropdown", -- use dropdown theme
                   -- theme = { }, -- use own theme spec
                   -- layout_config = { mirror=true }, -- mirror preview pane
                 }
@@ -446,96 +427,13 @@ vim.cmd[[
                 },
             })
 
-            require('gitsigns').setup {
-              signs = {
-                add          = { text = '│' },
-                change       = { text = '│' },
-                delete       = { text = '_' },
-                topdelete    = { text = '‾' },
-                changedelete = { text = '~' },
-                untracked    = { text = '┆' },
-              },
-              signcolumn = true,  -- Toggle with `:Gitsigns toggle_signs`
-              numhl      = false, -- Toggle with `:Gitsigns toggle_numhl`
-              linehl     = false, -- Toggle with `:Gitsigns toggle_linehl`
-              word_diff  = false, -- Toggle with `:Gitsigns toggle_word_diff`
-              watch_gitdir = {
-                follow_files = true
-              },
-              attach_to_untracked = true,
-              current_line_blame = false, -- Toggle with `:Gitsigns toggle_current_line_blame`
-              current_line_blame_opts = {
-                virt_text = true,
-                virt_text_pos = 'eol', -- 'eol' | 'overlay' | 'right_align'
-                delay = 1000,
-                ignore_whitespace = false,
-                virt_text_priority = 100,
-              },
-              current_line_blame_formatter = '<author>, <author_time:%Y-%m-%d> - <summary>',
-              sign_priority = 6,
-              update_debounce = 100,
-              status_formatter = nil, -- Use default
-              max_file_length = 40000, -- Disable if file is longer than this (in lines)
-              preview_config = {
-                -- Options passed to nvim_open_win
-                border = 'single',
-                style = 'minimal',
-                relative = 'cursor',
-                row = 0,
-                col = 1
-              },
-              yadm = {
-                enable = false
-              },
-              on_attach = function(bufnr)
-                  local gs = package.loaded.gitsigns
-              
-                  local function map(mode, l, r, opts)
-                    opts = opts or {}
-                    opts.buffer = bufnr
-                    vim.keymap.set(mode, l, r, opts)
-                  end
-              
-                  -- Navigation
-                  map('n', ']c', function()
-                    if vim.wo.diff then return ']c' end
-                    vim.schedule(function() gs.next_hunk() end)
-                    return '<Ignore>'
-                  end, {expr=true})
-              
-                  map('n', '[c', function()
-                    if vim.wo.diff then return '[c' end
-                    vim.schedule(function() gs.prev_hunk() end)
-                    return '<Ignore>'
-                  end, {expr=true})
-              
-                  -- Actions
-                  map('n', '<leader>hs', gs.stage_hunk)
-                  map('n', '<leader>hr', gs.reset_hunk)
-                  map('v', '<leader>hs', function() gs.stage_hunk {vim.fn.line('.'), vim.fn.line('v')} end)
-                  map('v', '<leader>hr', function() gs.reset_hunk {vim.fn.line('.'), vim.fn.line('v')} end)
-                  map('n', '<leader>hS', gs.stage_buffer)
-                  map('n', '<leader>hu', gs.undo_stage_hunk)
-                  map('n', '<leader>hR', gs.reset_buffer)
-                  map('n', '<leader>hp', gs.preview_hunk)
-                  map('n', '<leader>hb', function() gs.blame_line{full=true} end)
-                  map('n', '<leader>tb', gs.toggle_current_line_blame)
-                  map('n', '<leader>hd', gs.diffthis)
-                  map('n', '<leader>hD', function() gs.diffthis('~') end)
-                  map('n', '<leader>td', gs.toggle_deleted)
-              
-                  -- Text object
-                  map({'o', 'x'}, 'ih', ':<C-U>Gitsigns select_hunk<CR>')
-                end
-            }
-
             -- setup must be called before loading
             vim.cmd.colorscheme "catppuccin-mocha"
 
             -- Put anything you want to happen only in Neovide here
-            if vim.g.neovide then
-               vim.o.guifont = "monospace:h11" 
-               -- vim.keymap.set('n', '<C-s>', ':w<CR>') -- Save
+	    if vim.g.neovide then
+	       vim.o.guifont = "monospace:h11" 
+	       -- vim.keymap.set('n', '<C-s>', ':w<CR>') -- Save
                -- vim.keymap.set('v', '<C-c>', '"+y') -- Copy
                -- vim.keymap.set('n', '<C-v>', '"+P') -- Paste normal mode
                -- vim.keymap.set('v', '<C-v>', '"+P') -- Paste visual mode
@@ -563,16 +461,7 @@ vim.cmd[[
                   telescope = true
               },
               status = {
-                  recent_commit_count = 100,
+                  recent_commit_count = 30,
               },
             }
-
-            require("obsidian").setup({
-               workspaces = {
-                 {
-                   name = "v0d1ch",
-                   path = "~/Documents/v0d1ch",
-                 },
-               },
-            })
 
