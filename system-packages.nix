@@ -24,7 +24,6 @@ in
       xdotool
       unstable.zellij
       rclone
-      etcher
       bc
       multimarkdown
       trezor-suite
@@ -56,6 +55,7 @@ in
       alsa-tools
       alsa-utils
       sox
+      radicle-node
     ];
 
   };
