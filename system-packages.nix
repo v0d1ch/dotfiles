@@ -57,6 +57,7 @@ in
       sox
       radicle-node
       obsidian
+      nix-output-monitor
     ];
 
   };
