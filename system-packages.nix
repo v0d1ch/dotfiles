@@ -56,6 +56,7 @@ in
       alsa-utils
       sox
       radicle-node
+      obsidian
     ];
 
   };
