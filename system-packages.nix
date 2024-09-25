@@ -58,6 +58,7 @@ in
       radicle-node
       obsidian
       nix-output-monitor
+      unixtools.xxd
     ];
 
   };
