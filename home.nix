@@ -10,6 +10,7 @@ in
          libreoffice
          virtualbox
          caffeine-ng
+         dbeaver
          kazam
          vokoscreen
          kdenlive
@@ -50,8 +51,8 @@ in
          cachix
          haskell.compiler.ghc8107
          haskellPackages.cabal-install
-         eog
-         gnome-terminal
+         gnome.eog
+         gnome.gnome-terminal
          clementine
          flameshot
          fx
@@ -85,7 +86,7 @@ in
        enable = true;
        iconTheme = {
          name = "Adwaita";
-         package = pkgs.adwaita-icon-theme;
+         package = pkgs.gnome3.adwaita-icon-theme;
          size = "16x16";
        };
        settings = {
