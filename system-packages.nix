@@ -1,16 +1,14 @@
 { config, pkgs, ... }:
 
-let unstable = import <nixos-unstable> { config = { allowUnfree = true; }; };
-in
 {
   config = {
     environment.systemPackages = with pkgs; [
       lazygit
-      unstable.neovim
-      unstable.neovide
+      neovim
+      neovide
       wget
-      unstable.google-chrome
-      unstable.chromium
+      google-chrome
+      chromium
       discord
       signal-desktop
       spotify
@@ -22,9 +20,7 @@ in
       gcc8
       xorg.libxcb
       xdotool
-      unstable.zellij
       rclone
-      etcher
       bc
       multimarkdown
       trezor-suite
@@ -47,8 +43,8 @@ in
       protonvpn-gui
       protonvpn-cli
       networkmanagerapplet
-      unstable.gnomecast
-      unstable.vlc
+      gnomecast
+      vlc
       xkblayout-state
       killall
       wireplumber

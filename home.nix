@@ -1,16 +1,12 @@
 { config, pkgs, lib, ... }: 
 
-let unstable = import <nixos-unstable> { config = { allowUnfree = true; }; };
-in
 {
    home.stateVersion = "22.11";
      home.packages = with pkgs; [
-         spacevim
          firefox
          libreoffice
          virtualbox
          caffeine-ng
-         dbeaver
          kazam
          vokoscreen
          kdenlive
@@ -40,7 +36,7 @@ in
          haskellPackages.Agda
          eva
          rustup
-         unstable.alacritty
+         alacritty
          speechd
          btop
          lsix
@@ -51,8 +47,8 @@ in
          cachix
          haskell.compiler.ghc8107
          haskellPackages.cabal-install
-         gnome.eog
-         gnome.gnome-terminal
+         eog
+         gnome-terminal
          clementine
          flameshot
          fx
@@ -86,7 +82,7 @@ in
        enable = true;
        iconTheme = {
          name = "Adwaita";
-         package = pkgs.gnome3.adwaita-icon-theme;
+         package = pkgs.adwaita-icon-theme;
          size = "16x16";
        };
        settings = {
