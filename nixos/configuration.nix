@@ -178,6 +178,7 @@
     "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
     "ryantrinkle.com-1:JJiAKaRv9mWgpVAz8dwewnZe0AzzEAzPkagE9SP5NWI=" 
     "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
+    "cardano-scaling.cachix.org-1:RKvHKhGs/b6CBDqzKbDk0Rv6sod2kPSXLwPzcUQg9lY="
   ];
 
   nix.settings.substituters = [
@@ -185,7 +186,9 @@
     "https://cache.nixos.org" 
     "https://nixcache.reflex-frp.org"
     "https://nix-community.cachix.org"
+    "https://cardano-scaling.cachix.org"
   ];
+
 
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
   nix.settings.trusted-users = ["root" "v0d1ch"];
