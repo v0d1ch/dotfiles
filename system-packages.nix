@@ -52,6 +52,7 @@
       alsa-tools
       alsa-utils
       sox
+      obsidian        
     ];
 
   };
