@@ -53,6 +53,7 @@
       alsa-utils
       sox
       obsidian        
+      baobab
     ];
 
   };
