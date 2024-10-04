@@ -1,10 +1,10 @@
-{ config, pkgs, nixvim, home-manager, ... }:
+{ config, pkgs, nixvim, inputs, ... }:
 {
   imports =
     [ 
       ./hardware-configuration.nix
       (import ../system-packages.nix)
-      home-manager.nixosModules.default
+      inputs.home-manager.nixosModules.default
     ];
 
   boot.loader.systemd-boot.enable = true;

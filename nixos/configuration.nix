@@ -1,11 +1,11 @@
-{ config, pkgs, lib, nixvim, home-manager, ... }:
+{ config, pkgs, lib, inputs, ... }:
 
 {
   imports =
     [ # Include the results of the hardware scan.
       ./hardware-configuration.nix
       (import ../system-packages.nix)
-      home-manager.nixosModules.default
+      inputs.home-manager.nixosModules.default
     ];
 
   # Bootloader.

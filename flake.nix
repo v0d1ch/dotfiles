@@ -4,15 +4,15 @@
     home-manager.url = "github:nix-community/home-manager/release-24.05";
     nixvim.url = "github:v0d1ch/nixvim";
   };
-  outputs = attrs@{ self, unstable,  ... }: {
+  outputs = inputs@{ self, unstable, ... }: {
     nixosConfigurations.nixos = unstable.lib.nixosSystem {
       system = "x86_64-linux";
-      specialArgs = attrs;
+      specialArgs = {inherit inputs;};
       modules = [./nixos/configuration.nix ];
     };
     nixosConfigurations.nixos-yoga = unstable.lib.nixosSystem {
       system = "x86_64-linux";
-      specialArgs = attrs;
+      specialArgs = {inherit inputs;};
       modules = [ ./nixos-yoga/configuration.nix ];
     };
   };

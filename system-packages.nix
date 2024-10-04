@@ -1,10 +1,10 @@
-{ config, pkgs, ... }:
+{ config, pkgs, inputs, ... }:
 
 {
   config = {
     environment.systemPackages = with pkgs; [
       lazygit
-      neovim
+      inputs.nixvim.packages.${system}.default
       neovide
       wget
       google-chrome
