@@ -3,6 +3,7 @@
 {
   config = {
     environment.systemPackages = with pkgs; [
+      vim
       lazygit
       inputs.nixvim.packages.${system}.default
       neovide
