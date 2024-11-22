@@ -55,6 +55,7 @@
       sox
       obsidian        
       baobab
+      dbeaver-bin
     ];
 
   };
