@@ -1,7 +1,7 @@
 {
   inputs = {
     unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
-    home-manager.url = "github:nix-community/home-manager/release-24.05";
+    home-manager.url = "github:nix-community/home-manager/release-24.11";
     nixvim.url = "github:v0d1ch/nixvim";
   };
   outputs = inputs@{ self, unstable, ... }: {

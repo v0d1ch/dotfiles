@@ -18,7 +18,6 @@
       pam_u2f
       pinentry-curses
       pinentry-emacs
-      gcc8
       xorg.libxcb
       xdotool
       rclone

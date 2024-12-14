@@ -107,7 +107,6 @@
     hasklig
     iosevka
     font-awesome
-    nerdfonts
   ];
 
 

@@ -163,7 +163,7 @@ lor:magenta)%(authorname)%(color:reset)' --color=always";
              share = true;
              path = "$HOME/.zsh_history";
            };
-       enableAutosuggestions = true;
+       autosuggestion.enable = true;
        enableCompletion = true;
        initExtra = ''
             bindkey '^F' autosuggest-accept

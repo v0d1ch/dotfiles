@@ -81,7 +81,6 @@
     hasklig
     iosevka
     font-awesome
-    nerdfonts
   ];
 
   # Configure keymap in X11
