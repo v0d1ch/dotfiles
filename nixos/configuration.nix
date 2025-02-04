@@ -35,6 +35,7 @@
   # Enable the GNOME Desktop Environment.
   # services.xserver.displayManager.gdm.enable = true;
   services.xserver.desktopManager.gnome.enable = true;
+  services.gnome.gnome-keyring.enable = true;
   services.displayManager.sddm.enable = true;
   services.displayManager.autoLogin = { enable = true; user = "v0d1ch"; };
   services.displayManager.defaultSession = "none+xmonad";
