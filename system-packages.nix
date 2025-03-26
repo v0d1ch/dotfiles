@@ -55,6 +55,7 @@
       obsidian        
       baobab
       dbeaver-bin
+      ollama
     ];
 
   };
