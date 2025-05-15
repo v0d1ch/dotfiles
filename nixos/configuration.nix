@@ -172,6 +172,7 @@
   services.dbus.packages = [ pkgs.gcr ];
 
   services.openssh.enable = true;
+  services.openssh.forwardX11 = true;
 
   nix.settings.trusted-public-keys = [
     "hydra.iohk.io:f/Ea+s+dFdN+3Y/G+FDgSq+a5NEWhJGzdjvKNGv0/EQ="
