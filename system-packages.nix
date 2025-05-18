@@ -56,6 +56,7 @@
       baobab
       dbeaver-bin
       ollama
+      zellij
     ];
 
   };
