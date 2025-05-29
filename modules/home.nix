@@ -1,7 +1,7 @@
-{ config, pkgs, lib, inputs, ... }: 
+{ flake.modules.homeManager.v0d1ch = { config, pkgs, lib, inputs, ... }: 
 
 {
-   home.stateVersion = "22.11";
+   home.stateVersion = "24.11";
      home.packages = with pkgs; [
          firefox
          libreoffice
@@ -9,7 +9,6 @@
          caffeine-ng
          kazam
          vokoscreen
-         kdenlive
          xscreensaver
          trayer
          arandr
@@ -20,7 +19,6 @@
          lsof
          qbittorrent
          nicotine-plus
-         termonad
          keepassxc
          openvpn
          docker
@@ -57,7 +55,6 @@
 
          # Yubico's official tools
          yubikey-manager
-         yubikey-manager-qt
          yubikey-personalization
          yubikey-personalization-gui
          yubico-piv-tool
@@ -316,4 +313,5 @@ lor:magenta)%(authorname)%(color:reset)' --color=always";
         };
      };
 
-  }
+  };
+}

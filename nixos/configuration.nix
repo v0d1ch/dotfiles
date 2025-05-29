@@ -2,11 +2,14 @@
 
 {
   imports =
-    [ # Include the results of the hardware scan.
-      ./hardware-configuration.nix
-      (import ../system-packages.nix)
+    [ 
+      inputs.self.modules.nixos.v0d1ch
       inputs.home-manager.nixosModules.default
     ];
+
+  home-manager.users.v0d1ch = { ... }: {
+       imports = [inputs.self.modules.homeManager.v0d1ch];
+  };
 
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
@@ -28,7 +31,7 @@
   time.timeZone = "Europe/Belgrade";
 
   # Select internationalisation properties.
-  i18n.defaultLocale = "en_US.utf8";
+  i18n.defaultLocale = "en_US.UTF-8";
 
   # Enable the X11 windowing system.
 
@@ -137,18 +140,10 @@
     openssh.authorizedKeys.keys = [
         "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDnCLEXU8AQIhF2EsUK0JCtmzEa/Byd+2vvsHKtr+csB/CSjBMqxCYo8o647XEfLR0WRMCUaB8zJzpCJ5IPy/uyxHvarDfFpYzUwO29Q0wPFJq2P46zjLLcMKg9rUrY8Eii3tKqy9A6PtnaCBNwHhni5aZmHT92Wx4/XgaVGSb4TEXPErCQiT6wyvf21lXeKxjipojYXCL/nrN5jBBiJ53VFSt7myj0TWgkcDDvGJVuE7mgUTEySlmfwQwLd/42PoSuitN4e86SzuCN4AFa4cGQeJRGJ+aDsF3JhNOBuDYjFlMJseooMdvR9DhTq263M+D7w3fpJBmRBXLdXj3GoHpvXh6L4LxP08dd6D4AdcDPZHwEkpd1pDaGQL/PuTDqpug7x5/OWVcLNVlnG0AXGlEFOVBQ4pUNwQ+xHvI1pMKl0I4JYBPEU/Ul2qX37tVhwQol3k9n5U/K8iJGTEyOO/ipr4uz2uQoeyVOXRSObl+pjlzGYfF7IG7/idcNfYUg6Tk= v0d1ch@nixos"
       ];
-
   };
   
   environment.variables.EDITOR = "nvim";
 
-
-  home-manager.users.v0d1ch = { ... }: {
-       imports = [ ../home.nix ];
-  };
-  home-manager.users.root = { ... }: {
-       imports = [ ../home.nix ];
-  };
 
   services.trezord.enable = true;
 

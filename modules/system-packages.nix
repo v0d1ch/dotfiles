@@ -1,4 +1,4 @@
-{ config, pkgs, inputs, ... }:
+{ flake.modules.nixos.v0d1ch = { config, pkgs, lib, inputs, ... }: 
 
 {
   config = {
@@ -57,7 +57,9 @@
       dbeaver-bin
       ollama
       zellij
+      magic-wormhole
     ];
 
   };
+};
 }

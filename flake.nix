@@ -1,19 +1,36 @@
 {
   inputs = {
-    unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
-    home-manager.url = "github:nix-community/home-manager/release-24.11";
+    unstable.url = "github:NixOS/nixpkgs/nixos-25.05";
+    home-manager.url = "github:nix-community/home-manager/release-25.05";
     nixvim.url = "github:v0d1ch/nixvim";
+    flake-parts.url = "github:hercules-ci/flake-parts";
   };
-  outputs = inputs@{ self, unstable, ... }: {
-    nixosConfigurations.nixos = unstable.lib.nixosSystem {
-      system = "x86_64-linux";
-      specialArgs = {inherit inputs;};
-      modules = [./nixos/configuration.nix ];
-    };
-    nixosConfigurations.nixos-yoga = unstable.lib.nixosSystem {
-      system = "x86_64-linux";
-      specialArgs = {inherit inputs;};
-      modules = [ ./nixos-yoga/configuration.nix ];
+  outputs = inputs: inputs.flake-parts.lib.mkFlake {inherit inputs;} {
+    systems = ["x86_64-linux"];
+    # this gives us access to the flake-parts modules so we can import them
+    imports = [
+       inputs.flake-parts.flakeModules.modules
+       ./modules/system-packages.nix
+       ./modules/home.nix
+    ];
+    flake.nixosConfigurations = {
+      nixos = inputs.unstable.lib.nixosSystem {
+        system = "x86_64-linux";
+        specialArgs = {inherit inputs;};
+        modules = 
+            [
+             ./nixos/configuration.nix 
+             ./nixos/hardware-configuration.nix 
+            ];
+      };
+      nixos-yoga = inputs.unstable.lib.nixosSystem {
+        system = "x86_64-linux";
+        specialArgs = {inherit inputs;};
+        modules = [ 
+                ./nixos-yoga/configuration.nix 
+                ./nixos-yoga/hardware-configuration.nix 
+                ];
+      };
     };
   };
 }

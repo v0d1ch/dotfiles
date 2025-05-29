@@ -2,10 +2,13 @@
 {
   imports =
     [ 
-      ./hardware-configuration.nix
-      (import ../system-packages.nix)
+      inputs.self.modules.nixos.v0d1ch
       inputs.home-manager.nixosModules.default
     ];
+
+  home-manager.users.v0d1ch = { ... }: {
+       imports = [inputs.self.modules.homeManager.v0d1ch];
+  };
 
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
@@ -109,14 +112,6 @@
     font-awesome
   ];
 
-
-  # HOME
-  home-manager.users.v0d1ch = { ... }: {
-    imports = [ ../home.nix ];
-  };
-  home-manager.users.root = { ... }: {
-    imports = [ ../home.nix ];
-  };
 
   services.trezord.enable = true;
   services.udev.packages = 
