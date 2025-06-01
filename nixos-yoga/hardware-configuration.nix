@@ -13,20 +13,19 @@
   boot.kernelModules = [ "kvm-amd" ];
   boot.extraModulePackages = [ ];
 
-  boot.kernelPackages = pkgs.linuxPackages_latest;
-
   fileSystems."/" =
-    { device = "/dev/disk/by-uuid/361e4fa3-f3c9-4bed-a9e9-76137b474ca7";
+    { device = "/dev/disk/by-uuid/9e551e93-51c1-44b8-9499-1e66857d0bdb";
       fsType = "ext4";
     };
 
-  fileSystems."/boot/efi" =
-    { device = "/dev/disk/by-uuid/20C9-048B";
+  fileSystems."/boot" =
+    { device = "/dev/disk/by-uuid/3EC6-2ADC";
       fsType = "vfat";
+      options = [ "fmask=0077" "dmask=0077" ];
     };
 
   swapDevices =
-    [ { device = "/dev/disk/by-uuid/fd9a69ab-4568-4854-91ce-9289b1e16110"; }
+    [ { device = "/dev/disk/by-uuid/7068efae-4f1c-423a-9a47-f4110343bf5e"; }
     ];
 
   # Enables DHCP on each ethernet and wireless interface. In case of scripted networking
@@ -34,12 +33,8 @@
   # still possible to use this option, but it's recommended to use it in conjunction
   # with explicit per-interface declarations with `networking.interfaces.<interface>.useDHCP`.
   networking.useDHCP = lib.mkDefault true;
-  # networking.interfaces.enp5s0f4u1u1.useDHCP = lib.mkDefault true;
+  # networking.interfaces.wlp2s0.useDHCP = lib.mkDefault true;
 
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
   hardware.cpu.amd.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
-  hardware.enableAllFirmware = true;
-  # high-resolution display
-  # hardware.video.hidpi.enable = lib.mkDefault true;
-  hardware.alsa.enablePersistence = true;
 }
