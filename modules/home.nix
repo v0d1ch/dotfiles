@@ -147,6 +147,7 @@ lor:magenta)%(authorname)%(color:reset)' --color=always";
        enable = true;
        nix-direnv.enable = true;
      };
+
      programs.zsh = {
        enable = true;
        dotDir = ".config/zsh";
@@ -162,7 +163,7 @@ lor:magenta)%(authorname)%(color:reset)' --color=always";
            };
        autosuggestion.enable = true;
        enableCompletion = true;
-       initExtra = ''
+       initContent = ''
             bindkey '^F' autosuggest-accept
             bindkey '^U' backward-kill-line
             bindkey '^A' beginning-of-line
@@ -311,6 +312,10 @@ lor:magenta)%(authorname)%(color:reset)' --color=always";
          background = "#2E3440";
          icon_gravity = "W";
         };
+     };
+
+     programs.waybar = {
+        enable = true;
      };
 
   };

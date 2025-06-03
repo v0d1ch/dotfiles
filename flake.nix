@@ -3,6 +3,9 @@
     unstable.url = "github:NixOS/nixpkgs/nixos-25.05";
     home-manager.url = "github:nix-community/home-manager/release-25.05";
     nixvim.url = "github:v0d1ch/nixvim";
+    hyprland.url = "github:hyprwm/Hyprland";
+    waybar.url = "github:Alexays/Waybar/master";
+
     flake-parts.url = "github:hercules-ci/flake-parts";
   };
   outputs = inputs: inputs.flake-parts.lib.mkFlake {inherit inputs;} {

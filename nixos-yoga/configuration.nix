@@ -40,7 +40,13 @@
   services.xserver.enable = true;
 
   # Enable the GNOME Desktop Environment.
-  services.xserver.displayManager.gdm.enable = true;
+  services.displayManager.sddm.enable = true;
+  services.displayManager.sddm.settings = {
+    General = {
+      InputMethod="";
+    };
+  };
+
   services.xserver.desktopManager.gnome.enable = true;
 
   # Configure keymap in X11
@@ -78,6 +84,19 @@
     extraGroups = [ "networkmanager" "wheel" "docker" "audio" ];
   };
 
+  fonts.packages = with pkgs; [
+    noto-fonts
+    noto-fonts-cjk-sans
+    noto-fonts-emoji
+    liberation_ttf
+    fira-code
+    fira-code-symbols
+    mplus-outline-fonts.githubRelease
+    dina-font
+    proggyfonts
+    font-awesome
+  ];
+
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
 
@@ -95,13 +114,19 @@
     sudo.u2fAuth = true;
   };
 
-  # programs.fish.enable = true;
-  # programs.zsh.enable = true;
   programs.dconf.enable = true;
   programs.gnupg.agent = {
     enable = true;
     enableSSHSupport = true;
     pinentryPackage = pkgs.pinentry-gtk2;
+  };
+
+  programs.hyprland = {
+    enable = true;
+    # set the flake package
+    package = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.hyprland;
+    # make sure to also set the portal package, so that they are in sync
+    portalPackage = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.xdg-desktop-portal-hyprland;
   };
 
   services.dbus.packages = [ pkgs.gcr ];
@@ -121,6 +146,7 @@
     "ryantrinkle.com-1:JJiAKaRv9mWgpVAz8dwewnZe0AzzEAzPkagE9SP5NWI=" 
     "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
     "cardano-scaling.cachix.org-1:RKvHKhGs/b6CBDqzKbDk0Rv6sod2kPSXLwPzcUQg9lY="
+    "hyprland.cachix.org-1:a7pgxzMz7+chwVL3/pzj6jIBMioiJM7ypFP8PwtkuGc="
   ];
 
   nix.settings.substituters = [
@@ -129,6 +155,7 @@
     "https://nixcache.reflex-frp.org"
     "https://nix-community.cachix.org"
     "https://cardano-scaling.cachix.org"
+    "https://hyprland.cachix.org"
   ];
 
   system.stateVersion = "25.05"; # Did you read the comment?

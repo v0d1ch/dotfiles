@@ -58,6 +58,20 @@
       ollama
       zellij
       magic-wormhole
+
+      kitty
+      hyprland
+      swww # for wallpapers
+      xdg-desktop-portal-gtk
+      xdg-desktop-portal-hyprland
+      xwayland
+      meson
+      wayland-protocols
+      wayland-utils
+      wl-clipboard
+      wlroots
+      rofi-wayland
+      wofi
     ];
 
   };
