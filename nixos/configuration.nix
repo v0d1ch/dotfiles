@@ -18,37 +18,25 @@
 
   networking.hostName = "nixos"; # Define your hostname.
 
-  # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
-
-  # Configure network proxy if necessary
-  # networking.proxy.default = "http://user:password@proxy:port/";
-  # networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain";
 
   # Enable networking
   networking.networkmanager.enable = true;
 
-  # Set your time zone.
   time.timeZone = "Europe/Belgrade";
 
-  # Select internationalisation properties.
   i18n.defaultLocale = "en_US.UTF-8";
 
-  # Enable the X11 windowing system.
-
-  # Enable the GNOME Desktop Environment.
-  # services.xserver.displayManager.gdm.enable = true;
   services.xserver.desktopManager.gnome.enable = true;
   services.gnome.gnome-keyring.enable = true;
   services.displayManager.sddm.enable = true;
+
+  services.displayManager.sddm.settings = {
+    General = {
+      InputMethod="";
+    };
+  };
+  
   services.displayManager.autoLogin = { enable = true; user = "v0d1ch"; };
-  services.displayManager.defaultSession = "none+xmonad";
-  services.xserver.displayManager.session = [
-      {
-        manage = "desktop";
-        name = "xsession";
-        start = ''exec $HOME/.xsession'';
-      }
-    ];
   nixpkgs.config.allowUnfree = true;
 
   nixpkgs.config.permittedInsecurePackages = [
@@ -57,18 +45,6 @@
   ];
 
   nixpkgs.overlays = [ ];
-  services.xserver.windowManager = {
-    xmonad = {
-      enable = true;
-      enableContribAndExtras = true;
-      extraPackages = haskellPackages: [
-        haskellPackages.dbus
-        haskellPackages.List
-        haskellPackages.monad-logger
-        haskellPackages.xmonad
-      ];
-     };
-  };
   
   hardware.keyboard.zsa.enable = true;
 
@@ -122,10 +98,6 @@
   # Enable touchpad support (enabled default in most desktopManager).
   # services.xserver.libinput.enable = true;
 
-  # Define a user account. Don't forget to set a password with ‘passwd’.
-
-  users.defaultUserShell = pkgs.zsh; 
-
   services.keybase.enable = true; 
   services.tailscale.enable = true; 
   networking.firewall.checkReversePath = "loose";
@@ -133,7 +105,6 @@
 
   # services.openssh.ports = [ 22 443 62495];
   users.users.v0d1ch = {
-    shell = pkgs.zsh;
     isNormalUser = true;
     description = "Sasha Bogicevic";
     extraGroups = [ "networkmanager" "wheel" "docker" ];
@@ -157,7 +128,6 @@
     sudo.u2fAuth = true;
   };
 
-  programs.zsh.enable = true;
   programs.gnupg.agent = {
     enable = true;
     enableSSHSupport = true;
@@ -169,12 +139,23 @@
   services.openssh.enable = true;
   services.openssh.forwardX11 = true;
 
+
+  programs.hyprland = {
+    enable = true;
+    # set the flake package
+    package = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.hyprland;
+    # make sure to also set the portal package, so that they are in sync
+    portalPackage = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.xdg-desktop-portal-hyprland;
+  };
+
+
   nix.settings.trusted-public-keys = [
     "hydra.iohk.io:f/Ea+s+dFdN+3Y/G+FDgSq+a5NEWhJGzdjvKNGv0/EQ="
     "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
     "ryantrinkle.com-1:JJiAKaRv9mWgpVAz8dwewnZe0AzzEAzPkagE9SP5NWI=" 
     "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
     "cardano-scaling.cachix.org-1:RKvHKhGs/b6CBDqzKbDk0Rv6sod2kPSXLwPzcUQg9lY="
+    "hyprland.cachix.org-1:a7pgxzMz7+chwVL3/pzj6jIBMioiJM7ypFP8PwtkuGc="
   ];
 
   nix.settings.substituters = [
@@ -183,6 +164,7 @@
     "https://nixcache.reflex-frp.org"
     "https://nix-community.cachix.org"
     "https://cardano-scaling.cachix.org"
+    "https://hyprland.cachix.org"
   ];
 
 
