@@ -72,6 +72,9 @@
       wlroots
       rofi-wayland
       wofi
+      grim
+      swappy
+      slurp
     ];
 
   };
