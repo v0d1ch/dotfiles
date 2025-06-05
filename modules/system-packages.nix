@@ -75,6 +75,7 @@
       grim
       swappy
       slurp
+      atuin
     ];
 
   };
