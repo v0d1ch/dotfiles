@@ -17,6 +17,7 @@
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
+  boot.kernelParams = [ "amdgpu.gpu_recovery=1" ];
 
   nix.settings.experimental-features = "nix-command flakes";
 
@@ -51,7 +52,9 @@
 
   # Configure keymap in X11
   services.xserver.xkb = {
-    layout = "us";
+    enable = true;
+    exportConfiguration = true; 
+    layout = "us,rs";
     variant = "";
   };
 
@@ -75,7 +78,7 @@
   };
 
   # Enable touchpad support (enabled default in most desktopManager).
-  # services.xserver.libinput.enable = true;
+  services.libinput.enable = true;
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.v0d1ch = {
@@ -123,6 +126,7 @@
 
   programs.hyprland = {
     enable = true;
+    xwayland.enable = true;
     # set the flake package
     package = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.hyprland;
     # make sure to also set the portal package, so that they are in sync
