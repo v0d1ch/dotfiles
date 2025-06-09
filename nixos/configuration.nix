@@ -77,7 +77,7 @@
   # Enable CUPS to print documents.
   services.printing.enable = true;
 
-  hardware.pulseaudio.enable = false;
+  services.pulseaudio.enable = false;
   security.rtkit.enable = true;
 
   services.emacs = { 
@@ -139,7 +139,7 @@
   services.dbus.packages = [ pkgs.gcr ];
 
   services.openssh.enable = true;
-  services.openssh.forwardX11 = true;
+  services.openssh.settings.X11Forwarding = true; 
 
 
   programs.hyprland = {

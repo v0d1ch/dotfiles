@@ -76,6 +76,7 @@
       swappy
       slurp
       atuin
+      lnav
     ];
 
   };
