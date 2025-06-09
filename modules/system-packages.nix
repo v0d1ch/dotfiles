@@ -77,6 +77,7 @@
       slurp
       atuin
       lnav
+      dconf-editor
     ];
 
   };
