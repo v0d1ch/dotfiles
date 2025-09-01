@@ -75,9 +75,9 @@
       grim
       swappy
       slurp
-      atuin
       lnav
       dconf-editor
+      jujutsu
     ];
 
   };
