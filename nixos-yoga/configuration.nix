@@ -37,8 +37,6 @@
   # Select internationalisation properties.
   i18n.defaultLocale = "en_US.UTF-8";
 
-  # Enable the X11 windowing system.
-  services.xserver.enable = true;
 
   # Enable the GNOME Desktop Environment.
   services.displayManager.sddm.enable = true;
@@ -50,12 +48,14 @@
 
   services.xserver.desktopManager.gnome.enable = true;
 
+  # Enable the X11 windowing system.
   # Configure keymap in X11
-  services.xserver.xkb = {
+  services.xserver = {
+    xkb.variant = "";
     enable = true;
     exportConfiguration = true; 
-    layout = "us,rs";
-    variant = "";
+    xkb.layout = "us,rs";
+    xkb.options = "eurosign:e, compose:menu";
   };
 
   # Enable CUPS to print documents.
@@ -143,6 +143,8 @@
   hardware.keyboard.zsa.enable = true;
 
   virtualisation.docker.enable = true;
+
+  environment.variables.EDITOR = "nvim";
 
   nix.settings.trusted-public-keys = [
     "hydra.iohk.io:f/Ea+s+dFdN+3Y/G+FDgSq+a5NEWhJGzdjvKNGv0/EQ="
