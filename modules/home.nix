@@ -242,6 +242,7 @@ lor:magenta)%(authorname)%(color:reset)' --color=always";
 
      programs.fzf = {
        enable = true;
+       enableBashIntegration = true;
      };
 
 
@@ -315,6 +316,9 @@ lor:magenta)%(authorname)%(color:reset)' --color=always";
      };
 
      programs.waybar = {
+        enable = true;
+     };
+     programs.bash = {
         enable = true;
      };
 

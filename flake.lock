@@ -606,11 +606,11 @@
         "tree-sitter-haskell": "tree-sitter-haskell"
       },
       "locked": {
-        "lastModified": 1752567531,
-        "narHash": "sha256-yPicU2y9s2U2yojvxoLA+mHUEwTV28DXgIOHWZfQVS0=",
+        "lastModified": 1760947916,
+        "narHash": "sha256-jyrs1MB3agE7CcAGmc2es60TN/Pul0il8P0BEYfg0Mo=",
         "owner": "v0d1ch",
         "repo": "nixvim",
-        "rev": "8cca2cdc9c14ab366351a7ac9baaf87e82adfcd9",
+        "rev": "ca44a5b7f975ce8a8a1a2fa0fd9168b6a90f7bf4",
         "type": "github"
       },
       "original": {
