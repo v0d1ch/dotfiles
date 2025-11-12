@@ -320,6 +320,9 @@ lor:magenta)%(authorname)%(color:reset)' --color=always";
      };
      programs.bash = {
         enable = true;
+        historyFile = "~/.bash_history";
+        historySize = 10000;
+        historyFileSize = 100000;
      };
 
   };
