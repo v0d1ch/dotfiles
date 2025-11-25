@@ -78,7 +78,6 @@
       lnav
       dconf-editor
       jujutsu
-      atuin
     ];
 
   };

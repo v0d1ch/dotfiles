@@ -227,9 +227,10 @@ lor:magenta)%(authorname)%(color:reset)' --color=always";
      programs.waybar = {
         enable = true;
      };
+    
      programs.bash = {
         enable = true;
-        historyFile = "~/.bash_history";
+        historyFile = "\${config.home.homeDirectory}/.bash_history";
         historySize = 10000;
         historyFileSize = 100000;
      };
