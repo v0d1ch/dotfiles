@@ -48,6 +48,7 @@
 
   nixpkgs.overlays = [ ];
   
+  hardware.bluetooth.enable = true;
   hardware.keyboard.zsa.enable = true;
 
   virtualisation.docker.enable = true;

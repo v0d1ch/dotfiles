@@ -140,6 +140,7 @@
   services.keybase.enable = true; 
   services.kbfs.enable = true; 
   services.tailscale.enable = true;
+  hardware.bluetooth.enable = true;
   hardware.keyboard.zsa.enable = true;
 
   virtualisation.docker.enable = true;

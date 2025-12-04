@@ -78,6 +78,7 @@
       lnav
       dconf-editor
       jujutsu
+      blueman
     ];
 
   };
