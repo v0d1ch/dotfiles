@@ -43,7 +43,7 @@
          copyq
          meld
          cachix
-         haskell.compiler.ghc8107
+         haskell.compiler.ghc967
          haskellPackages.cabal-install
          eog
          gnome-terminal
@@ -234,6 +234,22 @@ lor:magenta)%(authorname)%(color:reset)' --color=always";
         historyFile = "\${config.home.homeDirectory}/.bash_history";
         historySize = 10000;
         historyFileSize = 100000;
+        historyIgnore = [ "ls" "cd" "exit" ];  # optional: ignore simple commands
+        shellOptions = [
+           "histappend"          # append to history file instead of overwriting
+           "cmdhist"             # save multi-line commands as one entry
+           "lithist"             # preserve newlines in multi-line commands
+        ];
+        initExtra = ''
+           # Prevent duplicates and erase previous identical commands
+           export HISTCONTROL=erasedups:ignorespace
+           export HISTSIZE=10000
+           export HISTFILESIZE=20000
+
+           # Optional: also ignore specific commands
+           export HISTIGNORE="ls:cd:exit:pwd:clear"
+        '';
+
      };
 
   };
