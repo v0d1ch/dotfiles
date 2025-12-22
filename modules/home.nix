@@ -43,8 +43,6 @@
          copyq
          meld
          cachix
-         haskell.compiler.ghc967
-         haskellPackages.cabal-install
          eog
          gnome-terminal
          clementine
