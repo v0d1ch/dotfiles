@@ -5,10 +5,12 @@
     environment.systemPackages = with pkgs; [
       vim
       lazygit
+      vscode
       inputs.nixvim.packages.${system}.default
       neovide
       wget
       google-chrome
+      brave
       chromium
       discord
       signal-desktop
