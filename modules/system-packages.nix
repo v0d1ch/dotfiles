@@ -54,7 +54,7 @@
       alsa-tools
       alsa-utils
       sox
-      openai-whisper-cpp  # Voice dictation
+      openai-whisper      # Voice dictation (Python version)
       wtype               # For typing transcribed text (Wayland)
       obsidian        
       baobab
