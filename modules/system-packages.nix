@@ -54,6 +54,7 @@
       alsa-tools
       alsa-utils
       sox
+      nerd-dictation
       obsidian        
       baobab
       dbeaver-bin
