@@ -54,7 +54,8 @@
       alsa-tools
       alsa-utils
       sox
-      nerd-dictation
+      openai-whisper-cpp  # Voice dictation
+      wtype               # For typing transcribed text (Wayland)
       obsidian        
       baobab
       dbeaver-bin
