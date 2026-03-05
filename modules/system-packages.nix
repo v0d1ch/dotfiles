@@ -60,6 +60,7 @@
       baobab
       dbeaver-bin
       ollama
+      (pkgs.callPackage ../packages/qmd.nix {})
       zellij
       magic-wormhole
 
