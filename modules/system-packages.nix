@@ -65,6 +65,7 @@
       magic-wormhole
 
       kitty
+      ghostty
       hyprland
       swww # for wallpapers
       xdg-desktop-portal-gtk
