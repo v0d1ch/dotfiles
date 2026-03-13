@@ -85,6 +85,7 @@
       dconf-editor
       jujutsu
       blueman
+      orca-slicer
     ];
 
   };
