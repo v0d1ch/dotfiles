@@ -10,8 +10,57 @@
     inputs.home-manager.nixosModules.default
   ];
   
-  home-manager.users.v0d1ch = {...}:{
+  home-manager.users.v0d1ch = { lib, pkgs, ... }: {
     imports = [inputs.self.modules.homeManager.v0d1ch];
+
+    # OpenClaw - install package and write config directly
+    home.packages = [ (lib.lowPrio inputs.nix-openclaw.packages.x86_64-linux.openclaw) ];
+    home.file.".local/bin/claude-print" = {
+      executable = true;
+      text = ''
+        #!/bin/sh
+        exec /home/v0d1ch/.nix-profile/bin/claude --print "$@"
+      '';
+    };
+    # openclaw.json is written by openclaw at runtime, so we seed it only if absent
+    home.activation.seedOpenclawConfig =
+      let
+        defaultCfg = pkgs.writeText "openclaw-default.json" (builtins.toJSON {
+          gateway.mode = "local";
+          agents.defaults = {
+            model.primary = "claude-cli/claude-opus-4-6";
+            cliBackends."claude-cli" = {
+              command = "/home/v0d1ch/.local/bin/claude-print";
+              modelArg = "--model";
+              systemPromptArg = "--append-system-prompt";
+              sessionArg = "--session-id";
+              systemPromptWhen = "first";
+              sessionMode = "always";
+            };
+          };
+          channels.telegram = {
+            enabled = true;
+            dmPolicy = "allowlist";
+            allowFrom = [ 1184983378 ];
+            tokenFile = "/home/v0d1ch/.secrets/telegram-bot-token";
+          };
+        });
+      in
+      lib.hm.dag.entryAfter ["writeBoundary"] ''
+        OPENCLAW_CFG="$HOME/.openclaw/openclaw.json"
+        if [ ! -f "$OPENCLAW_CFG" ]; then
+          mkdir -p "$HOME/.openclaw"
+          cp ${defaultCfg} "$OPENCLAW_CFG"
+        fi
+      '';
+
+    # Fix openclaw-gateway systemd service missing Nix profile paths (needed for ffmpeg/audio)
+    home.file.".config/systemd/user/openclaw-gateway.service.d/nix-path.conf" = {
+      text = ''
+        [Service]
+        Environment=PATH=/home/v0d1ch/.nix-profile/bin:/run/current-system/sw/bin:/home/v0d1ch/.local/bin:/usr/local/bin:/usr/bin:/bin
+      '';
+    };
   };
 
   # Bootloader.

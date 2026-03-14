@@ -61,6 +61,7 @@
          #  (haskell-language-server.override { supportedGhcVersions = [ "8107" ]; })
          protonvpn-gui
          blesh
+         nodejs_22
      ];
 
 
@@ -226,10 +227,14 @@ lor:magenta)%(authorname)%(color:reset)' --color=always";
      programs.waybar = {
         enable = true;
      };
-    
+
      programs.bash = {
         enable = true;
-        historyFile = "\${config.home.homeDirectory}/.bash_history";
+        shellAliases = {
+          claude = "CLAUDE_CONFIG_DIR=~/.claude claude";
+          claude-personal = "CLAUDE_CONFIG_DIR=~/.claude-personal claude";
+        };
+        historyFile = "${config.home.homeDirectory}/.bash_history";
         historySize = 10000;
         historyFileSize = 100000;
         historyIgnore = [ "ls" "cd" "exit" ];  # optional: ignore simple commands
