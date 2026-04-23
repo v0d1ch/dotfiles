@@ -154,6 +154,18 @@ lor:magenta)%(authorname)%(color:reset)' --color=always";
        enableBashIntegration = true;
      };
 
+     programs.atuin = {
+       enable = true;
+       enableBashIntegration = true;
+       flags = [ "--disable-up-arrow" ];
+       settings = {
+         auto_sync = false;
+         update_check = false;
+         style = "compact";
+         inline_height = 20;
+         search_mode = "fuzzy";
+       };
+     };
 
      programs.tmux = {
         enable = true;
@@ -244,13 +256,8 @@ lor:magenta)%(authorname)%(color:reset)' --color=always";
            "lithist"             # preserve newlines in multi-line commands
         ];
         initExtra = ''
-           # Prevent duplicates and erase previous identical commands
-           export HISTCONTROL=erasedups:ignorespace
-           export HISTSIZE=10000
-           export HISTFILESIZE=20000
-
-           # Optional: also ignore specific commands
-           export HISTIGNORE="ls:cd:exit:pwd:clear"
+           # Prevent consecutive duplicates but keep history intact
+           export HISTCONTROL=ignoredups:ignorespace
         '';
 
      };
