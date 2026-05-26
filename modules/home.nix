@@ -69,6 +69,16 @@
       enable = true;
      };
 
+     programs.gpg = {
+       enable = true;
+       settings = {
+         # Ask gpg to use loopback pinentry so that subprocesses (e.g. NeoGit
+         # inside Neovim) can sign commits without needing direct TTY access.
+         # The gpg-agent side enables this via allow-loopback-pinentry below.
+         pinentry-mode = "loopback";
+       };
+     };
+
      services.gpg-agent = {
        enable = true;
        enableSshSupport = true;
