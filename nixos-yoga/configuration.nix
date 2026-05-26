@@ -167,11 +167,9 @@
   };
 
   programs.dconf.enable = true;
-  programs.gnupg.agent = {
-    enable = true;
-    enableSSHSupport = true;
-    pinentryPackage = pkgs.pinentry-gtk2;
-  };
+  # GPG agent is managed by home-manager (services.gpg-agent in modules/home.nix)
+  # to avoid pinentry-gtk2 conflicts when signing commits over SSH.
+  programs.gnupg.agent.enable = true;
 
   programs.hyprland = {
     enable = true;

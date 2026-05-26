@@ -73,7 +73,10 @@
        enable = true;
        enableSshSupport = true;
        defaultCacheTtl = 1800;
-       pinentry.package = pkgs.pinentry-tty;
+       pinentry.package = pkgs.pinentry-curses;
+       extraConfig = ''
+         allow-loopback-pinentry
+       '';
      };
 
      services.dunst = {
@@ -259,6 +262,15 @@ lor:magenta)%(authorname)%(color:reset)' --color=always";
         initExtra = ''
            # Prevent consecutive duplicates but keep history intact
            export HISTCONTROL=ignoredups:ignorespace
+           export GPG_TTY=$(tty)
+
+           # Attach to a zellij session and refresh GPG_TTY so signing works
+           # in the (possibly pre-existing) session's panes
+           zja() {
+             zellij attach "$@"
+             export GPG_TTY=$(tty)
+             gpg-connect-agent updatestartuptty /bye >/dev/null 2>&1
+           }
         '';
 
      };
