@@ -81,12 +81,19 @@
 
      services.gpg-agent = {
        enable = true;
-       enableSshSupport = true;
+       # SSH keys are served by plain ssh-agent (below), not gpg-agent: the
+       # SSH agent protocol cannot tell gpg-agent which TTY to prompt on, so
+       # pinentry lands in the wrong zellij pane / SSH session.
+       enableSshSupport = false;
        defaultCacheTtl = 1800;
        pinentry.package = pkgs.pinentry-curses;
        extraConfig = ''
          allow-loopback-pinentry
        '';
+     };
+
+     services.ssh-agent = {
+       enable = true;
      };
 
      services.dunst = {
@@ -274,12 +281,11 @@ lor:magenta)%(authorname)%(color:reset)' --color=always";
            export HISTCONTROL=ignoredups:ignorespace
            export GPG_TTY=$(tty)
 
-           # Attach to a zellij session and refresh GPG_TTY so signing works
-           # in the (possibly pre-existing) session's panes
+           # Attach to a zellij session and refresh GPG_TTY so gpg signing
+           # works in the (possibly pre-existing) session's panes
            zja() {
              zellij attach "$@"
              export GPG_TTY=$(tty)
-             gpg-connect-agent updatestartuptty /bye >/dev/null 2>&1
            }
         '';
 
