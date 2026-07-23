@@ -87,7 +87,7 @@
       jujutsu
       blueman
       orca-slicer
-      halloy
+      irssi
     ];
 
   };
