@@ -127,7 +127,7 @@ next_workspace = "prefix+down"     # optional, unset by default
 # height = "80%"
 
 [[keys.command]]
-  key = "prefix+t"
+  key = "prefix+t" 
   type = "plugin_action"
   command = "herdr-navigator.open"
   description = "jump to anything"
@@ -258,7 +258,7 @@ next_workspace = "prefix+down"     # optional, unset by default
 
 # Play sounds when agents change state in background workspaces
 [ui.sound]
-# enabled = true
+  enabled = true
 # Optional custom mp3 sound files. Relative paths are resolved from this config file's directory.
 # path = "sounds/notification.mp3"   # one mp3 file for all sound notifications
 # done_path = "sounds/done.mp3"      # overrides only finished notifications
@@ -283,7 +283,7 @@ next_workspace = "prefix+down"     # optional, unset by default
 # per-attach OpenSSH control socket to reuse the first authenticated connection.
 # Set false to run plain ssh against your ssh config unchanged — this does not
 # force keepalive or multiplexing off, it only stops herdr from adding its own.
-# manage_ssh_config = true
+  manage_ssh_config = true
 
 [experimental]
 # Allow launching herdr from inside a herdr-managed pane.
