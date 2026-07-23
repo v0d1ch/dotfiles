@@ -7,6 +7,7 @@
       lazygit
       vscode
       inputs.nixvim.packages.${system}.default
+      inputs.herdr.packages.${system}.default
       neovide
       wget
       google-chrome
@@ -86,6 +87,7 @@
       jujutsu
       blueman
       orca-slicer
+      halloy
     ];
 
   };

@@ -5,6 +5,7 @@
     nixvim.url = "github:v0d1ch/nixvim";
     hyprland.url = "github:hyprwm/Hyprland";
     waybar.url = "github:Alexays/Waybar/master";
+    herdr.url = "github:ogulcancelik/herdr/v0.7.5";
 
     flake-parts.url = "github:hercules-ci/flake-parts";
     nix-openclaw.url = "github:openclaw/nix-openclaw";
