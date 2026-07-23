@@ -10,6 +10,8 @@
     inputs.home-manager.nixosModules.default
   ];
   
+  home-manager.backupFileExtension = "hm-backup";
+
   home-manager.users.v0d1ch = { lib, pkgs, ... }: {
     imports = [inputs.self.modules.homeManager.v0d1ch];
 

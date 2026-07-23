@@ -69,6 +69,12 @@
       enable = true;
      };
 
+     xdg.configFile = {
+       "kitty/kitty.conf".source = ../home/kitty/kitty.conf;
+       "kitty/current-theme.conf".source = ../home/kitty/current-theme.conf;
+       "herdr/config.toml".source = ../home/herdr/config.toml;
+     };
+
      programs.gpg = {
        enable = true;
        settings = {
