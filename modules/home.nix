@@ -62,6 +62,24 @@
          protonvpn-gui
          blesh
          nodejs_22
+
+         # Claude Code with the personal account profile (default ~/.claude);
+         # a real command (not just the bash alias below) so IDEs, launchers
+         # and scripts see it too
+         (writeShellScriptBin "claude-personal" ''
+           export CLAUDE_CONFIG_DIR="$HOME/.claude"
+           exec claude "$@"
+         '')
+
+         # Same idea for the work account profile: a real command, not just
+         # the bash alias below, so IDEs, launchers and scripts that invoke
+         # it directly still get the right account. Must be a DIFFERENT
+         # directory than the personal profile, otherwise /logout in one
+         # profile wipes the shared credentials of both.
+         (writeShellScriptBin "claude-work" ''
+           export CLAUDE_CONFIG_DIR="$HOME/.claude-work"
+           exec claude "$@"
+         '')
      ];
 
 
@@ -269,7 +287,8 @@
         enable = true;
         shellAliases = {
           claude = "CLAUDE_CONFIG_DIR=~/.claude claude";
-          claude-personal = "CLAUDE_CONFIG_DIR=~/.claude-personal claude";
+          claude-personal = "CLAUDE_CONFIG_DIR=~/.claude claude";
+          claude-work = "CLAUDE_CONFIG_DIR=~/.claude-work claude";
         };
         historyFile = "${config.home.homeDirectory}/.bash_history";
         historySize = 10000;
