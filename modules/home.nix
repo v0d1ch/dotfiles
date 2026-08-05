@@ -131,14 +131,12 @@
          aliases = {
            st = "status";
            ca = "commit --amend --no-edit";
-           bl = "branch -r --sort=-committerdate --format='%(HEAD)%(color:yellow)%(refname:short)|%(color:bold green)%(committerdate:relative)|%(color:blue)%(subject)|%(co
-lor:magenta)%(authorname)%(color:reset)' --color=always";
+           bl = "branch -r --sort=-committerdate --format='%(HEAD)%(color:yellow)%(refname:short)|%(color:bold green)%(committerdate:relative)|%(color:blue)%(subject)|%(color:magenta)%(authorname)%(color:reset)' --color=always";
            lol = "log --graph --decorate --oneline --abbrev-commit";
            lola = "log --graph --decorate --oneline --abbrev-commit --all";
            hist = "log --pretty=format:'%h %ad | %s%d [%an]' --graph --date=short";
            lg = "log --color --graph --pretty=format:'%Cred%h$Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --";
-           recent = "for-each-ref --sort=committerdate refs/heads/ --format='%(HEAD) %(color:yellow)%(refname:short)%(color:reset) - %(color:red)%(objectname:short)%(color
-:reset) - %(contents:subject) - %(authorname) (%(color:green)%(committerdate:relative)%(color:reset))'";
+           recent = "for-each-ref --sort=committerdate refs/heads/ --format='%(HEAD) %(color:yellow)%(refname:short)%(color:reset) - %(color:red)%(objectname:short)%(color:reset) - %(contents:subject) - %(authorname) (%(color:green)%(committerdate:relative)%(color:reset))'";
            work = "log --pretty=format:'%h%x09%an%x09%ad%x09%s'";
          };
          ignores = [ "TAGS" ];
