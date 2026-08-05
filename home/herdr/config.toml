@@ -238,7 +238,7 @@ next_tab = "prefix+l"
 
 # Accent color for highlights, borders, and navigation UI.
 # Accepts: hex (#89b4fa), named colors (cyan, blue, magenta), or rgb(r,g,b)
-# accent = "cyan"
+accent = "black"
 
 # Background notification popup delivery
 [ui.toast]
