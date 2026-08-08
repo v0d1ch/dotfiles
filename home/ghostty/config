@@ -1,0 +1,8 @@
+font-size = 13
+
+# Equivalent of kitty's copy_or_interrupt: copies when a selection exists,
+# otherwise the key passes through as a normal Ctrl+C interrupt
+keybind = performable:ctrl+c=copy_to_clipboard
+
+theme = TokyoNight
+window-theme = dark

@@ -2,7 +2,7 @@
 # Missing also shows onboarding; set false after you've chosen.
 # onboarding = true
 [theme]
-  name = "catppuccin-latte"
+  name = "tokyo-night"
   auto_switch = false
 
 # Built-in themes: catppuccin, terminal, tokyo-night, dracula, nord,
@@ -238,7 +238,9 @@ prompt_new_tab_name = false
 
 # Accent color for highlights, borders, and navigation UI.
 # Accepts: hex (#89b4fa), named colors (cyan, blue, magenta), or rgb(r,g,b)
-accent = "black"
+# Black accent was for the light catppuccin-latte theme; unreadable on
+# tokyo-night's dark background, so let the theme's own accent apply.
+# accent = "black"
 
 # Background notification popup delivery
 [ui.toast]

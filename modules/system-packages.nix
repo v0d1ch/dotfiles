@@ -65,8 +65,7 @@
       zellij
       magic-wormhole
 
-      kitty
-      ghostty
+      inputs.nixpkgs-unstable.legacyPackages.${system}.ghostty
       hyprland
       swww # for wallpapers
       xdg-desktop-portal-gtk

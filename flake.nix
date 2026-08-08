@@ -1,6 +1,9 @@
 {
   inputs = {
     unstable.url = "github:NixOS/nixpkgs/nixos-25.05";
+    # ghostty 1.1.3 in 25.05 is broken with GTK 4.18 (window doesn't resize,
+    # input coords map outside the grid); pull 1.2.x from real unstable
+    nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
     home-manager.url = "github:nix-community/home-manager/release-25.05";
     nixvim.url = "github:v0d1ch/nixvim";
     hyprland.url = "github:hyprwm/Hyprland";

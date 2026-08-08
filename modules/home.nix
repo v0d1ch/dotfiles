@@ -88,8 +88,7 @@
      };
 
      xdg.configFile = {
-       "kitty/kitty.conf".source = ../home/kitty/kitty.conf;
-       "kitty/current-theme.conf".source = ../home/kitty/current-theme.conf;
+       "ghostty/config".source = ../home/ghostty/config;
        "herdr/config.toml".source = ../home/herdr/config.toml;
      };
 
