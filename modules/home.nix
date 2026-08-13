@@ -94,6 +94,13 @@
        "ghostty/config".source = ../home/ghostty/config;
        "herdr/config.toml".source = ../home/herdr/config.toml;
        "hypr/hyprland.conf".source = ../home/hyprland.conf;
+       "waybar/config.jsonc".source = ../home/waybar/config.jsonc;
+       "waybar/style.css".source = ../home/waybar/style.css;
+       "waybar/power_menu.xml".source = ../home/waybar/power_menu.xml;
+       "waybar/mediaplayer.py" = {
+         source = ../home/waybar/mediaplayer.py;
+         executable = true;
+       };
      };
 
      programs.gpg = {
