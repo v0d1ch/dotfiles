@@ -79,7 +79,7 @@
 
   i18n.defaultLocale = "en_US.UTF-8";
 
-  services.xserver.desktopManager.gnome.enable = true;
+  services.desktopManager.gnome.enable = true;
   services.gnome.gnome-keyring.enable = true;
   services.displayManager.sddm.enable = true;
 
@@ -111,7 +111,7 @@
     fira-code-symbols
     dina-font
     open-sans
-    ubuntu_font_family
+    ubuntu-classic
     hasklig
     iosevka
     font-awesome
@@ -195,10 +195,10 @@
   programs.hyprland = {
     enable = true;
     xwayland.enable = true;
-    # set the flake package
-    package = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.hyprland;
-    # make sure to also set the portal package, so that they are in sync
-    portalPackage = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.xdg-desktop-portal-hyprland;
+    # Use nixpkgs' Hyprland (and its matching portal) so the compositor is
+    # built against the same mesa/libdrm/kernel as the rest of the system.
+    # The flake input pinned an old Hyprland whose bundled mesa couldn't
+    # create a GBM device on the newer kernel, so it aborted at startup.
   };
 
   environment.sessionVariables.NIXOS_OZONE_WL = "1";

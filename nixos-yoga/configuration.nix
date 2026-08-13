@@ -97,7 +97,7 @@
     };
   };
 
-  services.xserver.desktopManager.gnome.enable = true;
+  services.desktopManager.gnome.enable = true;
 
   # Enable the X11 windowing system.
   # Configure keymap in X11
@@ -141,7 +141,7 @@
   fonts.packages = with pkgs; [
     noto-fonts
     noto-fonts-cjk-sans
-    noto-fonts-emoji
+    noto-fonts-color-emoji
     liberation_ttf
     fira-code
     fira-code-symbols
@@ -176,10 +176,10 @@
   programs.hyprland = {
     enable = true;
     xwayland.enable = true;
-    # set the flake package
-    package = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.hyprland;
-    # make sure to also set the portal package, so that they are in sync
-    portalPackage = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.xdg-desktop-portal-hyprland;
+    # Use nixpkgs' Hyprland (and its matching portal) so the compositor is
+    # built against the same mesa/libdrm/kernel as the rest of the system.
+    # The flake input pinned an old Hyprland whose bundled mesa couldn't
+    # create a GBM device on the newer kernel, so it aborted at startup.
   };
 
   services.dbus.packages = [ pkgs.gcr ];
@@ -195,6 +195,9 @@
   virtualisation.docker.enable = true;
 
   environment.variables.EDITOR = "nvim";
+
+  # Match the desktop: run Electron/Chromium apps natively on Wayland.
+  environment.sessionVariables.NIXOS_OZONE_WL = "1";
 
   nix.settings.trusted-public-keys = [
     "hydra.iohk.io:f/Ea+s+dFdN+3Y/G+FDgSq+a5NEWhJGzdjvKNGv0/EQ="

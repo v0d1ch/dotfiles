@@ -2,11 +2,11 @@
 , fetchFromGitHub
 , bun
 , nodejs
+, node-gyp
 , python3
 , pkg-config
 , makeWrapper
 , sqlite
-, nodePackages
 , stdenv
 }:
 
@@ -49,14 +49,14 @@ let
 
     outputHashMode = "recursive";
     outputHashAlgo = "sha256";
-    outputHash = "sha256-xYGEng1I256V6j3IFA7yiJrwtEXnO873ZjSUaMNCFWU=";
+    outputHash = "sha256-1V/AU2Zy3FtsVXOZS+Csju0XJoyvT8U+LqHZN1BCM3g=";
   };
 
 in stdenv.mkDerivation {
   pname = "qmd";
   inherit version src;
 
-  nativeBuildInputs = [ makeWrapper nodejs python3 pkg-config nodePackages.node-gyp ];
+  nativeBuildInputs = [ makeWrapper nodejs node-gyp python3 pkg-config ];
   buildInputs = [ sqlite ];
 
   buildPhase = ''

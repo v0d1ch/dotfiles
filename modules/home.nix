@@ -3,65 +3,68 @@
 {
    home.stateVersion = "24.11";
      home.packages = with pkgs; [
-         firefox
-         libreoffice
-         virtualbox
-         caffeine-ng
-         kazam
-         vokoscreen
-         xscreensaver
-         trayer
-         arandr
-         xclip
-         zip
-         unzip
-         jq
-         lsof
-         qbittorrent
-         nicotine-plus
-         keepassxc
-         openvpn
-         docker
-         docker-compose
-         xmobar
-         ripgrep
-         fd
-         lorri
-         xsel
-         htop
-         dmenu
-         haskellPackages.yeganesh
-         haskellPackages.Agda
-         eva
-         rustup
-         alacritty
-         speechd
-         btop
-         lsix
-         simplescreenrecorder
-         feh
-         copyq
-         meld
-         cachix
-         eog
-         gnome-terminal
-         clementine
-         flameshot
-         fx
-         dunst
-         thefuck
+         # --- Desktop applications ---
+         firefox        # browser
+         libreoffice    # office suite
+         keepassxc      # password manager
+         qbittorrent    # torrent client
+         nicotine-plus  # Soulseek client
+         clementine     # music player
+         gnome-terminal # fallback terminal
+         virtualbox     # VMs (kernel modules would need virtualisation.virtualbox.host.enable)
+         caffeine-ng    # keep the screen awake
+
+         # --- Screen capture ---
+         simplescreenrecorder # screen recorder
+         kazam                # screen recorder
+         vokoscreen-ng        # screen recorder
+         flameshot            # screenshots + annotation (X11)
+
+         # --- Images ---
+         feh  # image viewer / wallpaper setter
+         eog  # GNOME image viewer
+         lsix # image thumbnails in the terminal (sixel)
+
+         # --- X11 desktop utilities ---
+         xscreensaver             # screen saver/locker
+         trayer                   # X11 system tray (stalonetray service below is the other one)
+         arandr                   # GUI for xrandr display layout
+         xclip                    # X11 clipboard CLI (tmux copy-mode pipes into it)
+         xsel                     # X11 clipboard CLI
+         dmenu                    # X11 launcher
+         haskellPackages.yeganesh # dmenu wrapper that sorts by usage
+         copyq                    # clipboard history manager
+
+         # --- CLI utilities ---
+         zip     # create zip archives
+         unzip   # extract zip archives
+         jq      # JSON processor
+         fx      # interactive JSON viewer
+         lsof    # list open files/ports
+         ripgrep # fast grep (rg)
+         fd      # fast find
+         htop    # process monitor
+         btop    # fancier process monitor
+         eva     # calculator REPL
+         speechd # speech-dispatcher text-to-speech daemon
+
+         # --- Development ---
+         docker-compose       # compose v2 (docker itself comes from virtualisation.docker in machine configs)
+         meld                 # visual diff/merge
+         cachix               # Nix binary cache client
+         rustup               # Rust toolchain manager
+         nodejs_22            # Node.js
+         haskellPackages.Agda # Agda proof assistant
+         blesh                # ble.sh — bash autosuggestions/highlighting
+
+         # --- Network ---
+         openvpn # OpenVPN client
 
          # Yubico's official tools
          yubikey-manager
          yubikey-personalization
-         yubikey-personalization-gui
          yubico-piv-tool
-         # yubioath-desktop
-         # yubioath-flutter
-         #  (haskell-language-server.override { supportedGhcVersions = [ "8107" ]; })
-         protonvpn-gui
-         blesh
-         nodejs_22
+         yubioath-flutter
 
          # Claude Code with the personal account profile (default ~/.claude);
          # a real command (not just the bash alias below) so IDEs, launchers
@@ -90,6 +93,7 @@
      xdg.configFile = {
        "ghostty/config".source = ../home/ghostty/config;
        "herdr/config.toml".source = ../home/herdr/config.toml;
+       "hypr/hyprland.conf".source = ../home/hyprland.conf;
      };
 
      programs.gpg = {
@@ -145,27 +149,29 @@
 
      programs.git = {
          enable = true;
-         aliases = {
-           st = "status";
-           ca = "commit --amend --no-edit";
-           bl = "branch -r --sort=-committerdate --format='%(HEAD)%(color:yellow)%(refname:short)|%(color:bold green)%(committerdate:relative)|%(color:blue)%(subject)|%(color:magenta)%(authorname)%(color:reset)' --color=always";
-           lol = "log --graph --decorate --oneline --abbrev-commit";
-           lola = "log --graph --decorate --oneline --abbrev-commit --all";
-           hist = "log --pretty=format:'%h %ad | %s%d [%an]' --graph --date=short";
-           lg = "log --color --graph --pretty=format:'%Cred%h$Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --";
-           recent = "for-each-ref --sort=committerdate refs/heads/ --format='%(HEAD) %(color:yellow)%(refname:short)%(color:reset) - %(color:red)%(objectname:short)%(color:reset) - %(contents:subject) - %(authorname) (%(color:green)%(committerdate:relative)%(color:reset))'";
-           work = "log --pretty=format:'%h%x09%an%x09%ad%x09%s'";
-         };
          ignores = [ "TAGS" ];
-         # userEmail = "sasa.bogicevic@pm.me";
-         userEmail = "sasha.bogicevic@iohk.io";
-         userName = "Sasha Bogicevic";
          signing = {
            signByDefault = true;
            # key = "8FE67EA9460B6F07";
            key = "BEBC851F2E49B6B6";
          };
-         extraConfig = {
+         settings = {
+           user = {
+             # email = "sasa.bogicevic@pm.me";
+             email = "sasha.bogicevic@iohk.io";
+             name = "Sasha Bogicevic";
+           };
+           alias = {
+             st = "status";
+             ca = "commit --amend --no-edit";
+             bl = "branch -r --sort=-committerdate --format='%(HEAD)%(color:yellow)%(refname:short)|%(color:bold green)%(committerdate:relative)|%(color:blue)%(subject)|%(color:magenta)%(authorname)%(color:reset)' --color=always";
+             lol = "log --graph --decorate --oneline --abbrev-commit";
+             lola = "log --graph --decorate --oneline --abbrev-commit --all";
+             hist = "log --pretty=format:'%h %ad | %s%d [%an]' --graph --date=short";
+             lg = "log --color --graph --pretty=format:'%Cred%h$Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --";
+             recent = "for-each-ref --sort=committerdate refs/heads/ --format='%(HEAD) %(color:yellow)%(refname:short)%(color:reset) - %(color:red)%(objectname:short)%(color:reset) - %(contents:subject) - %(authorname) (%(color:green)%(committerdate:relative)%(color:reset))'";
+             work = "log --pretty=format:'%h%x09%an%x09%ad%x09%s'";
+           };
            core = {
              editor = "nvim";
            };
