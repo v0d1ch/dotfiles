@@ -155,6 +155,7 @@
   services.keybase.enable = true; 
   services.tailscale.enable = true; 
   networking.firewall.checkReversePath = "loose";
+  networking.firewall.trustedInterfaces = [ "tailscale0" ];
   # services.tailscale.useRoutingFeatures = "server";
 
   # services.openssh.ports = [ 22 443 62495];
