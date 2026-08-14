@@ -17,6 +17,8 @@
       # --- Version control & dev tools ---
       lazygit       # git TUI
       jujutsu       # jj, git-compatible VCS
+      # hunk is not in 26.05 yet; pull the terminal diff viewer from real unstable
+      inputs.nixpkgs-unstable.legacyPackages.${pkgs.stdenv.hostPlatform.system}.hunk
       dbeaver-bin   # database GUI client
       ollama        # run LLMs locally
       nvd           # diff nix closures/generations
