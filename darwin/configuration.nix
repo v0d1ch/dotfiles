@@ -3,6 +3,9 @@
 {
   imports = [
     inputs.home-manager.darwinModules.home-manager
+    # Makes nix-installed GUI apps (environment.systemPackages) visible to
+    # Spotlight/Launchpad via trampolines instead of symlinks
+    inputs.mac-app-util.darwinModules.default
   ];
 
   # Apple Silicon; use "x86_64-darwin" on an Intel Mac.
@@ -23,6 +26,11 @@
   home-manager.backupFileExtension = "hm-backup";
   home-manager.useGlobalPkgs = true;
   home-manager.extraSpecialArgs = { inherit inputs; };
+  # Same trampoline treatment for apps installed via home.packages
+  # (keepassxc, ghostty, obsidian, ...), which is where most GUI apps live
+  home-manager.sharedModules = [
+    inputs.mac-app-util.homeManagerModules.default
+  ];
   home-manager.users.v0d1ch = { ... }: {
     imports = [ inputs.self.modules.homeManager.v0d1ch ];
   };

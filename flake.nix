@@ -7,6 +7,9 @@
       url = "github:nix-darwin/nix-darwin/nix-darwin-26.05";
       inputs.nixpkgs.follows = "unstable";
     };
+    # Trampoline launchers for nix-installed .app bundles so Spotlight,
+    # Launchpad and the Dock see them (plain symlinks are not indexed)
+    mac-app-util.url = "github:hraban/mac-app-util";
     nixvim.url = "github:v0d1ch/nixvim";
     waybar.url = "github:Alexays/Waybar/master";
     herdr.url = "github:ogulcancelik/herdr/v0.8.0";
