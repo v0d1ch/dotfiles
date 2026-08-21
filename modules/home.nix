@@ -1,41 +1,39 @@
-{ flake.modules.homeManager.v0d1ch = { config, pkgs, lib, inputs, ... }: 
+{ flake.modules.homeManager.v0d1ch = { config, pkgs, lib, inputs, ... }:
 
+let
+  system = pkgs.stdenv.hostPlatform.system;
+  inherit (pkgs.stdenv) isLinux isDarwin;
+in
 {
    home.stateVersion = "24.11";
+     # Everything in the first list works on both Linux and macOS. Apps whose
+     # nixpkgs build is Linux-only sit behind the isLinux guard below — on the
+     # MacBook the GUI ones come from Homebrew casks instead
+     # (see darwin/configuration.nix).
      home.packages = with pkgs; [
+         # --- Editors & IDEs ---
+         neovide       # GUI frontend for Neovim
+         vim           # classic vi, always-available fallback
+         vscode        # Visual Studio Code
+
+         # --- Version control & dev tools ---
+         lazygit       # git TUI
+         jujutsu       # jj, git-compatible VCS
+         dbeaver-bin   # database GUI client
+         ollama        # run LLMs locally
+         nvd           # diff nix closures/generations
+
          # --- Desktop applications ---
-         firefox        # browser
-         libreoffice    # office suite
          keepassxc      # password manager
          qbittorrent    # torrent client
-         nicotine-plus  # Soulseek client
-         clementine     # music player
-         gnome-terminal # fallback terminal
-         virtualbox     # VMs (kernel modules would need virtualisation.virtualbox.host.enable)
-         caffeine-ng    # keep the screen awake
-
-         # --- Screen capture ---
-         simplescreenrecorder # screen recorder
-         kazam                # screen recorder
-         vokoscreen-ng        # screen recorder
-         flameshot            # screenshots + annotation (X11)
-
-         # --- Images ---
-         feh  # image viewer / wallpaper setter
-         eog  # GNOME image viewer
-         lsix # image thumbnails in the terminal (sixel)
-
-         # --- X11 desktop utilities ---
-         xscreensaver             # screen saver/locker
-         trayer                   # X11 system tray (stalonetray service below is the other one)
-         arandr                   # GUI for xrandr display layout
-         xclip                    # X11 clipboard CLI (tmux copy-mode pipes into it)
-         xsel                     # X11 clipboard CLI
-         dmenu                    # X11 launcher
-         haskellPackages.yeganesh # dmenu wrapper that sorts by usage
-         copyq                    # clipboard history manager
+         obsidian       # note-taking
+         discord
 
          # --- CLI utilities ---
+         bc      # arbitrary-precision calculator
+         sad     # interactive search & replace (sed alternative)
+         lnav    # log file navigator
+         wget    # HTTP downloader
          zip     # create zip archives
          unzip   # extract zip archives
          jq      # JSON processor
@@ -46,25 +44,39 @@
          htop    # process monitor
          btop    # fancier process monitor
          eva     # calculator REPL
-         speechd # speech-dispatcher text-to-speech daemon
+         lsix    # image thumbnails in the terminal (sixel)
+
+         # --- Communication ---
+         irssi   # IRC client
+
+         # --- Network ---
+         rclone         # sync files with cloud storage
+         magic-wormhole # send files machine-to-machine with codes
+         nmap           # port scanner
+         wireshark      # packet capture & analysis
+         openvpn        # OpenVPN client
+
+         # --- Security & hardware keys ---
+         pinentry-curses # terminal pinentry, used by gpg-agent
+         yubikey-manager
+         yubikey-personalization
+         yubico-piv-tool
+
+         # --- Audio / media ---
+         sox            # audio recording/processing CLI
+         openai-whisper # speech-to-text (Python version)
+
+         # --- Documents & writing ---
+         multimarkdown                # markdown converter
+         texlive.combined.scheme-full # complete TeX Live
 
          # --- Development ---
-         docker-compose       # compose v2 (docker itself comes from virtualisation.docker in machine configs)
-         meld                 # visual diff/merge
+         docker-compose       # engine: virtualisation.docker on NixOS, Docker Desktop/colima on macOS
          cachix               # Nix binary cache client
          rustup               # Rust toolchain manager
          nodejs_22            # Node.js
          haskellPackages.Agda # Agda proof assistant
          blesh                # ble.sh — bash autosuggestions/highlighting
-
-         # --- Network ---
-         openvpn # OpenVPN client
-
-         # Yubico's official tools
-         yubikey-manager
-         yubikey-personalization
-         yubico-piv-tool
-         yubioath-flutter
 
          # Claude Code with the personal account profile (default ~/.claude);
          # a real command (not just the bash alias below) so IDEs, launchers
@@ -83,16 +95,93 @@
            export CLAUDE_CONFIG_DIR="$HOME/.claude-work"
            exec claude "$@"
          '')
+     ]
+     # ghostty 1.1.3 in 26.05 is broken with GTK 4.18 on Linux, pull 1.2.x from
+     # real unstable; on macOS nixpkgs only ships the upstream binary (ghostty-bin)
+     ++ [ (if isDarwin
+           then pkgs.ghostty-bin
+           else inputs.nixpkgs-unstable.legacyPackages.${system}.ghostty) ]
+     # Flake-input packages: only include them on platforms the flake actually
+     # builds for, so a macOS eval doesn't die if an input has no darwin output
+     ++ lib.optionals (inputs.nixvim ? packages && inputs.nixvim.packages ? ${system})
+        [ inputs.nixvim.packages.${system}.default ] # my Neovim distribution (github:v0d1ch/nixvim)
+     # github:v0d1ch/nixvim doesn't build for darwin (yet) — fall back to plain
+     # neovim there so `nvim` / EDITOR still work; drop this once the nixvim
+     # flake adds darwin to its systems
+     ++ lib.optionals (!(inputs.nixvim ? packages && inputs.nixvim.packages ? ${system}))
+        [ pkgs.neovim ]
+     ++ lib.optionals (inputs.herdr ? packages && inputs.herdr.packages ? ${system})
+        [ inputs.herdr.packages.${system}.default ]  # tabbed terminal session manager
+     ++ lib.optionals isLinux [
+         # hunk is not in 26.05 yet; pull the terminal diff viewer from real unstable
+         # (darwin build unverified, keep it Linux-only for now)
+         inputs.nixpkgs-unstable.legacyPackages.${system}.hunk
+         # local search over markdown notes — the FOD dependency hash is
+         # platform-specific (bun fetches native packages), so Linux-only
+         (pkgs.callPackage ../packages/qmd.nix {})
+
+         # --- Browsers (macOS: homebrew casks firefox / google-chrome / brave-browser) ---
+         firefox
+         google-chrome
+         brave
+
+         # --- Desktop applications ---
+         libreoffice    # office suite (macOS: cask libreoffice)
+         signal-desktop # (macOS: cask signal)
+         viber          # (macOS: cask viber)
+         karere         # WhatsApp client (GTK)
+         vlc            # media player (macOS: cask vlc)
+         gnomecast      # cast video to Chromecast
+         nicotine-plus  # Soulseek client
+         clementine     # music player
+         gnome-terminal # fallback terminal
+         virtualbox     # VMs (kernel modules would need virtualisation.virtualbox.host.enable)
+         caffeine-ng    # keep the screen awake (macOS: built-in `caffeinate`)
+         trezor-suite   # Trezor hardware wallet app (macOS: cask trezor-suite)
+         orca-slicer    # 3D printer slicer (macOS: cask orcaslicer)
+         meld           # visual diff/merge
+
+         # --- Network / VPN ---
+         proton-vpn     # ProtonVPN GUI (macOS: cask protonvpn)
+         proton-vpn-cli # ProtonVPN CLI
+         ettercap       # network sniffing/MITM toolkit
+
+         # --- Security & hardware keys ---
+         yubioath-flutter # (macOS: cask yubico-authenticator)
+
+         # --- Screen capture (macOS: built-in Cmd-Shift-5) ---
+         simplescreenrecorder
+         kazam
+         vokoscreen-ng
+         flameshot # screenshots + annotation (X11)
+
+         # --- Images ---
+         feh  # image viewer / wallpaper setter
+         eog  # GNOME image viewer
+
+         # --- X11 desktop utilities ---
+         xscreensaver             # screen saver/locker
+         trayer                   # X11 system tray (stalonetray service below is the other one)
+         arandr                   # GUI for xrandr display layout
+         xclip                    # X11 clipboard CLI (tmux copy-mode pipes into it)
+         xsel                     # X11 clipboard CLI
+         dmenu                    # X11 launcher
+         haskellPackages.yeganesh # dmenu wrapper that sorts by usage
+         copyq                    # clipboard history manager
+
+         # --- Misc ---
+         speechd # speech-dispatcher text-to-speech daemon
      ];
 
 
-     services.lorri = {
+     services.lorri = lib.mkIf isLinux {
       enable = true;
      };
 
      xdg.configFile = {
        "ghostty/config".source = ../home/ghostty/config;
        "herdr/config.toml".source = ../home/herdr/config.toml;
+     } // lib.optionalAttrs isLinux {
        "hypr/hyprland.conf".source = ../home/hyprland.conf;
        "waybar/config.jsonc".source = ../home/waybar/config.jsonc;
        "waybar/style.css".source = ../home/waybar/style.css;
@@ -113,7 +202,10 @@
        };
      };
 
-     services.gpg-agent = {
+     # The home-manager gpg-agent service is systemd-only. On macOS gpg-agent
+     # is auto-started on demand by gpg, so a plain config file with the same
+     # settings is all that's needed.
+     services.gpg-agent = lib.mkIf isLinux {
        enable = true;
        # SSH keys are served by plain ssh-agent (below), not gpg-agent: the
        # SSH agent protocol cannot tell gpg-agent which TTY to prompt on, so
@@ -126,11 +218,20 @@
        '';
      };
 
-     services.ssh-agent = {
+     home.file.".gnupg/gpg-agent.conf" = lib.mkIf isDarwin {
+       text = ''
+         allow-loopback-pinentry
+         default-cache-ttl 1800
+         pinentry-program ${pkgs.pinentry-curses}/bin/pinentry-curses
+       '';
+     };
+
+     # macOS runs its own ssh-agent via launchd
+     services.ssh-agent = lib.mkIf isLinux {
        enable = true;
      };
 
-     services.dunst = {
+     services.dunst = lib.mkIf isLinux {
        enable = true;
        iconTheme = {
          name = "Adwaita";
@@ -261,7 +362,7 @@
           bind-key -T copy-mode-vi 'v' send -X begin-selection
           bind-key -T copy-mode-vi 'C-v' send -X rectangle-toggle
           #bind-key -T copy-mode-vi 'y' send -X copy-pipe
-          bind-key -T copy-mode-vi 'y' send -X copy-pipe 'xclip -in -selection clipboard'
+          bind-key -T copy-mode-vi 'y' send -X copy-pipe '${if isDarwin then "pbcopy" else "xclip -in -selection clipboard"}'
           bind-key -T copy-mode-vi 'Space' send -X halfpage-down
           bind-key -T copy-mode-vi 'Bspace' send -X halfpage-up
           bind-key -Tcopy-mode-vi 'Escape' send -X cancel
@@ -278,7 +379,7 @@
      };
 
 
-     services.stalonetray = {
+     services.stalonetray = lib.mkIf isLinux {
         enable = true;
         config = {
          geometry = "5x1-900+0";
@@ -292,7 +393,7 @@
      };
 
      programs.waybar = {
-        enable = true;
+        enable = isLinux;
      };
 
      programs.bash = {

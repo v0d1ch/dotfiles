@@ -1,13 +1,51 @@
 # dotfiles
 
-NixOS flake managing two machines: `nixos` (desktop) and `nixos-yoga` (laptop).
+Nix flake managing three machines: `nixos` (desktop), `nixos-yoga` (laptop)
+and `macbook` (macOS via nix-darwin).
 
 ## Building
 
 ```bash
 sudo nixos-rebuild switch --flake .#nixos          # desktop
 sudo nixos-rebuild switch --flake .#nixos-yoga     # laptop
+sudo darwin-rebuild switch --flake .#macbook       # macbook
 ```
+
+## Setting up a new MacBook
+
+1. Install Nix: https://nixos.org/download (if you use the Determinate
+   installer instead, uncomment `nix.enable = false;` in
+   `darwin/configuration.nix`).
+2. Install Homebrew (https://brew.sh) — a handful of GUI apps that are
+   Linux-only in nixpkgs (browsers, VLC, LibreOffice, Signal, Viber,
+   ProtonVPN, Trezor Suite, OrcaSlicer, Yubico Authenticator) come from
+   casks. Or set `homebrew.enable = false;` in `darwin/configuration.nix`
+   to skip them.
+3. Clone this repo and bootstrap nix-darwin:
+
+```bash
+git clone <this repo> ~/code/dotfiles && cd ~/code/dotfiles
+sudo nix run nix-darwin/nix-darwin-26.05 -- switch --flake .#macbook
+# every rebuild after the first one:
+sudo darwin-rebuild switch --flake .#macbook
+```
+
+Assumptions baked into `darwin/configuration.nix` — adjust there if needed:
+- Apple Silicon (`nixpkgs.hostPlatform = "aarch64-darwin"`; use
+  `x86_64-darwin` on Intel)
+- macOS account named `v0d1ch` with home `/Users/v0d1ch`
+
+macOS notes:
+- All cross-platform apps and CLI tools come from `modules/home.nix`, same
+  as on the NixOS machines. Linux-only ones are behind an `isLinux` guard
+  there, each annotated with its Homebrew cask replacement where one exists.
+- `github:v0d1ch/nixvim` doesn't build for darwin yet, so the mac gets plain
+  `neovim` as a fallback until that flake adds `aarch64-darwin` to its
+  systems.
+- The default macOS shell is zsh; the bash config from home-manager applies
+  when bash runs (point ghostty at bash or `chsh` if you want it as login
+  shell).
+- `docker-compose` is installed but needs an engine: Docker Desktop or colima.
 
 ## Where to change things
 
@@ -20,9 +58,9 @@ commit/push so the other machine can pick it up with `git pull` + rebuild.
 | kitty config          | `home/kitty/kitty.conf`          | `~/.config/kitty/kitty.conf`          |
 | kitty theme           | `home/kitty/current-theme.conf`  | `~/.config/kitty/current-theme.conf`  |
 | herdr config          | `home/herdr/config.toml`         | `~/.config/herdr/config.toml`         |
-| system packages       | `modules/system-packages.nix`    | both machines                         |
-| home-manager programs/services (git, tmux, bash, gpg…) | `modules/home.nix` | both machines |
-| machine-specific bits | `nixos/configuration.nix` or `nixos-yoga/configuration.nix` | that machine only |
+| Linux-only system packages | `modules/system-packages.nix` | both NixOS machines              |
+| apps + home-manager programs/services (git, tmux, bash, gpg…) | `modules/home.nix` | all machines (macOS included) |
+| machine-specific bits | `nixos/configuration.nix`, `nixos-yoga/configuration.nix` or `darwin/configuration.nix` | that machine only |
 
 The symlink wiring lives in `modules/home.nix` under `xdg.configFile` — add new
 config files there following the same pattern.

@@ -3,6 +3,10 @@
     unstable.url = "github:NixOS/nixpkgs/nixos-26.05";
     nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
     home-manager.url = "github:nix-community/home-manager/release-26.05";
+    nix-darwin = {
+      url = "github:nix-darwin/nix-darwin/nix-darwin-26.05";
+      inputs.nixpkgs.follows = "unstable";
+    };
     nixvim.url = "github:v0d1ch/nixvim";
     waybar.url = "github:Alexays/Waybar/master";
     herdr.url = "github:ogulcancelik/herdr/v0.8.0";
@@ -11,7 +15,7 @@
     nix-openclaw.url = "github:openclaw/nix-openclaw";
   };
   outputs = inputs: inputs.flake-parts.lib.mkFlake {inherit inputs;} {
-    systems = ["x86_64-linux"];
+    systems = ["x86_64-linux" "aarch64-darwin"];
     # this gives us access to the flake-parts modules so we can import them
     imports = [
        inputs.flake-parts.flakeModules.modules
@@ -31,10 +35,18 @@
       nixos-yoga = inputs.unstable.lib.nixosSystem {
         system = "x86_64-linux";
         specialArgs = {inherit inputs;};
-        modules = [ 
-                ./nixos-yoga/configuration.nix 
-                ./nixos-yoga/hardware-configuration.nix 
+        modules = [
+                ./nixos-yoga/configuration.nix
+                ./nixos-yoga/hardware-configuration.nix
                 ];
+      };
+    };
+    flake.darwinConfigurations = {
+      # MacBook (Apple Silicon). For an Intel Mac change
+      # nixpkgs.hostPlatform in darwin/configuration.nix.
+      macbook = inputs.nix-darwin.lib.darwinSystem {
+        specialArgs = {inherit inputs;};
+        modules = [ ./darwin/configuration.nix ];
       };
     };
   };

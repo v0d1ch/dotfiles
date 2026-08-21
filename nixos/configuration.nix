@@ -8,6 +8,11 @@
     ];
 
   home-manager.backupFileExtension = "hm-backup";
+  # home.nix references flake inputs (nixvim, ghostty, herdr, hunk) and unfree
+  # packages, so pass the inputs through and reuse the system nixpkgs (which
+  # already has allowUnfree)
+  home-manager.useGlobalPkgs = true;
+  home-manager.extraSpecialArgs = { inherit inputs; };
 
   home-manager.users.v0d1ch = { lib, pkgs, ... }: {
        imports = [inputs.self.modules.homeManager.v0d1ch];
