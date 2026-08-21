@@ -24,7 +24,6 @@ in
          nvd           # diff nix closures/generations
 
          # --- Desktop applications ---
-         keepassxc      # password manager
          qbittorrent    # torrent client
          obsidian       # note-taking
          discord
@@ -95,6 +94,22 @@ in
            export CLAUDE_CONFIG_DIR="$HOME/.claude-work"
            exec claude "$@"
          '')
+
+         # Sync the KeePassXC databases (*.kdbx) with Google Drive.
+         # Needs the rclone remote "google_drive" configured once per machine
+         # (rclone config, or copy ~/.config/rclone/rclone.conf over wormhole).
+         # --update in both directions: an older copy never overwrites a newer
+         # one. See README "KeePass database sync".
+         (writeShellScriptBin "keepass-sync" ''
+           REMOTE="''${KEEPASS_REMOTE:-google_drive:}"
+           LOCAL="''${KEEPASS_DIR:-$HOME/Documents/google-drive-local}"
+           case "$1" in
+             pull)   exec ${rclone}/bin/rclone copy --update -v --include "*.kdbx" "$REMOTE" "$LOCAL" ;;
+             push)   exec ${rclone}/bin/rclone copy --update -v --include "*.kdbx" "$LOCAL" "$REMOTE" ;;
+             status) exec ${rclone}/bin/rclone check --include "*.kdbx" "$LOCAL" "$REMOTE" ;;
+             *) echo "usage: keepass-sync pull|push|status" >&2; exit 1 ;;
+           esac
+         '')
      ]
      # ghostty 1.1.3 in 26.05 is broken with GTK 4.18 on Linux, pull 1.2.x from
      # real unstable; on macOS nixpkgs only ships the upstream binary (ghostty-bin)
@@ -126,6 +141,10 @@ in
          brave
 
          # --- Desktop applications ---
+         # nixpkgs builds keepassxc without YubiKey support on darwin
+         # (withKeePassYubiKey defaults to isLinux), so macOS uses the
+         # official build via cask keepassxc instead
+         keepassxc      # password manager
          libreoffice    # office suite (macOS: cask libreoffice)
          signal-desktop # (macOS: cask signal)
          viber          # (macOS: cask viber)

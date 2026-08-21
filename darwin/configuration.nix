@@ -51,6 +51,7 @@
   homebrew = {
     enable = true;
     casks = [
+      "keepassxc"   # official build; the nixpkgs darwin build lacks YubiKey support
       "firefox"
       "google-chrome"
       "brave-browser"

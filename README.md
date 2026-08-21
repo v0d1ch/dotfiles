@@ -86,6 +86,41 @@ git commit -am "..." && git push
 git pull && sudo nixos-rebuild switch --flake .#nixos-yoga
 ```
 
+## KeePass database sync
+
+The KeePassXC databases (`*.kdbx`) live in the root of Google Drive and are
+mirrored locally in `~/Documents/google-drive-local/`. The live database is
+`keesharexc-sync.kdbx` (the `*.kdbx` copies directly in `~/Documents` are
+stale 2022 leftovers).
+
+`keepass-sync` (defined in `modules/home.nix`, available on every machine):
+
+```bash
+keepass-sync pull     # Drive -> ~/Documents/google-drive-local
+keepass-sync push     # ~/Documents/google-drive-local -> Drive
+keepass-sync status   # compare local vs Drive
+```
+
+Both directions use `rclone copy --update`, so an older copy never
+overwrites a newer one. Still: don't edit the database on two machines at
+once — KeePassXC can't merge diverged copies. Pull before editing, push
+after.
+
+One-time setup on a new machine: the script needs the rclone remote named
+`google_drive`. Either run `rclone config` (new remote -> name it
+`google_drive` -> type `drive`), or copy the existing config from another
+machine:
+
+```bash
+# old machine
+wormhole send ~/.config/rclone/rclone.conf
+# new machine
+mkdir -p ~/.config/rclone && cd ~/.config/rclone && wormhole receive
+```
+
+Then `keepass-sync pull` and open
+`~/Documents/google-drive-local/keesharexc-sync.kdbx` in KeePassXC.
+
 ## Gotchas
 
 - Flakes only see **git-tracked** files — `git add` any new file before rebuilding.
