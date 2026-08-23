@@ -2,7 +2,7 @@
 # Missing also shows onboarding; set false after you've chosen.
 # onboarding = true
 [theme]
-  name = "tokyo-night"
+  name = "catppuccin"
   auto_switch = false
 
 # Built-in themes: catppuccin, terminal, tokyo-night, dracula, nord,
@@ -16,13 +16,27 @@
 # dark_name = "catppuccin"
 # light_name = "catppuccin-latte"
 
-# Override individual color tokens on top of the base theme.
-# Accepts: hex (#rrggbb), named colors, rgb(r,g,b), or panel_bg = "reset"
-# [theme.custom]
-# panel_bg = "reset"
-# accent = "#f5c2e7"
-# red = "#ff6188"
-# green = "#a6e3a1"
+# No built-in "github" theme ships with Herdr, so this recolors the
+# catppuccin base with GitHub Dark Default's actual palette (matches
+# github.com's dark theme, and the ghostty/nixvim themes set alongside
+# this file) via full token overrides.
+[theme.custom]
+panel_bg = "#0d1117"     # canvas.default
+surface0 = "#161b22"     # canvas.subtle
+surface1 = "#21262d"     # canvas.overlay / hover
+surface_dim = "#010409"  # canvas.inset (darkest)
+overlay0 = "#30363d"     # border.default
+overlay1 = "#6e7681"     # border.muted / fg.subtle
+text = "#e6edf3"         # fg.default
+subtext0 = "#8b949e"     # fg.muted
+accent = "#58a6ff"       # accent.fg
+blue = "#58a6ff"         # accent.fg
+mauve = "#bc8cff"        # done.fg
+green = "#3fb950"        # success.fg
+yellow = "#d29922"       # attention.fg
+red = "#f85149"          # danger.fg
+teal = "#39c5cf"         # open.fg
+peach = "#f0883e"        # severe.fg
 
 [terminal]
 # Executable used for new interactive panes.
@@ -238,9 +252,9 @@ prompt_new_tab_name = false
 
 # Accent color for highlights, borders, and navigation UI.
 # Accepts: hex (#89b4fa), named colors (cyan, blue, magenta), or rgb(r,g,b)
-# Black accent was for the light catppuccin-latte theme; unreadable on
-# tokyo-night's dark background, so let the theme's own accent apply.
-# accent = "black"
+# Monochrome (white) tab/nav highlight instead of the GitHub Dark theme's
+# blue accent — black would be invisible against the dark background.
+accent = "white"
 
 # Background notification popup delivery
 [ui.toast]

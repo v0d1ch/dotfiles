@@ -4,5 +4,5 @@ font-size = 13
 # otherwise the key passes through as a normal Ctrl+C interrupt
 keybind = performable:ctrl+c=copy_to_clipboard
 
-theme = TokyoNight
+theme = GitHub Dark Default
 window-theme = dark
