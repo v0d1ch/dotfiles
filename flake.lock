@@ -573,11 +573,11 @@
         "tree-sitter-haskell": "tree-sitter-haskell"
       },
       "locked": {
-        "lastModified": 1787320831,
-        "narHash": "sha256-x5lNwg7PFAD9osEJq/+sjIodji0SeQSmnzA72N+Y3I0=",
+        "lastModified": 1787479615,
+        "narHash": "sha256-uKvdVNHv3wEb8baWW2DU39O61cKgyjPXmfqEsIWK/kQ=",
         "owner": "v0d1ch",
         "repo": "nixvim",
-        "rev": "abc795726f3307cc3210d08031e8b49bf777a6be",
+        "rev": "b3ddf70dbbb6481c43748d29c239ec03da8c1681",
         "type": "github"
       },
       "original": {
