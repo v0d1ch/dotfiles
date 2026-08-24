@@ -16,27 +16,28 @@
 # dark_name = "catppuccin"
 # light_name = "catppuccin-latte"
 
-# No built-in "github" theme ships with Herdr, so this recolors the
-# catppuccin base with GitHub Dark Default's actual palette (matches
-# github.com's dark theme, and the ghostty/nixvim themes set alongside
-# this file) via full token overrides.
+# No built-in "paper" theme ships with Herdr, so this recolors the
+# catppuccin base with a light "Paper" palette (matches the ghostty/nixvim
+# themes set alongside this file, background pinned to the current macOS
+# desktop wallpaper color: rgb 190 191 196 / #bebfc4) via full token
+# overrides.
 [theme.custom]
-panel_bg = "#0d1117"     # canvas.default
-surface0 = "#161b22"     # canvas.subtle
-surface1 = "#21262d"     # canvas.overlay / hover
-surface_dim = "#010409"  # canvas.inset (darkest)
-overlay0 = "#30363d"     # border.default
-overlay1 = "#6e7681"     # border.muted / fg.subtle
-text = "#e6edf3"         # fg.default
-subtext0 = "#8b949e"     # fg.muted
-accent = "#58a6ff"       # accent.fg
-blue = "#58a6ff"         # accent.fg
-mauve = "#bc8cff"        # done.fg
-green = "#3fb950"        # success.fg
-yellow = "#d29922"       # attention.fg
-red = "#f85149"          # danger.fg
-teal = "#39c5cf"         # open.fg
-peach = "#f0883e"        # severe.fg
+panel_bg = "#bebfc4"     # canvas.default (= wallpaper)
+surface0 = "#b3b4b9"     # canvas.subtle
+surface1 = "#a6a7ac"     # canvas.overlay / hover
+surface_dim = "#97989e"  # canvas.inset (darkest)
+overlay0 = "#8b8c92"     # border.default
+overlay1 = "#6e6f76"     # border.muted / fg.subtle
+text = "#202125"         # fg.default (ink)
+subtext0 = "#55565c"     # fg.muted
+accent = "#35618a"       # accent.fg
+blue = "#35618a"         # accent.fg
+mauve = "#7a4b7a"        # done.fg
+green = "#4b7a3d"        # success.fg
+yellow = "#8a6d1f"       # attention.fg
+red = "#a6353b"          # danger.fg
+teal = "#2e7a79"         # open.fg
+peach = "#9c5a2e"        # severe.fg
 
 [terminal]
 # Executable used for new interactive panes.
@@ -252,9 +253,9 @@ prompt_new_tab_name = false
 
 # Accent color for highlights, borders, and navigation UI.
 # Accepts: hex (#89b4fa), named colors (cyan, blue, magenta), or rgb(r,g,b)
-# Monochrome (white) tab/nav highlight instead of the GitHub Dark theme's
-# blue accent — black would be invisible against the dark background.
-accent = "white"
+# Monochrome (ink) tab/nav highlight to match the Paper theme's light
+# background — white would be invisible against it.
+accent = "#202125"
 
 # Background notification popup delivery
 [ui.toast]

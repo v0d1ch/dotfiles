@@ -199,6 +199,7 @@ in
 
      xdg.configFile = {
        "ghostty/config".source = ../home/ghostty/config;
+       "ghostty/themes/Paper".source = ../home/ghostty/themes/Paper;
        "herdr/config.toml".source = ../home/herdr/config.toml;
      } // lib.optionalAttrs isLinux {
        "hypr/hyprland.conf".source = ../home/hyprland.conf;

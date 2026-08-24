@@ -4,5 +4,7 @@ font-size = 13
 # otherwise the key passes through as a normal Ctrl+C interrupt
 keybind = performable:ctrl+c=copy_to_clipboard
 
-theme = GitHub Dark Default
-window-theme = dark
+# Paper: custom light theme in themes/Paper, background matched to the
+# current macOS desktop wallpaper color (rgb 190 191 196 / #bebfc4).
+theme = Paper
+window-theme = light
