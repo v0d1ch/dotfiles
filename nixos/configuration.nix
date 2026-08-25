@@ -157,10 +157,17 @@
   # Enable touchpad support (enabled default in most desktopManager).
   services.libinput.enable = true;
 
-  services.keybase.enable = true; 
-  services.tailscale.enable = true; 
+  services.keybase.enable = true;
+  services.tailscale.enable = true;
   networking.firewall.checkReversePath = "loose";
   networking.firewall.trustedInterfaces = [ "tailscale0" ];
+
+  # This machine doubles as a server reached over tailscale: never let
+  # GNOME/logind suspend it, or it drops off the tailnet until woken locally.
+  systemd.targets.sleep.enable = false;
+  systemd.targets.suspend.enable = false;
+  systemd.targets.hibernate.enable = false;
+  systemd.targets.hybrid-sleep.enable = false;
   # services.tailscale.useRoutingFeatures = "server";
 
   # services.openssh.ports = [ 22 443 62495];
