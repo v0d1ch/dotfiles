@@ -17,6 +17,7 @@ in
          vscode        # Visual Studio Code
 
          # --- Version control & dev tools ---
+         gh            # GitHub CLI
          lazygit       # git TUI
          jujutsu       # jj, git-compatible VCS
          dbeaver-bin   # database GUI client
