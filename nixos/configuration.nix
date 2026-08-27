@@ -170,6 +170,44 @@
   systemd.targets.hybrid-sleep.enable = false;
   # services.tailscale.useRoutingFeatures = "server";
 
+  # File sync between machines (this desktop is the always-on hub; the
+  # macbook runs syncthing via home-manager in darwin/configuration.nix).
+  # Devices and folders are paired once in the GUI at http://127.0.0.1:8384;
+  # manual steps in docs/sync-setup.md.
+  services.syncthing = {
+    enable = true;
+    user = "v0d1ch";
+    group = "users";
+    dataDir = "/home/v0d1ch";   # default folder root, so the share lands at ~/Sync
+    openDefaultPorts = true;    # LAN sync at home; tailscale0 is already trusted
+  };
+
+  # WebDAV view of the synced folder so Strongbox on the iPhone can open the
+  # password database. Bound to localhost and exposed only through
+  # `tailscale serve` (valid HTTPS cert, reachable from the tailnet only).
+  # Credentials are NOT in the repo: Sasha creates /etc/webdav/env
+  # (root-owned, chmod 0600) with:
+  #   WEBDAV_USERNAME=...
+  #   WEBDAV_PASSWORD=...
+  services.webdav = {
+    enable = true;
+    user = "v0d1ch";
+    group = "users";
+    environmentFile = "/etc/webdav/env";
+    settings = {
+      address = "127.0.0.1";
+      port = 6065;
+      directory = "/home/v0d1ch/Sync";
+      permissions = "CRUD";
+      users = [
+        {
+          username = "{env}WEBDAV_USERNAME";
+          password = "{env}WEBDAV_PASSWORD";
+        }
+      ];
+    };
+  };
+
   # services.openssh.ports = [ 22 443 62495];
   users.users.v0d1ch = {
     isNormalUser = true;

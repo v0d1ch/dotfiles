@@ -39,6 +39,11 @@
     # on the physical token and isn't present on this machine. nixos and
     # nixos-yoga are untouched — they still use the shared module's key.
     programs.git.signing.key = lib.mkForce "C574785FF89B8E25";
+
+    # File sync with the desktop, which runs syncthing as a NixOS system
+    # service. Runs here as a launchd agent (starts at login). Pair the
+    # devices once in the GUI at http://127.0.0.1:8384; see docs/sync-setup.md.
+    services.syncthing.enable = true;
   };
 
   fonts.packages = with pkgs; [
