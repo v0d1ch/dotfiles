@@ -24,7 +24,9 @@ sudo darwin-rebuild switch --flake .#macbook   # macbook
 
 ```sh
 sudo mkdir -p /etc/webdav
-sudo sh -c 'umask 077; $EDITOR /etc/webdav/env'
+sudo touch /etc/webdav/env
+sudo chmod 600 /etc/webdav/env   # lock down BEFORE writing the secret
+sudo -e /etc/webdav/env
 # contents:
 #   WEBDAV_USERNAME=<pick one>
 #   WEBDAV_PASSWORD=<long random>

@@ -181,6 +181,10 @@
     dataDir = "/home/v0d1ch";   # default folder root, so the share lands at ~/Sync
     openDefaultPorts = true;    # LAN sync at home; tailscale0 is already trusted
   };
+  # The module hardens the unit with PrivateUsers=true, which breaks syncing
+  # folders under /home (uid mapping in the user namespace makes mkdir fail
+  # with "operation not supported"). Our data lives in ~/Sync, so relax it.
+  systemd.services.syncthing.serviceConfig.PrivateUsers = lib.mkForce false;
 
   # WebDAV view of the synced folder so Strongbox on the iPhone can open the
   # password database. Bound to localhost and exposed only through
