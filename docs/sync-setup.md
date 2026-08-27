@@ -1,89 +1,61 @@
-# File sync + iPhone vault access (Syncthing + Tailscale HTTPS)
+# File sync + vault access on all devices (Syncthing mesh)
 
-What the nix config provides (added 27.8.2026):
+Final state (working since 27.8.2026): one Syncthing folder (`tatty-ysvfv`)
+synced peer-to-peer between three devices over Tailscale/LAN. No always-on
+server required: any two awake devices sync directly.
 
-- `nixos/configuration.nix`: Syncthing as a system service on the desktop
-  (always-on hub, starts at boot, shares root `~/Sync`), plus a WebDAV
-  server (hacdias/webdav) over `~/Sync` on `127.0.0.1:6065`.
-- `darwin/configuration.nix`: Syncthing as a launchd agent on the macbook.
+- Desktop `nixos`: Syncthing as a NixOS system service (starts at boot),
+  folder at `/home/v0d1ch/Sync`. Config in `nixos/configuration.nix`.
+- MacBook: Syncthing as a home-manager launchd agent (starts at login),
+  folder at `/Users/v0d1ch/Sync`. Config in `darwin/configuration.nix`.
+- iPhone: third-party Syncthing client (Mobius Sync / Synctrain) holds a
+  full local copy; Strongbox opens the database from it via the Files app.
 
-The WebDAV server exists only for Strongbox on the iPhone. It is never
-exposed publicly: `tailscale serve` fronts it with a real Let's Encrypt
-certificate, reachable from the tailnet only.
+The password database is `keesharexc-sync.kdbx` at the folder root. Both
+KeePassXC instances open it from `~/Sync`; Strongbox references it in
+place from the sync app's Files location.
 
-## One-time manual steps
+## Hard-won gotchas (do not rediscover)
 
-### 1. Rebuild
+- NixOS module hardening sets `PrivateUsers=true`, which breaks folders
+  under `/home` ("mkdir ...: operation not supported"). Overridden with
+  `lib.mkForce false` in `nixos/configuration.nix`.
+- On macOS the folder path must be `/Users/...`; `/home` is a reserved
+  autofs mount ("operation not supported"). A folder's path cannot be
+  edited after creation: remove the folder entry and re-add it (same
+  folder ID) with the right path. Removing never deletes files.
+- Strongbox on iOS: use "Add Existing" -> Files -> the sync app's folder,
+  so the file is opened IN PLACE. If the database is imported/copied,
+  storage shows "Local Device" and edits silently go to a private copy
+  that never syncs. Properties must name the sync app as storage.
+- iOS never syncs in the background reliably: open the sync app after
+  saving on the phone and before expecting fresh data on it.
+- Syncthing conflicts are file-level: a `*.sync-conflict*` kdbx is not an
+  error to delete but a copy to merge (KeePassXC: Database -> Merge From
+  Database). Staggered file versioning is enabled on the folder.
 
-```sh
-sudo nixos-rebuild switch --flake .#nixos      # desktop
-sudo darwin-rebuild switch --flake .#macbook   # macbook
-```
+## WebDAV (retired 27.8.2026)
 
-### 2. WebDAV credentials (desktop, Sasha only)
-
-```sh
-sudo mkdir -p /etc/webdav
-sudo touch /etc/webdav/env
-sudo chmod 600 /etc/webdav/env   # lock down BEFORE writing the secret
-sudo -e /etc/webdav/env
-# contents:
-#   WEBDAV_USERNAME=<pick one>
-#   WEBDAV_PASSWORD=<long random>
-sudo systemctl restart webdav
-```
-
-### 3. Tailscale HTTPS (once per tailnet)
-
-In the admin console (https://login.tailscale.com/admin/dns): enable
-MagicDNS and HTTPS Certificates. Then on the desktop:
-
-```sh
-sudo tailscale serve --bg 6065
-tailscale serve status        # shows the https URL, port 443
-tailscale status --json | jq -r '.Self.DNSName'   # the exact hostname
-```
-
-The serve config persists across reboots. Undo with
-`sudo tailscale serve reset`.
-
-### 4. Pair Syncthing devices
-
-On each machine open http://127.0.0.1:8384. Actions -> Show ID on one,
-Add Remote Device on the other (over the tailnet both directions work),
-confirm on both sides. Share the desktop's `Default Folder` (`~/Sync`)
-with the macbook and accept it there as `/Users/v0d1ch/Sync`.
-
-Recommended on both: folder -> Edit -> File Versioning -> Staggered,
-so a bad save of the vault never destroys history.
-
-### 5. Move the password database in
-
-On ONE machine only (let Syncthing propagate it):
+An interim `services.webdav` + `tailscale serve` setup gave Strongbox
+WebDAV access before the phone became a Syncthing peer. The nix config
+is removed; finish on the desktop with:
 
 ```sh
-mkdir -p ~/Sync/vault
-mv <current location>/Passwords.kdbx ~/Sync/vault/
+sudo tailscale serve reset
+sudo nixos-rebuild switch --flake .#nixos
+sudo rm -r /etc/webdav
 ```
 
-Re-point KeePassXC on both machines to the new path. Once confident,
-retire the daily rsync and delete the Google Drive copy of the vault.
+## Remaining cleanup
 
-### 6. Strongbox on the iPhone
-
-Tailscale VPN on. Strongbox -> add database -> WebDAV:
-
-- URL: `https://<desktop-dns-name>/` (from step 3; `~/Sync` is the root,
-  so the database is under `/vault/`)
-- Username/password: the values from `/etc/webdav/env`
-
-Strongbox keeps a local cache, so the vault stays readable offline; it
-syncs writes back over WebDAV when the desktop is reachable.
-
-## Notes
-
-- The yoga laptop can join the mesh by copying the `services.syncthing`
-  block from `nixos/configuration.nix` (drop the webdav part).
-- iPhone as a full Syncthing peer instead of WebDAV: install Mobius Sync
-  or Synctrain and share the folder with it; the WebDAV route was chosen
-  because Strongbox syncs itself and needs no extra app.
+- Move plaintext secrets OUT of `~/Sync` and into the database as notes/
+  attachments: `Backup-codes-*.txt`, `discord_backup_codes.txt`,
+  `proton_recovery_codes.txt`, `proton_recovery_phrase.txt`. They
+  currently sync in plaintext to every device.
+- Delete stale artifacts in `~/Sync`: `Passwords.kdbx` (old 2022 vault,
+  verify first), zero-byte `keesharexc-sync.kdbx.??????` temp files.
+- Retire the daily rsync and delete the vault from Google Drive.
+- Optional: split the vault into its own small Syncthing folder so the
+  phone does not carry the entire ~100 MB of misc files.
+- Optional: add the yoga laptop as a fourth peer (copy the syncthing
+  block, including the PrivateUsers override).
