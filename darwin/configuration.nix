@@ -80,7 +80,7 @@
   # Tiling window manager. Alt is the main modifier since Cmd is reserved by
   # macOS and most apps. See https://nikitabobko.github.io/AeroSpace/guide
   services.aerospace = {
-    enable = true;
+    enable = false;
     settings = {
       gaps = {
         outer.left = 8;
