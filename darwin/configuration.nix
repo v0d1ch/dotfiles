@@ -155,6 +155,14 @@
     };
   };
 
+  # Auto-hidden Dock: appear immediately on edge hit, quick slide-in
+  # (macOS defaults are 0.5s for both, which feels sluggish)
+  system.defaults.dock = {
+    autohide = true;
+    autohide-delay = 0.0;
+    autohide-time-modifier = 0.3;
+  };
+
   environment.variables.EDITOR = "nvim";
 
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
