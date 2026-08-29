@@ -80,7 +80,7 @@
   # Tiling window manager. Alt is the main modifier since Cmd is reserved by
   # macOS and most apps. See https://nikitabobko.github.io/AeroSpace/guide
   services.aerospace = {
-    enable = false;
+    enable = true;
     settings = {
       gaps = {
         outer.left = 8;
@@ -94,6 +94,7 @@
       mode.main.binding = {
         alt-enter = "exec-and-forget open -a Ghostty";
         alt-q = "close";
+        alt-f = "fullscreen"; # maximize within aerospace, not macOS native fullscreen
         alt-slash = "layout tiles horizontal vertical";
         alt-comma = "layout accordion";
         alt-shift-space = "layout floating tiling";
