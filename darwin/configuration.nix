@@ -74,6 +74,8 @@
       "trezor-suite"
       "orcaslicer"
       "yubico-authenticator"
+      "jordanbaird-ice" # menu bar icon manager (https://github.com/jordanbaird/Ice)
+      "keepingyouawake" # menu bar toggle to prevent display sleep (caffeinate wrapper)
     ];
   };
 
