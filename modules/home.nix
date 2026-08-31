@@ -316,9 +316,18 @@ in
      programs.starship = {
        enable = true;
        enableFishIntegration = true;
+       enableZshIntegration = true;
+       presets = [ "gruvbox-rainbow" ];
        settings = {
          add_newline = true;
        };
+     };
+
+     programs.zsh = {
+       enable = true;
+       initContent = ''
+         export PATH="$HOME/.local/bin:$PATH"
+       '';
      };
 
      programs.direnv = {
