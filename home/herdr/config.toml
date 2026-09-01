@@ -18,26 +18,26 @@
 
 # No built-in "paper" theme ships with Herdr, so this recolors the
 # catppuccin base with a light "Paper" palette (matches the ghostty/nixvim
-# themes set alongside this file, background pinned to the current macOS
-# desktop wallpaper color: rgb 190 191 196 / #bebfc4) via full token
-# overrides.
+# themes set alongside this file): Kindle e-ink style — warm cream canvas
+# (#f0e9d8), sepia ink (#322e26), muted print-like accents — via full
+# token overrides.
 [theme.custom]
-panel_bg = "#bebfc4"     # canvas.default (= wallpaper)
-surface0 = "#b3b4b9"     # canvas.subtle
-surface1 = "#a6a7ac"     # canvas.overlay / hover
-surface_dim = "#97989e"  # canvas.inset (darkest)
-overlay0 = "#8b8c92"     # border.default
-overlay1 = "#6e6f76"     # border.muted / fg.subtle
-text = "#202125"         # fg.default (ink)
-subtext0 = "#55565c"     # fg.muted
-accent = "#35618a"       # accent.fg
-blue = "#35618a"         # accent.fg
-mauve = "#7a4b7a"        # done.fg
-green = "#4b7a3d"        # success.fg
-yellow = "#8a6d1f"       # attention.fg
-red = "#a6353b"          # danger.fg
-teal = "#2e7a79"         # open.fg
-peach = "#9c5a2e"        # severe.fg
+panel_bg = "#f0e9d8"     # canvas.default (cream paper)
+surface0 = "#e5dcc7"     # canvas.subtle
+surface1 = "#d8cdb4"     # canvas.overlay / hover
+surface_dim = "#c9bda2"  # canvas.inset (darkest)
+overlay0 = "#a89c80"     # border.default
+overlay1 = "#746c5c"     # border.muted / fg.subtle
+text = "#322e26"         # fg.default (sepia ink)
+subtext0 = "#5f5849"     # fg.muted
+accent = "#3a618c"       # accent.fg
+blue = "#3a618c"         # accent.fg
+mauve = "#7e4a72"        # done.fg
+green = "#2e6e44"        # success.fg
+yellow = "#85621c"       # attention.fg
+red = "#a03528"          # danger.fg
+teal = "#2e7370"         # open.fg
+peach = "#9c531f"        # severe.fg
 
 [terminal]
 # Executable used for new interactive panes.
@@ -253,9 +253,10 @@ prompt_new_tab_name = false
 
 # Accent color for highlights, borders, and navigation UI.
 # Accepts: hex (#89b4fa), named colors (cyan, blue, magenta), or rgb(r,g,b)
-# Monochrome (ink) tab/nav highlight to match the Paper theme's light
-# background — white would be invisible against it.
-accent = "#202125"
+# Golden amber tab/nav highlight, matched to the desktop wallpaper
+# (#e0a83c). If it reads too faint against the cream panel background,
+# use the deeper #c8860f instead (same hue, more contrast).
+accent = "#e0a83c"
 
 # Background notification popup delivery
 [ui.toast]

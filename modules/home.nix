@@ -128,6 +128,10 @@ in
         [ pkgs.neovim ]
      ++ lib.optionals (inputs.herdr ? packages && inputs.herdr.packages ? ${system})
         [ inputs.herdr.packages.${system}.default ]  # tabbed terminal session manager
+     ++ lib.optionals isDarwin [
+         yaak   # API client for REST/GraphQL/gRPC (move to shared list if wanted on Linux too)
+         shottr # screenshot app with OCR, annotation and scrolling capture (macOS-only)
+     ]
      ++ lib.optionals isLinux [
          # hunk is not in 26.05 yet; pull the terminal diff viewer from real unstable
          # (darwin build unverified, keep it Linux-only for now)

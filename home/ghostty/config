@@ -4,7 +4,8 @@ font-size = 13
 # otherwise the key passes through as a normal Ctrl+C interrupt
 keybind = performable:ctrl+c=copy_to_clipboard
 
-# Paper: custom light theme in themes/Paper, background matched to the
-# current macOS desktop wallpaper color (rgb 190 191 196 / #bebfc4).
+# Paper: custom light theme in themes/Paper, styled after Kindle e-ink —
+# warm cream background (#f0e9d8), sepia ink (#322e26), muted print-like
+# accents. Same palette as the herdr and nixvim "paper" themes.
 theme = Paper
 window-theme = light
