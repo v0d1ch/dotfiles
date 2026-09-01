@@ -1,0 +1,26 @@
+{
+  "manifest_version": 3,
+  "version": "1.0",
+  "name": "Paper (Kindle cream + amber)",
+  "description": "Warm paper theme matching the ghostty/herdr/nvim Paper palette: cream #f0e9d8, sepia ink #322e26, golden amber #e0a83c frame.",
+  "theme": {
+    "colors": {
+      "frame": [224, 168, 60],
+      "frame_inactive": [216, 205, 180],
+      "toolbar": [240, 233, 216],
+      "tab_text": [50, 46, 38],
+      "tab_background_text": [50, 46, 38],
+      "tab_background_text_inactive": [95, 88, 73],
+      "bookmark_text": [50, 46, 38],
+      "toolbar_button_icon": [50, 46, 38],
+      "omnibox_background": [250, 245, 233],
+      "omnibox_text": [50, 46, 38],
+      "ntp_background": [240, 233, 216],
+      "ntp_text": [50, 46, 38],
+      "ntp_link": [58, 97, 140]
+    },
+    "properties": {
+      "ntp_logo_alternate": 1
+    }
+  }
+}
