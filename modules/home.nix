@@ -25,9 +25,10 @@ in
          nvd           # diff nix closures/generations
 
          # --- Desktop applications ---
-         qbittorrent    # torrent client
-         obsidian       # note-taking
+         qbittorrent        # torrent client
+         obsidian           # note-taking
          discord
+         protonmail-desktop # official Proton Mail app
 
          # --- CLI utilities ---
          bc      # arbitrary-precision calculator
