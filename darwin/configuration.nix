@@ -69,6 +69,7 @@
       "vlc"
       "libreoffice"
       "signal"
+      "slack"       # desktop app instead of a Brave tab; nixpkgs builds it for darwin too, but the cask self-updates
       "viber"
       "protonvpn"
       "trezor-suite"
