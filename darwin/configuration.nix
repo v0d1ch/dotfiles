@@ -76,6 +76,7 @@
       "orcaslicer"
       "yubico-authenticator"
       "keepingyouawake" # menu bar toggle to prevent display sleep (caffeinate wrapper)
+      "vorssaint"   # menu bar toolkit: keep-awake, system monitor, volume mixer (arm64, macOS >= 14)
     ];
   };
 
