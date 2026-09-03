@@ -97,6 +97,7 @@
         alt-enter = "exec-and-forget open -a Ghostty";
         alt-q = "close";
         alt-f = "fullscreen"; # maximize within aerospace, not macOS native fullscreen
+        alt-m = "macos-native-minimize";
         alt-slash = "layout tiles horizontal vertical";
         alt-comma = "layout accordion";
         alt-shift-space = "layout floating tiling";
