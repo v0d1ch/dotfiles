@@ -207,6 +207,8 @@ in
        "ghostty/config".source = ../home/ghostty/config;
        "ghostty/themes/Paper".source = ../home/ghostty/themes/Paper;
        "herdr/config.toml".source = ../home/herdr/config.toml;
+       # Custom notification chimes referenced by [ui.sound] in config.toml
+       "herdr/sounds".source = ../home/herdr/sounds;
      } // lib.optionalAttrs isLinux {
        "hypr/hyprland.conf".source = ../home/hyprland.conf;
        "waybar/config.jsonc".source = ../home/waybar/config.jsonc;
