@@ -138,6 +138,13 @@ in
     # Msty Studio and Enchanted GUIs below. The ollama CLI itself comes from
     # modules/home.nix; on darwin it uses Metal acceleration out of the box.
     # Usage: `ollama pull llama3.2` then point the GUI at the default URL.
+    #
+    # Stays on loopback (the macOS firewall is off, so 0.0.0.0 would expose it
+    # to any Wi-Fi). It is published to the tailnet instead with the App Store
+    # Tailscale client, whose serve config persists across reboots; run once:
+    #   /Applications/Tailscale.app/Contents/MacOS/Tailscale serve --bg --tcp 11434 tcp://localhost:11434
+    # Then the phone reaches it as http://sashas-macbook-air.<tailnet>.ts.net:11434.
+    # See docs/ollama-tailscale.md.
     services.ollama.enable = true;
 
     home.file.".aerospace.toml".source =

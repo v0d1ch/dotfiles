@@ -162,6 +162,23 @@
   networking.firewall.checkReversePath = "loose";
   networking.firewall.trustedInterfaces = [ "tailscale0" ];
 
+  # Local LLM server on the AMD GPU, shared over the tailnet: reachable from
+  # the phone (Enchanted), the macbook and the yoga as
+  # http://nixos.<tailnet>.ts.net:11434 via MagicDNS. Binds all interfaces,
+  # but the firewall only admits loopback and tailscale0 (trusted above), so
+  # the LAN never sees it.
+  # The macbook runs its own ollama (darwin/configuration.nix) for offline use.
+  services.ollama = {
+    enable = true;
+    package = pkgs.ollama-rocm;
+    host = "0.0.0.0";
+    # If the GPU is not officially supported by ROCm (most consumer RDNA2/3
+    # cards), uncomment and set to the closest supported gfx version, e.g.
+    # "10.3.0" for RX 6xxx or "11.0.0" for RX 7xxx. Check `journalctl -u ollama`
+    # for "no compatible GPUs" if it falls back to CPU.
+    # rocmOverrideGfx = "11.0.0";
+  };
+
   # This machine doubles as a server reached over tailscale: never let
   # GNOME/logind suspend it, or it drops off the tailnet until woken locally.
   systemd.targets.sleep.enable = false;
