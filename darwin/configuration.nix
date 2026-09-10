@@ -134,6 +134,12 @@ in
     # devices once in the GUI at http://127.0.0.1:8384; see docs/sync-setup.md.
     services.syncthing.enable = true;
 
+    # Local LLM server (launchd agent, listens on 127.0.0.1:11434) for the
+    # Msty Studio and Enchanted GUIs below. The ollama CLI itself comes from
+    # modules/home.nix; on darwin it uses Metal acceleration out of the box.
+    # Usage: `ollama pull llama3.2` then point the GUI at the default URL.
+    services.ollama.enable = true;
+
     home.file.".aerospace.toml".source =
       (pkgs.formats.toml { }).generate "aerospace.toml" aerospaceSettings;
   };
@@ -156,6 +162,9 @@ in
     taps = [
       "nikitabobko/tap" # aerospace
     ];
+    brews = [
+      "mas" # Mac App Store CLI, needed for masApps below; declared so cleanup doesn't remove it after each rebuild
+    ];
     casks = [
       "nikitabobko/tap/aerospace" # tiling WM; cask for a stable path so the Accessibility grant survives updates (see aerospaceSettings above)
       "keepassxc"   # official build; the nixpkgs darwin build lacks YubiKey support
@@ -173,7 +182,13 @@ in
       "yubico-authenticator"
       "keepingyouawake" # menu bar toggle to prevent display sleep (caffeinate wrapper)
       "vorssaint"   # menu bar toolkit: keep-awake, system monitor, volume mixer (arm64, macOS >= 14)
+      "mstystudio"  # Msty Studio: chat GUI for local (ollama) and online models; the older "msty" cask is discontinued
     ];
+    # Mac App Store apps (installed via `mas`, which nix-darwin adds when this
+    # is non-empty). Requires being signed in to the App Store beforehand.
+    masApps = {
+      "Enchanted" = 6474268307; # native macOS/iOS chat client for ollama
+    };
   };
 
   # Auto-hidden Dock: appear immediately on edge hit, quick slide-in
