@@ -120,7 +120,7 @@ in
   home-manager.sharedModules = [
     inputs.mac-app-util.homeManagerModules.default
   ];
-  home-manager.users.v0d1ch = { lib, ... }: {
+  home-manager.users.v0d1ch = { lib, config, ... }: {
     imports = [ inputs.self.modules.homeManager.v0d1ch ];
 
     # macOS-only: sign with a local software key instead of the YubiKey-backed
@@ -146,6 +146,38 @@ in
     # Then the phone reaches it as http://sashas-macbook-air.<tailnet>.ts.net:11434.
     # See docs/ollama-tailscale.md.
     services.ollama.enable = true;
+
+    # reMarkable 2 -> Obsidian. The tablet pushes its raw document store over
+    # Syncthing (send-only there, receive-only here) into ~/reMarkable/raw;
+    # this agent turns it into real folders/PDFs/notes under
+    # ~/Sync/obsidian/reMarkable every 5 min and transcribes handwriting
+    # with the local ollama vision model. Python deps live in an unmanaged
+    # venv (rmc is not in nixpkgs); bootstrap once with
+    #   python3 -m venv ~/reMarkable/venv && ~/reMarkable/venv/bin/pip install rmc svglib reportlab pypdf pypdfium2
+    # Full setup in docs/remarkable-sync.md.
+    home.file.".local/bin/remarkable-to-obsidian" = {
+      source = ../home/remarkable/remarkable-to-obsidian.py;
+      executable = true;
+    };
+    launchd.agents.remarkable-to-obsidian = {
+      enable = true;
+      config = {
+        ProgramArguments = [
+          "${config.home.homeDirectory}/reMarkable/venv/bin/python"
+          "${config.home.homeDirectory}/.local/bin/remarkable-to-obsidian"
+        ];
+        StartInterval = 300;
+        RunAtLoad = true;
+        StandardOutPath = "${config.home.homeDirectory}/reMarkable/convert.log";
+        StandardErrorPath = "${config.home.homeDirectory}/reMarkable/convert.log";
+        EnvironmentVariables = {
+          PATH = "/usr/bin:/bin";
+          # Handwriting OCR only for notebooks in these tablet folders; the
+          # others (Sketch, Draw, ...) hold drawings and are just rendered.
+          REMARKABLE_OCR_FOLDERS = "Notes";
+        };
+      };
+    };
 
     home.file.".aerospace.toml".source =
       (pkgs.formats.toml { }).generate "aerospace.toml" aerospaceSettings;
