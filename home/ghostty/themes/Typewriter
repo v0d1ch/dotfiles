@@ -1,0 +1,30 @@
+# Typewriter: light theme matched to the Obsidian "Typewriter" community theme
+# (crashmoney, v2.3.3) in light mode. Canvas is its --background-primary
+# (#fcf5e4), text its neutral near-black (#262626, not sepia), sidebars and
+# code blocks its #e4dcc8 / #eee8d5, green accent (#459f58) for cursor and
+# links, light-blue selection (#cce6ff). ANSI colors are the theme's Monokai-
+# derived code palette (blue #6c99bb, purple #9e86c8, orange #e87d3e, yellow
+# #e5b567) darkened for contrast on cream; green is a dark emerald and yellow
+# leans ochre for red-green color vision (see nixvim colors/typewriter.lua).
+palette = 0=#262626
+palette = 1=#b83232
+palette = 2=#2f7a48
+palette = 3=#9a6b12
+palette = 4=#3d6d99
+palette = 5=#6e56a6
+palette = 6=#2b7d78
+palette = 7=#595959
+palette = 8=#7d7d7d
+palette = 9=#e63c3c
+palette = 10=#459f58
+palette = 11=#b8842a
+palette = 12=#6c99bb
+palette = 13=#8a70c0
+palette = 14=#3f9a94
+palette = 15=#fffcf2
+background = #fcf5e4
+foreground = #262626
+cursor-color = #459f58
+cursor-text = #fcf5e4
+selection-background = #cce6ff
+selection-foreground = #262626

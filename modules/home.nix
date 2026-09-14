@@ -206,6 +206,7 @@ in
      xdg.configFile = {
        "ghostty/config".source = ../home/ghostty/config;
        "ghostty/themes/Paper".source = ../home/ghostty/themes/Paper;
+       "ghostty/themes/Typewriter".source = ../home/ghostty/themes/Typewriter;
        "herdr/config.toml".source = ../home/herdr/config.toml;
        # Custom notification chimes referenced by [ui.sound] in config.toml
        "herdr/sounds".source = ../home/herdr/sounds;

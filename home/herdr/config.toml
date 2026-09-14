@@ -16,28 +16,48 @@
 # dark_name = "catppuccin"
 # light_name = "catppuccin-latte"
 
-# No built-in "paper" theme ships with Herdr, so this recolors the
-# catppuccin base with a light "Paper" palette (matches the ghostty/nixvim
-# themes set alongside this file): Kindle e-ink style — warm cream canvas
-# (#f0e9d8), sepia ink (#322e26), muted print-like accents — via full
-# token overrides.
+# No built-in "typewriter" theme ships with Herdr, so this recolors the
+# catppuccin base with a light palette matched to the Obsidian "Typewriter"
+# theme (matches the ghostty/nixvim themes set alongside this file): cream
+# canvas (#fcf5e4), neutral near-black ink (#262626), green accent (#459f58),
+# code-block and sidebar tones (#eee8d5 / #e4dcc8) — via full token overrides.
 [theme.custom]
-panel_bg = "#f0e9d8"     # canvas.default (cream paper)
-surface0 = "#e5dcc7"     # canvas.subtle
-surface1 = "#d8cdb4"     # canvas.overlay / hover
-surface_dim = "#c9bda2"  # canvas.inset (darkest)
-overlay0 = "#a89c80"     # border.default
-overlay1 = "#746c5c"     # border.muted / fg.subtle
-text = "#322e26"         # fg.default (sepia ink)
-subtext0 = "#5f5849"     # fg.muted
-accent = "#3a618c"       # accent.fg
-blue = "#3a618c"         # accent.fg
-mauve = "#7e4a72"        # done.fg
-green = "#2e6e44"        # success.fg
-yellow = "#85621c"       # attention.fg
-red = "#a03528"          # danger.fg
-teal = "#2e7370"         # open.fg
-peach = "#9c531f"        # severe.fg
+panel_bg = "#fcf5e4"     # canvas.default (--background-primary)
+surface0 = "#eee8d5"     # canvas.subtle (--code-background)
+surface1 = "#e4dcc8"     # canvas.overlay / hover (--background-secondary)
+surface_dim = "#d6cdb5"  # canvas.inset (darkest)
+overlay0 = "#c2c2c2"     # border.default (--background-modifier-border-focus)
+overlay1 = "#7d7d7d"     # border.muted / fg.subtle
+text = "#262626"         # fg.default (--text-normal)
+subtext0 = "#595959"     # fg.muted (--text-muted)
+accent = "#459f58"       # accent.fg (Typewriter green accent)
+blue = "#3d6d99"         # info (Typewriter code blue, darkened)
+mauve = "#6e56a6"        # done.fg (Typewriter purple, darkened)
+green = "#2f7a48"        # success.fg (dark emerald, red-green safe)
+yellow = "#9a6b12"       # attention.fg (ochre)
+red = "#b83232"          # danger.fg
+teal = "#2b7d78"         # open.fg
+peach = "#c25a20"        # severe.fg (Typewriter orange, darkened)
+
+# Previous palette — "Paper" (Kindle e-ink: cream #f0e9d8, sepia ink #322e26).
+# Swap the block above for this one to go back.
+# [theme.custom]
+# panel_bg = "#f0e9d8"
+# surface0 = "#e5dcc7"
+# surface1 = "#d8cdb4"
+# surface_dim = "#c9bda2"
+# overlay0 = "#a89c80"
+# overlay1 = "#746c5c"
+# text = "#322e26"
+# subtext0 = "#5f5849"
+# accent = "#3a618c"
+# blue = "#3a618c"
+# mauve = "#7e4a72"
+# green = "#2e6e44"
+# yellow = "#85621c"
+# red = "#a03528"
+# teal = "#2e7370"
+# peach = "#9c531f"
 
 [terminal]
 # Executable used for new interactive panes.
