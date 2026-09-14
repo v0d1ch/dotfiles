@@ -69,6 +69,14 @@ tablet /home/root/.local/share/remarkable/xochitl   (Syncthing, send-only)
   modified, pages; tags `remarkable`, `remarkable/<type>`) that embeds the
   PDF. Notebooks are rendered to PDF page by page; PDFs and EPUBs are copied
   through. Pen annotations on PDFs are **not** overlaid (noted in the .md).
+- Tablet tags follow the vault convention: one empty note per tag in
+  `Tags/`, referenced from notes with a `tags: [[name]] [[other]]` line under
+  the title. Document tags go on that line; page tags get a `## Page tags`
+  list (PDF/EPUB) or a `tags:` line under the page heading (notebooks).
+  Missing tag notes are created on every run, matching existing ones
+  case-insensitively (tablet `hydra` -> existing `Tags/Hydra.md`). Tags with
+  spaces (`to read`) are fine since they are wikilinks, not `#tags`.
+  Override the folder with `REMARKABLE_TAGS_DIR`.
 - Documents moved to the tablet's trash or deleted disappear from the vault
   on the next run. Renames/moves on the tablet are followed.
 - `.gitignore` in the vault excludes `reMarkable/**/*.pdf|epub`: Syncthing

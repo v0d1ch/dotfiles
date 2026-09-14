@@ -12,10 +12,14 @@ Output: ~/Sync/obsidian/reMarkable/<tablet folders>/<Name>.pdf + <Name>.md
   handwriting transcription per page from a local ollama vision model, cached
   by the page's content hash so re-runs only OCR new/changed pages.
 - Documents deleted on the tablet are removed from the vault on the next run.
+- Tablet tags (document and page tags) become `tags: [[name]]` wikilinks in the
+  note, following the vault convention of one empty note per tag in Tags/;
+  missing tag notes are created (matching existing ones case-insensitively).
 
 Runs from the venv at ~/reMarkable/venv (rmc, svglib, reportlab, pypdf,
 pypdfium2). Env: REMARKABLE_RAW, REMARKABLE_OUT, REMARKABLE_OCR_MODEL,
-OLLAMA_URL, REMARKABLE_OCR_FOLDERS (default "Notes"). Flags: --no-ocr, --force, --only SUBSTR, -v.
+OLLAMA_URL, REMARKABLE_OCR_FOLDERS (default "Notes"), REMARKABLE_TAGS_DIR
+(default <vault>/Tags). Flags: --no-ocr, --force, --only SUBSTR, -v.
 """
 import argparse, base64, hashlib, io, json, os, re, shutil, subprocess, sys, time, urllib.request, urllib.error
 from datetime import datetime, timezone
@@ -24,6 +28,7 @@ from pathlib import Path
 HOME = Path.home()
 RAW = Path(os.environ.get("REMARKABLE_RAW", HOME / "reMarkable/raw"))
 OUT = Path(os.environ.get("REMARKABLE_OUT", HOME / "Sync/obsidian/reMarkable"))
+TAGS_DIR = Path(os.environ.get("REMARKABLE_TAGS_DIR", OUT.parent / "Tags"))
 CACHE = HOME / "reMarkable/cache"
 STATE = CACHE / "state.json"
 LOCK = CACHE / "run.lock"
@@ -212,6 +217,48 @@ def cached_transcript(rm: Path, pdf_bytes: bytes, allow_ocr: bool):
     cf.write_text(text)
     return text, True
 
+# ---------- tags ----------
+class TagNotes:
+    """The vault keeps one (empty) note per tag in Tags/ and notes link to them
+    with [[name]]. Reuse an existing note whatever its case, else create it."""
+    def __init__(self, folder: Path):
+        self.folder = folder
+        self.existing = {p.stem.lower(): p.stem for p in folder.glob("*.md")} if folder.is_dir() else {}
+        self.created = 0
+
+    def resolve(self, name: str) -> str:
+        stem = sanitize(name)
+        hit = self.existing.get(stem.lower())
+        if hit:
+            return hit
+        self.folder.mkdir(parents=True, exist_ok=True)
+        (self.folder / f"{stem}.md").touch()
+        self.existing[stem.lower()] = stem
+        self.created += 1
+        log(f"  created tag note {self.folder.name}/{stem}.md")
+        return stem
+
+def doc_tags(content, ids, resolve):
+    """(document tags, {1-based page number: [tags]}) of a document, deduplicated
+    and mapped to the vault's tag note names."""
+    def uniq(names):
+        out = []
+        for n in names:
+            r = resolve(n)
+            if r not in out:
+                out.append(r)
+        return out
+    tags = uniq(t["name"] for t in content.get("tags", []) if t.get("name", "").strip())
+    pos = {pid: i for i, pid in enumerate(ids, 1)}
+    by_page = {}
+    for t in content.get("pageTags", []):
+        if t.get("name", "").strip() and t.get("pageId") in pos:
+            by_page.setdefault(pos[t["pageId"]], []).append(t["name"])
+    return tags, {n: uniq(v) for n, v in sorted(by_page.items())}
+
+def tag_links(names) -> str:
+    return " ".join(f"[[{n}]]" for n in names)
+
 # ---------- notes ----------
 def ms_to_iso(ms):
     try:
@@ -219,18 +266,27 @@ def ms_to_iso(ms):
     except Exception:
         return ""
 
-def write_note(md: Path, name, uuid, kind, meta, pages, embed_rel, transcripts, annotated_pages=0):
+def write_note(md: Path, name, uuid, kind, meta, pages, embed_rel, transcripts, annotated_pages=0,
+               tags=(), page_tags=None):
+    page_tags = page_tags or {}
     lines = ["---", "source: remarkable", f"remarkable_id: {uuid}", f"type: {kind}",
              f"modified: {ms_to_iso(meta.get('lastModified'))}", f"pages: {pages}",
              "tags:", "  - remarkable", f"  - remarkable/{kind}", "---", "", f"# {name}", ""]
+    if tags:
+        lines += [f"tags: {tag_links(tags)}", ""]
     if embed_rel:
         lines += [f"![[{embed_rel}]]", ""]
     if kind != "notebook" and annotated_pages:
         lines += [f"> {annotated_pages} page(s) carry pen annotations on the tablet; they are not rendered here.", ""]
+    if transcripts is None and page_tags:
+        lines += ["## Page tags", ""] + [f"- page {n}: {tag_links(t)}" for n, t in page_tags.items()] + [""]
     if transcripts is not None:
         lines += ["## Transcription", ""]
         for i, t in enumerate(transcripts, 1):
-            lines += [f"### Page {i}", "", (t if t is not None else "_(transcription pending)_"), ""]
+            lines += [f"### Page {i}", ""]
+            if i in page_tags:
+                lines += [f"tags: {tag_links(page_tags[i])}", ""]
+            lines += [(t if t is not None else "_(transcription pending)_"), ""]
     md.parent.mkdir(parents=True, exist_ok=True)
     md.write_text("\n".join(lines))
 
@@ -259,8 +315,9 @@ def run(args):
     state = load_json(STATE, {}) or {}
     meta = load_meta()
     tmp = CACHE / "tmp"; tmp.mkdir(exist_ok=True)
-    seen, stats = set(), {"rendered": 0, "copied": 0, "skipped": 0, "ocr": 0, "pending": 0, "errors": 0, "removed": 0}
+    seen, stats = set(), {"rendered": 0, "copied": 0, "skipped": 0, "ocr": 0, "pending": 0, "errors": 0, "removed": 0, "tag_notes_created": 0}
     ocr_ok = not args.no_ocr
+    tag_notes = TagNotes(TAGS_DIR)
     used_names = {}
 
     docs = [(u, m) for u, m in meta.items() if m.get("type") == "DocumentType"]
@@ -285,10 +342,15 @@ def run(args):
         pdf_out, md_out = dest / f"{stem}.pdf", dest / f"{stem}.md"
         seen.add(uuid)
 
+        # tag notes are (re)created on every run, even for up-to-date documents
+        all_tags = sorted({tag_notes.resolve(t["name"]) for t in content.get("tags", []) + content.get("pageTags", [])
+                           if t.get("name", "").strip()})
+
         prev = state.get(uuid, {})
         outputs_exist = all(Path(p).exists() for p in prev.get("outputs", []))
         up_to_date = (prev.get("lastModified") == m.get("lastModified") and outputs_exist
-                      and prev.get("stem") == stem and prev.get("folder") == str(folder))
+                      and prev.get("stem") == stem and prev.get("folder") == str(folder)
+                      and prev.get("tags", []) == all_tags)
         if up_to_date and (prev.get("ocr_done", True) or not ocr_ok) and not args.force:
             stats["skipped"] += 1
             continue
@@ -312,7 +374,9 @@ def run(args):
                 pages = content.get("pageCount") or len(page_ids(content))
                 annotated = sum(1 for pid in page_ids(content) if (RAW / uuid / f"{pid}.rm").exists())
                 embed = f"reMarkable/{folder}/{stem}.{kind}" if str(folder) != "." else f"reMarkable/{stem}.{kind}"
-                write_note(md_out, stem, uuid, kind, m, pages, embed if kind == "pdf" else None, None, annotated)
+                tags, page_tags = doc_tags(content, page_ids(content), tag_notes.resolve)
+                write_note(md_out, stem, uuid, kind, m, pages, embed if kind == "pdf" else None, None, annotated,
+                           tags=tags, page_tags=page_tags)
                 if kind == "epub":
                     md_out.write_text(md_out.read_text() + f"\n[[{embed}|Open EPUB]]\n")
                 outputs.append(str(md_out))
@@ -358,10 +422,11 @@ def run(args):
                 if pdf_out.exists():
                     outputs.append(str(pdf_out))
                 embed = (f"reMarkable/{folder}/{stem}.pdf" if str(folder) != "." else f"reMarkable/{stem}.pdf") if pages else None
-                write_note(md_out, stem, uuid, kind, m, pages, embed, transcripts)
+                tags, page_tags = doc_tags(content, ids, tag_notes.resolve)
+                write_note(md_out, stem, uuid, kind, m, pages, embed, transcripts, tags=tags, page_tags=page_tags)
                 outputs.append(str(md_out))
             state[uuid] = {"lastModified": m.get("lastModified"), "outputs": outputs, "stem": stem,
-                           "folder": str(folder), "ocr_done": ocr_done, "kind": kind}
+                           "folder": str(folder), "ocr_done": ocr_done, "kind": kind, "tags": all_tags}
             if args.verbose:
                 log(f"  {kind:8} {folder}/{stem}  pages={pages} ocr_done={ocr_done}")
         except Exception as e:
@@ -381,6 +446,7 @@ def run(args):
                 d.rmdir()
     json.dump(state, open(STATE, "w"), indent=1)
     shutil.rmtree(tmp, ignore_errors=True)
+    stats["tag_notes_created"] = tag_notes.created
     log("done", json.dumps(stats))
     return 0
 
