@@ -1,0 +1,212 @@
+From 269577721ff0cf3d89d7abaf1dcc03273e13a73b Mon Sep 17 00:00:00 2001
+From: Sasha Bogicevic <sasha.bogicevic@iohk.io>
+Date: Fri, 18 Sep 2026 14:04:55 +0200
+Subject: [PATCH] Build against the PrismML llama.cpp fork for Ternary Bonsai
+ (PQ2_0/PTQ1_0)
+
+- Pin LLAMA_CPP_VERSION to PrismML-Eng/llama.cpp tag prism-b10687-5d80cff and
+  fetch from that repository instead of ggml-org/llama.cpp.
+- Rebase llama/compat/001-llama-cpp-hooks.patch onto the fork (drop the
+  load_data_range hunk; that method does not exist there yet).
+- fs/gguf: know Prism tensor types 142 (PQ2_0, 34 B/128) and 143 (PTQ1_0,
+  28 B/128) and general.file_type 141/142/143 so imports no longer fail with
+  'tensor size overflows'.
+
+Co-Authored-By: Claude Fable 5.1 <noreply@anthropic.com>
+---
+ LLAMA_CPP_VERSION                      |  2 +-
+ cmake/local.cmake                      |  2 +-
+ fs/gguf/file_type.go                   | 10 ++++++++++
+ fs/gguf/tensor.go                      | 22 ++++++++++++++++++++-
+ llama/compat/001-llama-cpp-hooks.patch | 27 ++++++++------------------
+ llama/server/CMakeLists.txt            |  2 +-
+ 6 files changed, 42 insertions(+), 23 deletions(-)
+
+diff --git a/LLAMA_CPP_VERSION b/LLAMA_CPP_VERSION
+index 8433938..eddf67b 100644
+--- a/LLAMA_CPP_VERSION
++++ b/LLAMA_CPP_VERSION
+@@ -1 +1 @@
+-b10969
++prism-b10687-5d80cff
+diff --git a/cmake/local.cmake b/cmake/local.cmake
+index 2fb9b84..178f5ed 100644
+--- a/cmake/local.cmake
++++ b/cmake/local.cmake
+@@ -126,7 +126,7 @@ else()
+     else()
+         set(OLLAMA_LLAMA_CPP_SOURCE_DIR "${CMAKE_BINARY_DIR}/_deps/llama_cpp-src")
+         ExternalProject_Add(ollama-llama-cpp-source
+-            GIT_REPOSITORY "https://github.com/ggml-org/llama.cpp.git"
++            GIT_REPOSITORY "https://github.com/PrismML-Eng/llama.cpp.git"
+             GIT_TAG ${OLLAMA_LLAMA_CPP_GIT_TAG}
+             GIT_SHALLOW TRUE
+             SOURCE_DIR ${OLLAMA_LLAMA_CPP_SOURCE_DIR}
+diff --git a/fs/gguf/file_type.go b/fs/gguf/file_type.go
+index 0fe14c7..420527b 100644
+--- a/fs/gguf/file_type.go
++++ b/fs/gguf/file_type.go
+@@ -46,6 +46,12 @@ const (
+ 	fileTypeNVFP4
+ 	fileTypeQ1_0
+ 
++	// Prism ternary file types (PrismML llama.cpp fork). 141 and 143 are what the
++	// published Ternary-Bonsai GGUFs carry; 142 is the pre-rename PQ2_0 value.
++	fileTypePQ2_0       FileType = 141
++	fileTypePQ2_0Legacy FileType = 142
++	fileTypePTQ1_0      FileType = 143
++
+ 	FileTypeUnknown FileType = 1024
+ )
+ 
+@@ -121,6 +127,10 @@ func (t FileType) String() string {
+ 		return "NVFP4"
+ 	case fileTypeQ1_0:
+ 		return "Q1_0"
++	case fileTypePQ2_0, fileTypePQ2_0Legacy:
++		return "PQ2_0"
++	case fileTypePTQ1_0:
++		return "PTQ1_0"
+ 	default:
+ 		return "unknown"
+ 	}
+diff --git a/fs/gguf/tensor.go b/fs/gguf/tensor.go
+index d1304e1..19ba451 100644
+--- a/fs/gguf/tensor.go
++++ b/fs/gguf/tensor.go
+@@ -153,6 +153,16 @@ const (
+ 	TensorTypeQ1_0
+ )
+ 
++// Prism low-bit types from the PrismML llama.cpp fork (github.com/PrismML-Eng/llama.cpp,
++// branch prism). Their ids sit past upstream GGML_TYPE_COUNT on purpose so stock
++// builds refuse the files instead of decoding them as garbage.
++const (
++	// PQ2_0: ternary weights, group size 128, 34 bytes per block (2.13 bpw).
++	TensorTypePQ2_0 TensorType = 142
++	// PTQ1_0: ternary weights, group size 128, 28 bytes per block (1.75 bpw).
++	TensorTypePTQ1_0 TensorType = 143
++)
++
+ func (tt TensorType) NumBytes() float64 {
+ 	return float64(tt.typeSize()) / float64(tt.blockSize())
+ }
+@@ -223,6 +233,10 @@ func (tt TensorType) typeSize() int64 {
+ 		return 4 + tt.blockSize()/2
+ 	case TensorTypeQ1_0:
+ 		return 2 + tt.blockSize()/8
++	case TensorTypePQ2_0:
++		return 2 + tt.blockSize()/4
++	case TensorTypePTQ1_0:
++		return 2 + tt.blockSize()*13/64
+ 	default:
+ 		return 0
+ 	}
+@@ -241,7 +255,9 @@ func (tt TensorType) blockSize() int64 {
+ 		return 1
+ 	case TensorTypeNVFP4:
+ 		return 64
+-	case TensorTypeQ1_0:
++	case TensorTypeQ1_0,
++		TensorTypePQ2_0,
++		TensorTypePTQ1_0:
+ 		return 128
+ 	case TensorTypeQ4_0,
+ 		TensorTypeQ4_1,
+@@ -343,6 +359,10 @@ func (tt TensorType) String() string {
+ 		return "nvfp4"
+ 	case TensorTypeQ1_0:
+ 		return "q1_0"
++	case TensorTypePQ2_0:
++		return "pq2_0"
++	case TensorTypePTQ1_0:
++		return "ptq1_0"
+ 	default:
+ 		return "unknown"
+ 	}
+diff --git a/llama/compat/001-llama-cpp-hooks.patch b/llama/compat/001-llama-cpp-hooks.patch
+index 6610052..93d610e 100644
+--- a/llama/compat/001-llama-cpp-hooks.patch
++++ b/llama/compat/001-llama-cpp-hooks.patch
+@@ -1,5 +1,5 @@
+ diff --git a/src/llama-model-loader.cpp b/src/llama-model-loader.cpp
+-index 7663797ba..4140399a5 100644
++index 835d172..30d0e13 100644
+ --- a/src/llama-model-loader.cpp
+ +++ b/src/llama-model-loader.cpp
+ @@ -5,6 +5,7 @@
+@@ -10,7 +10,7 @@ index 7663797ba..4140399a5 100644
+  
+  #include <algorithm>
+  #include <array>
+-@@ -574,6 +575,9 @@ llama_model_loader::llama_model_loader(
++@@ -577,6 +578,9 @@ llama_model_loader::llama_model_loader(
+          }
+  
+          get_key(llm_kv(LLM_KV_GENERAL_ARCHITECTURE), arch_name, false);
+@@ -20,7 +20,7 @@ index 7663797ba..4140399a5 100644
+          llm_kv = LLM_KV(llm_arch_from_string(arch_name));
+  
+          files.emplace_back(new llama_file(fname.c_str(), "rb", use_direct_io));
+-@@ -584,6 +588,9 @@ llama_model_loader::llama_model_loader(
++@@ -587,6 +591,9 @@ llama_model_loader::llama_model_loader(
+          // so we build a unified tensors index for weights.
+          for (ggml_tensor * cur = ggml_get_first_tensor(ctx); cur; cur = ggml_get_next_tensor(ctx, cur)) {
+              std::string tensor_name = std::string(cur->name);
+@@ -30,7 +30,7 @@ index 7663797ba..4140399a5 100644
+              // make sure there is no duplicated tensor names
+              if (weights_map.find(tensor_name) != weights_map.end()) {
+                  throw std::runtime_error(format("invalid model: tensor '%s' is duplicated", ggml_get_name(cur)));
+-@@ -694,6 +701,9 @@ llama_model_loader::llama_model_loader(
++@@ -697,6 +704,9 @@ llama_model_loader::llama_model_loader(
+          // Save tensors data offset info of the main file.
+          for (ggml_tensor * cur = ggml_get_first_tensor(ctx); cur; cur = ggml_get_next_tensor(ctx, cur)) {
+              std::string tensor_name = std::string(cur->name);
+@@ -40,27 +40,16 @@ index 7663797ba..4140399a5 100644
+              // make sure there is no duplicated tensor names
+              if (weights_map.find(tensor_name) != weights_map.end()) {
+                  throw std::runtime_error(format("invalid model: tensor '%s' is duplicated", ggml_get_name(cur)));
+-@@ -1464,6 +1474,10 @@ void llama_model_loader::unmap_weight(const llama_tensor_weight & w) const {
+- const void * llama_model_loader::load_data_range(const llama_tensor_weight & w, size_t offs, size_t size, void * buf) const {
+-     GGML_ASSERT(offs + size <= ggml_nbytes(w.tensor));
+- 
+-+    if (const void * compat_data = llama_ollama_compat::maybe_load_text_tensor_range(this, w.tensor, offs, size, buf)) {
+-+        return compat_data;
+-+    }
+-+
+-     const void * data = buf;
+- 
+-     if (use_mmap) {
+-@@ -1612,6 +1626,7 @@ bool llama_model_loader::load_all_data(
++@@ -1562,6 +1572,7 @@ bool llama_model_loader::load_all_data(
+          }
+  
+          size_t n_size = ggml_nbytes(cur);
+ +        if (llama_ollama_compat::maybe_load_text_tensor(this, cur, weight->offs)) continue;
+  
+-         const bool from_mapping = use_mmap || lazy.has(cur);
+- 
++         if (use_mmap) {
++             const auto & mapping = mappings.at(weight->idx);
+ diff --git a/tools/mtmd/clip.cpp b/tools/mtmd/clip.cpp
+-index 90de19575..5a8e4c675 100644
++index 90de195..5a8e4c6 100644
+ --- a/tools/mtmd/clip.cpp
+ +++ b/tools/mtmd/clip.cpp
+ @@ -10,6 +10,8 @@
+diff --git a/llama/server/CMakeLists.txt b/llama/server/CMakeLists.txt
+index 9153c9b..60f3a17 100644
+--- a/llama/server/CMakeLists.txt
++++ b/llama/server/CMakeLists.txt
+@@ -180,7 +180,7 @@ set(LLAMA_SUBPROCESS OFF CACHE BOOL "" FORCE)
+ 
+ FetchContent_Declare(
+     llama_cpp
+-    GIT_REPOSITORY "https://github.com/ggml-org/llama.cpp.git"
++    GIT_REPOSITORY "https://github.com/PrismML-Eng/llama.cpp.git"
+     GIT_TAG ${LLAMA_CPP_GIT_TAG}
+     GIT_SHALLOW TRUE
+     ${_ollama_compat_patch_cmd}
+-- 
+2.54.0
+

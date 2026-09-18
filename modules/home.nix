@@ -21,7 +21,6 @@ in
          lazygit       # git TUI
          jujutsu       # jj, git-compatible VCS
          dbeaver-bin   # database GUI client
-         ollama        # run LLMs locally
          nvd           # diff nix closures/generations
 
          # --- Desktop applications ---
@@ -134,6 +133,10 @@ in
          shottr # screenshot app with OCR, annotation and scrolling capture (macOS-only)
      ]
      ++ lib.optionals isLinux [
+         # run LLMs locally. On macOS the CLI comes from services.ollama.package
+         # in darwin/configuration.nix instead (the PrismML-fork build), and the
+         # home-manager ollama module puts that package on PATH itself.
+         ollama
          # hunk is not in 26.05 yet; pull the terminal diff viewer from real unstable
          # (darwin build unverified, keep it Linux-only for now)
          inputs.nixpkgs-unstable.legacyPackages.${system}.hunk

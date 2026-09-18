@@ -70,7 +70,7 @@ All share the flake-parts modules. Machine-specific config lives in their respec
 ### Key Directories
 
 - `modules/` — Flake-parts modules (system packages + home-manager)
-- `packages/` — Custom Nix derivations (e.g., `qmd.nix` with fixed-output derivation for bun deps)
+- `packages/` — Custom Nix derivations (e.g., `qmd.nix` with fixed-output derivation for bun deps; `ollama-prism.nix` overrides nixpkgs ollama to build on the PrismML llama.cpp fork for Ternary Bonsai models, see `docs/ollama-bonsai.md`)
 - `home/` — Dotfiles copied into home by home-manager (`hyprland.conf`, `kitty.conf`, `waybar/`, `zellij/`)
 
 ### Flake Inputs

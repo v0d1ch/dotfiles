@@ -120,7 +120,7 @@ in
   home-manager.sharedModules = [
     inputs.mac-app-util.homeManagerModules.default
   ];
-  home-manager.users.v0d1ch = { lib, config, ... }: {
+  home-manager.users.v0d1ch = { lib, config, pkgs, ... }: {
     imports = [ inputs.self.modules.homeManager.v0d1ch ];
 
     # macOS-only: sign with a local software key instead of the YubiKey-backed
@@ -135,8 +135,9 @@ in
     services.syncthing.enable = true;
 
     # Local LLM server (launchd agent, listens on 127.0.0.1:11434) for the
-    # Msty Studio and Enchanted GUIs below. The ollama CLI itself comes from
-    # modules/home.nix; on darwin it uses Metal acceleration out of the box.
+    # Msty Studio and Enchanted GUIs below. The home-manager module also puts
+    # this package's `ollama` CLI on PATH (modules/home.nix ships stock ollama
+    # on Linux only). Metal acceleration works out of the box.
     # Usage: `ollama pull llama3.2` then point the GUI at the default URL.
     #
     # Stays on loopback (the macOS firewall is off, so 0.0.0.0 would expose it
@@ -146,6 +147,11 @@ in
     # Then the phone reaches it as http://sashas-macbook-air.<tailnet>.ts.net:11434.
     # See docs/ollama-tailscale.md.
     services.ollama.enable = true;
+    # Ollama built on the PrismML llama.cpp fork so the Ternary Bonsai models
+    # (PQ2_0 / PTQ1_0 GGUFs, e.g. Ternary-Bonsai-2-27B at 5.9 GB) load; stock
+    # ollama rejects them. Everything else behaves like upstream 0.34.2.
+    # Import and usage notes in docs/ollama-bonsai.md.
+    services.ollama.package = pkgs.callPackage ../packages/ollama-prism.nix { };
 
     # reMarkable 2 -> Obsidian. The tablet pushes its raw document store over
     # Syncthing (send-only there, receive-only here) into ~/reMarkable/raw;
