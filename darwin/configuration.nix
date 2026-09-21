@@ -228,6 +228,7 @@ in
       "keepingyouawake" # menu bar toggle to prevent display sleep (caffeinate wrapper)
       "vorssaint"   # menu bar toolkit: keep-awake, system monitor, volume mixer (arm64, macOS >= 14)
       "mstystudio"  # Msty Studio: chat GUI for local (ollama) and online models; the older "msty" cask is discontinued
+      "docker-desktop" # Docker engine + CLI for macOS (the docker-compose CLI comes from modules/home.nix); the old "docker" cask name is an alias
     ];
     # Mac App Store apps (installed via `mas`, which nix-darwin adds when this
     # is non-empty). Requires being signed in to the App Store beforehand.
