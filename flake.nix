@@ -8,8 +8,15 @@
       inputs.nixpkgs.follows = "unstable";
     };
     # Trampoline launchers for nix-installed .app bundles so Spotlight,
-    # Launchpad and the Dock see them (plain symlinks are not indexed)
-    mac-app-util.url = "github:hraban/mac-app-util";
+    # Launchpad and the Dock see them (plain symlinks are not indexed).
+    # Its own nixpkgs pin (and nixos-26.05) ship SBCL 2.6.4, whose binaries
+    # die on macOS 27 with "failed to allocate 1048576 bytes at 0x300100000";
+    # SBCL 2.6.6+ fixed the static-space address, so build it from
+    # nixpkgs-unstable instead.
+    mac-app-util = {
+      url = "github:hraban/mac-app-util";
+      inputs.nixpkgs.follows = "nixpkgs-unstable";
+    };
     nixvim.url = "github:v0d1ch/nixvim";
     waybar.url = "github:Alexays/Waybar/master";
     herdr.url = "github:ogulcancelik/herdr/v0.8.0";
