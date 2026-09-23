@@ -349,6 +349,11 @@ in
        enable = true;
        initContent = ''
          export PATH="$HOME/.local/bin:$PATH"
+
+         # API keys and other secrets live outside the Nix store (anything in
+         # initContent ends up world-readable in /nix/store). Drop plain
+         # `export FOO=...` lines in this file; it is not tracked by git.
+         [ -f "$HOME/.config/typesafe/env" ] && source "$HOME/.config/typesafe/env"
        '';
      };
 
