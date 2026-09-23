@@ -75,8 +75,19 @@ in
          cachix               # Nix binary cache client
          rustup               # Rust toolchain manager
          nodejs_22            # Node.js
-         haskellPackages.Agda # Agda proof assistant
          blesh                # ble.sh — bash autosuggestions/highlighting
+
+         # --- Agda ---
+         # withPackages puts the libraries on Agda's global search path, so a
+         # project only needs an .agda-lib naming them — nothing to maintain by
+         # hand in ~/.agda/libraries. agda2hs-base is the Agda-side library that
+         # agda2hs code imports (Haskell.Prelude and friends); haskellPackages.agda2hs
+         # is the compiler binary itself. Both are needed.
+         (agda.withPackages (p: [ p.standard-library p.agda2hs-base ]))
+         haskellPackages.agda2hs # compile the Haskell-shaped Agda subset to readable Haskell
+         # NB: cornelis (the Neovim Agda backend) is not here on purpose — it has
+         # no CLI use, so nixvim ships it in extraPackages instead. See
+         # config/plugins/agda.nix in github:v0d1ch/nixvim.
 
          # Claude Code with the personal account profile (default ~/.claude);
          # a real command (not just the bash alias below) so IDEs, launchers
