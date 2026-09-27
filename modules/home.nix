@@ -170,6 +170,7 @@ in
          viber          # (macOS: cask viber)
          karere         # WhatsApp client (GTK)
          vlc            # media player (macOS: cask vlc)
+         rpi-imager     # Raspberry Pi SD card flasher (macOS: cask raspberry-pi-imager, nixpkgs darwin build uncached)
          gnomecast      # cast video to Chromecast
          nicotine-plus  # Soulseek client
          clementine     # music player

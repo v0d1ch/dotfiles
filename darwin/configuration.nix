@@ -1,94 +1,5 @@
 { config, pkgs, lib, inputs, ... }:
 
-let
-  # AeroSpace settings, written to ~/.aerospace.toml below. The app itself is
-  # installed via the Homebrew cask (stable /Applications path) rather than
-  # services.aerospace: macOS ties the Accessibility grant to the binary path,
-  # and the nix-store path changes on updates, which left shortcuts dead after
-  # rebuilds until the grant was redone. Alt is the main modifier since Cmd is
-  # reserved by macOS and most apps. See
-  # https://nikitabobko.github.io/AeroSpace/guide
-  aerospaceSettings = {
-    # The cask app manages its own launch (registers a login item), replacing
-    # the launchd agent services.aerospace used to create
-    start-at-login = true;
-
-    # Mouse lazily follows the focused monitor (the old services.aerospace
-    # module set this as its default)
-    on-focused-monitor-changed = [ "move-mouse monitor-lazy-center" ];
-
-    gaps = {
-      outer.left = 8;
-      outer.bottom = 8;
-      outer.top = 8;
-      outer.right = 8;
-      inner.horizontal = 8;
-      inner.vertical = 8;
-    };
-
-    mode.main.binding = {
-      alt-enter = "exec-and-forget open -a Ghostty";
-      alt-q = "close";
-      alt-f = "fullscreen"; # maximize within aerospace, not macOS native fullscreen
-      alt-m = "macos-native-minimize";
-      alt-slash = "layout tiles horizontal vertical";
-      alt-comma = "layout accordion";
-      alt-shift-space = "layout floating tiling";
-
-      # Focus/move, vim-style and arrow keys
-      alt-h = "focus left";
-      alt-j = "focus down";
-      alt-k = "focus up";
-      alt-l = "focus right";
-      alt-left = "focus left";
-      alt-down = "focus down";
-      alt-up = "focus up";
-      alt-right = "focus right";
-
-      alt-shift-h = "move left";
-      alt-shift-j = "move down";
-      alt-shift-k = "move up";
-      alt-shift-l = "move right";
-
-      alt-minus = "resize smart -50";
-      alt-equal = "resize smart +50";
-
-      alt-1 = "workspace 1";
-      alt-2 = "workspace 2";
-      alt-3 = "workspace 3";
-      alt-4 = "workspace 4";
-      alt-5 = "workspace 5";
-      alt-6 = "workspace 6";
-      alt-7 = "workspace 7";
-      alt-8 = "workspace 8";
-      alt-9 = "workspace 9";
-      alt-0 = "workspace 10";
-
-      alt-shift-1 = "move-node-to-workspace 1";
-      alt-shift-2 = "move-node-to-workspace 2";
-      alt-shift-3 = "move-node-to-workspace 3";
-      alt-shift-4 = "move-node-to-workspace 4";
-      alt-shift-5 = "move-node-to-workspace 5";
-      alt-shift-6 = "move-node-to-workspace 6";
-      alt-shift-7 = "move-node-to-workspace 7";
-      alt-shift-8 = "move-node-to-workspace 8";
-      alt-shift-9 = "move-node-to-workspace 9";
-      alt-shift-0 = "move-node-to-workspace 10";
-
-      alt-tab = "workspace-back-and-forth";
-      alt-shift-semicolon = "mode service";
-    };
-
-    # Secondary mode for less-frequent commands: alt-shift-; then a key,
-    # esc/mode main to leave it.
-    mode.service.binding = {
-      esc = [ "reload-config" "mode main" ];
-      r = [ "flatten-workspace-tree" "mode main" ];
-      f = [ "layout floating tiling" "mode main" ];
-      backspace = [ "close-all-windows-but-current" "mode main" ];
-    };
-  };
-in
 {
   imports = [
     inputs.home-manager.darwinModules.home-manager
@@ -184,10 +95,18 @@ in
         };
       };
     };
-
-    home.file.".aerospace.toml".source =
-      (pkgs.formats.toml { }).generate "aerospace.toml" aerospaceSettings;
   };
+
+  # Garmin watch app development (see ~/code/skate-iq): CLI that downloads the
+  # Connect IQ SDK (monkeyc compiler + simulator) and device definitions into
+  # ~/.Garmin/ConnectIQ. Not in nixpkgs; packaged from the upstream release.
+  # One-time setup: `connect-iq-sdk-manager login`, then
+  # `connect-iq-sdk-manager sdk set '>=8.0.0'` and
+  # `connect-iq-sdk-manager device download -d fr965`.
+  environment.systemPackages = [
+    (pkgs.callPackage ../packages/connect-iq-sdk-manager.nix { })
+    pkgs.jdk # the SDK's monkeyc compiler and simulator tools are Java-based
+  ];
 
   fonts.packages = with pkgs; [
     fira-code
@@ -204,14 +123,10 @@ in
   # homebrew.enable = false if you'd rather skip it.
   homebrew = {
     enable = true;
-    taps = [
-      "nikitabobko/tap" # aerospace
-    ];
     brews = [
       "mas" # Mac App Store CLI, needed for masApps below; declared so cleanup doesn't remove it after each rebuild
     ];
     casks = [
-      "nikitabobko/tap/aerospace" # tiling WM; cask for a stable path so the Accessibility grant survives updates (see aerospaceSettings above)
       "keepassxc"   # official build; the nixpkgs darwin build lacks YubiKey support
       "firefox"
       "google-chrome"
@@ -229,6 +144,7 @@ in
       "vorssaint"   # menu bar toolkit: keep-awake, system monitor, volume mixer (arm64, macOS >= 14)
       "mstystudio"  # Msty Studio: chat GUI for local (ollama) and online models; the older "msty" cask is discontinued
       "docker-desktop" # Docker engine + CLI for macOS (the docker-compose CLI comes from modules/home.nix); the old "docker" cask name is an alias
+      "raspberry-pi-imager" # SD card flasher for Raspberry Pi OS; the nixpkgs darwin build isn't cached (Qt from source)
     ];
     # Mac App Store apps (installed via `mas`, which nix-darwin adds when this
     # is non-empty). Requires being signed in to the App Store beforehand.
