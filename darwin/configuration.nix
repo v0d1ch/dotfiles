@@ -23,6 +23,22 @@
     home = "/Users/v0d1ch";
   };
 
+  # /run lives on /private/var/run, which macOS empties on every boot; the
+  # org.nixos.activate-system launchd daemon is what recreates
+  # /run/current-system at startup. The macOS 27 upgrade silently dropped
+  # that daemon from launchd, and nix-darwin's activation only re-registers
+  # it when the plist *content* changes, so every rebuild kept skipping it
+  # and darwin-rebuild vanished from PATH after each reboot. Re-bootstrap it
+  # on every activation (a no-op when it's already loaded) so this self-heals.
+  system.activationScripts.postActivation.text = ''
+    launchctl bootstrap system /Library/LaunchDaemons/org.nixos.activate-system.plist 2>/dev/null \
+      || launchctl kickstart system/org.nixos.activate-system 2>/dev/null \
+      || true
+  '';
+  # Belt and braces: the system profile is a stable path that survives a
+  # missing /run/current-system, so darwin-rebuild stays reachable regardless.
+  environment.systemPath = lib.mkAfter [ "/nix/var/nix/profiles/system/sw/bin" ];
+
   home-manager.backupFileExtension = "hm-backup";
   home-manager.useGlobalPkgs = true;
   home-manager.extraSpecialArgs = { inherit inputs; };
