@@ -142,6 +142,7 @@ in
      ++ lib.optionals isDarwin [
          yaak   # API client for REST/GraphQL/gRPC (move to shared list if wanted on Linux too)
          shottr # screenshot app with OCR, annotation and scrolling capture (macOS-only)
+         maccy  # menu bar clipboard manager (macOS-only); grant Accessibility access on first launch
      ]
      ++ lib.optionals isLinux [
          # run LLMs locally. On macOS the CLI comes from services.ollama.package

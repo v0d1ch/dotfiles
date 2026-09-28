@@ -161,6 +161,8 @@
       "mstystudio"  # Msty Studio: chat GUI for local (ollama) and online models; the older "msty" cask is discontinued
       "docker-desktop" # Docker engine + CLI for macOS (the docker-compose CLI comes from modules/home.nix); the old "docker" cask name is an alias
       "raspberry-pi-imager" # SD card flasher for Raspberry Pi OS; the nixpkgs darwin build isn't cached (Qt from source)
+      "handy"       # open-source offline speech-to-text (push-to-talk dictation, local Whisper/Parakeet models); not in nixpkgs
+      "cursor"      # AI code editor; nixpkgs code-cursor builds for darwin but lags many releases behind and can't self-update
     ];
     # Mac App Store apps (installed via `mas`, which nix-darwin adds when this
     # is non-empty). Requires being signed in to the App Store beforehand.
