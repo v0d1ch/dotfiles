@@ -163,6 +163,7 @@
       "raspberry-pi-imager" # SD card flasher for Raspberry Pi OS; the nixpkgs darwin build isn't cached (Qt from source)
       "handy"       # open-source offline speech-to-text (push-to-talk dictation, local Whisper/Parakeet models); not in nixpkgs
       "cursor"      # AI code editor; nixpkgs code-cursor builds for darwin but lags many releases behind and can't self-update
+      "dbx"         # DBX database client (MySQL/Postgres/SQLite/Redis/Mongo/...); the upstream flake's dbx-desktop is Linux-only, and the nixpkgs `dbx` is an unrelated Databricks CLI
     ];
     # Mac App Store apps (installed via `mas`, which nix-darwin adds when this
     # is non-empty). Requires being signed in to the App Store beforehand.

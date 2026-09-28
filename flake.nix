@@ -20,6 +20,11 @@
     nixvim.url = "github:v0d1ch/nixvim";
     waybar.url = "github:Alexays/Waybar/master";
     herdr.url = "github:ogulcancelik/herdr/v0.8.0";
+    # DBX database client. Its dbx-desktop package only builds on Linux
+    # (macOS uses the homebrew cask instead, see darwin/configuration.nix).
+    # No nixpkgs.follows on purpose: the flake pins its own nixpkgs-unstable +
+    # rust toolchain, and following ours would only make the build diverge.
+    dbx.url = "github:t8y2/dbx";
 
     flake-parts.url = "github:hercules-ci/flake-parts";
     nix-openclaw.url = "github:openclaw/nix-openclaw";

@@ -145,6 +145,12 @@ in
          maccy  # menu bar clipboard manager (macOS-only); grant Accessibility access on first launch
      ]
      ++ lib.optionals isLinux [
+         # DBX database client, built from its upstream flake (Tauri 2 + Rust +
+         # pnpm, no binary cache, so the first build takes a while). The flake
+         # exposes a darwin attr too but marks it platforms.linux, hence the
+         # isLinux guard rather than the `? ${system}` check used above.
+         # (macOS: cask dbx)
+         inputs.dbx.packages.${system}.dbx-desktop
          # run LLMs locally. On macOS the CLI comes from services.ollama.package
          # in darwin/configuration.nix instead (the PrismML-fork build), and the
          # home-manager ollama module puts that package on PATH itself.
