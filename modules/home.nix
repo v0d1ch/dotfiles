@@ -358,6 +358,10 @@ in
        enable = true;
        initContent = ''
          export PATH="$HOME/.local/bin:$PATH"
+         # OpenClaw CLI on macOS: OpenClaw.app (homebrew cask) installs the
+         # CLI and its own Node runtime under ~/.openclaw and does not touch
+         # PATH itself. Harmless on Linux where the directory does not exist.
+         [ -d "$HOME/.openclaw/bin" ] && export PATH="$HOME/.openclaw/bin:$PATH"
 
          # API keys and other secrets live outside the Nix store (anything in
          # initContent ends up world-readable in /nix/store). Drop plain
