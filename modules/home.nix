@@ -52,6 +52,7 @@ in
          # --- Network ---
          rclone         # sync files with cloud storage
          magic-wormhole # send files machine-to-machine with codes
+         localsend      # AirDrop-style LAN file sharing GUI (phones too); nixpkgs ships the upstream .dmg on darwin
          nmap           # port scanner
          wireshark      # packet capture & analysis
          openvpn        # OpenVPN client
