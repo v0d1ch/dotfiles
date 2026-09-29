@@ -1,0 +1,24 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(nix eval *)",
+      "Bash(nix path-info *)",
+      "Bash(dig *)",
+      "Bash(ping *)",
+      "Bash(launchctl print *)",
+      "Bash(launchctl print-disabled *)",
+      "Bash(launchctl list *)",
+      "Bash(log show *)",
+      "Bash(/usr/bin/log show *)",
+      "Bash(brew info *)",
+      "Bash(brew list *)",
+      "Bash(brew outdated *)",
+      "Bash(defaults read *)",
+      "Bash(ioreg *)",
+      "Bash(system_profiler *)",
+      "Bash(systemctl is-active *)",
+      "Bash(openclaw gateway status)",
+      "Bash(~/.openclaw/bin/openclaw gateway status)"
+    ]
+  }
+}
