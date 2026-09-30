@@ -16,9 +16,7 @@
       "Bash(defaults read *)",
       "Bash(ioreg *)",
       "Bash(system_profiler *)",
-      "Bash(systemctl is-active *)",
-      "Bash(openclaw gateway status)",
-      "Bash(~/.openclaw/bin/openclaw gateway status)"
+      "Bash(systemctl is-active *)"
     ]
   }
 }

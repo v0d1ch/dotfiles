@@ -56,72 +56,6 @@
     # nixos-yoga are untouched — they still use the shared module's key.
     programs.git.signing.key = lib.mkForce "C574785FF89B8E25";
 
-    # OpenClaw (Telegram-driven assistant gateway). On the NixOS machines it
-    # comes from the nix-openclaw flake input; here it is the homebrew cask
-    # `openclaw` (see the casks list below) because the locked nix-openclaw no
-    # longer builds on macOS: two of its pinned GitHub release downloads have
-    # been deleted upstream (the `bird` helper and the OpenClaw.app zip), and
-    # bumping the input would also move the NixOS machines to a new release.
-    # The cask ships OpenClaw.app plus the `openclaw` CLI and self-updates.
-    # After the first switch, install the launchd agent once with
-    #   openclaw gateway install
-    # and check it with `openclaw gateway status`. The Telegram token has to be
-    # copied over from the desktop to ~/.secrets/telegram-bot-token by hand.
-    # Gotcha: when OpenClaw.app self-updates (Sparkle) it also rewrites the CLI
-    # under ~/.openclaw/tools in place, but it does NOT restart the launchd
-    # gateway, which keeps running the old version from memory. Symptoms: the
-    # app/dashboard shows a "refresh required" banner that never clears
-    # ("control ui build rejected ... gatewayBuild=<old>" in
-    # ~/Library/Logs/openclaw/gateway.log) and Telegram dispatch fails with
-    # module import errors because the old process lazy-loads new files.
-    # `openclaw gateway restart` may refuse while the stale process still owns
-    # the state dir, so restart it via launchd and then reinstall the service:
-    #   launchctl kickstart -k gui/$(id -u)/ai.openclaw.gateway
-    #   openclaw gateway install --force
-    # `brew` will keep listing the originally installed cask version because
-    # the cask is `auto_updates`; that mismatch is harmless, do not brew upgrade.
-    # The wrapper and seeded config below are shared with the Linux setup.
-    # Claude Code comes from the native installer here (~/.local/bin/claude),
-    # not from nix like on Linux, so the wrapper points there.
-    home.file.".local/bin/claude-print" = {
-      executable = true;
-      text = ''
-        #!/bin/sh
-        exec /Users/v0d1ch/.local/bin/claude --print "$@"
-      '';
-    };
-    # openclaw.json is written by openclaw at runtime, so we seed it only if absent
-    home.activation.seedOpenclawConfig =
-      let
-        defaultCfg = pkgs.writeText "openclaw-default.json" (builtins.toJSON {
-          gateway.mode = "local";
-          agents.defaults = {
-            model.primary = "claude-cli/claude-opus-4-6";
-            cliBackends."claude-cli" = {
-              command = "/Users/v0d1ch/.local/bin/claude-print";
-              modelArg = "--model";
-              systemPromptArg = "--append-system-prompt";
-              sessionArg = "--session-id";
-              systemPromptWhen = "first";
-              sessionMode = "always";
-            };
-          };
-          channels.telegram = {
-            enabled = true;
-            dmPolicy = "allowlist";
-            allowFrom = [ 1184983378 ];
-            tokenFile = "/Users/v0d1ch/.secrets/telegram-bot-token";
-          };
-        });
-      in
-      lib.hm.dag.entryAfter ["writeBoundary"] ''
-        OPENCLAW_CFG="$HOME/.openclaw/openclaw.json"
-        if [ ! -f "$OPENCLAW_CFG" ]; then
-          mkdir -p "$HOME/.openclaw"
-          cp ${defaultCfg} "$OPENCLAW_CFG"
-        fi
-      '';
-
     # File sync with the desktop, which runs syncthing as a NixOS system
     # service. Runs here as a launchd agent (starts at login). Pair the
     # devices once in the GUI at http://127.0.0.1:8384; see docs/sync-setup.md.
@@ -205,6 +139,9 @@
   # homebrew.enable = false if you'd rather skip it.
   homebrew = {
     enable = true;
+    taps = [
+      "stablyai/orca" # Orca ADE; the core `orca` cask is plotly's unrelated chart exporter, so the cask below is fully qualified
+    ];
     brews = [
       "mas" # Mac App Store CLI, needed for masApps below; declared so cleanup doesn't remove it after each rebuild
     ];
@@ -230,7 +167,7 @@
       "handy"       # open-source offline speech-to-text (push-to-talk dictation, local Whisper/Parakeet models); not in nixpkgs
       "cursor"      # AI code editor; nixpkgs code-cursor builds for darwin but lags many releases behind and can't self-update
       "dbx"         # DBX database client (MySQL/Postgres/SQLite/Redis/Mongo/...); the upstream flake's dbx-desktop is Linux-only, and the nixpkgs `dbx` is an unrelated Databricks CLI
-      "openclaw"    # OpenClaw.app + CLI; the nix-openclaw input used on Linux no longer builds on macOS, see the home-manager block above
+      "stablyai/orca/orca" # Orca ADE: run/watch many coding agents in parallel worktrees, phone companion app; Linux uses packages/orca.nix. See docs/orca-tailscale.md
     ];
     # Mac App Store apps (installed via `mas`, which nix-darwin adds when this
     # is non-empty). Requires being signed in to the App Store beforehand.

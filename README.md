@@ -128,3 +128,6 @@ Then `keepass-sync pull` and open
   yet — they're manual snapshots. Edit those directly in `~/.config` as before.
 - herdr's `session.json`, logs, and sockets are runtime state and stay unmanaged;
   only `config.toml` comes from this repo.
+- Orca (`orca-ide` on Linux, cask on macOS) stores its worktrees and settings
+  outside the repo. Reaching it from the phone or another machine over the
+  tailnet is described in `docs/orca-tailscale.md`.

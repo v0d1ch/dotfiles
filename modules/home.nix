@@ -45,6 +45,7 @@ in
          btop    # fancier process monitor
          eva     # calculator REPL
          lsix    # image thumbnails in the terminal (sixel)
+         superfile # TUI file manager (spf)
 
          # --- Communication ---
          irssi   # IRC client
@@ -162,6 +163,10 @@ in
          # local search over markdown notes — the FOD dependency hash is
          # platform-specific (bun fetches native packages), so Linux-only
          (pkgs.callPackage ../packages/qmd.nix {})
+         # Orca: run and watch many coding agents in parallel worktrees; see
+         # docs/orca-tailscale.md for phone/remote access. Wrapped AppImage,
+         # binary `orca-ide` (macOS: cask stablyai/orca/orca)
+         (pkgs.callPackage ../packages/orca.nix {})
 
          # --- Browsers (macOS: homebrew casks firefox / google-chrome / brave-browser) ---
          firefox
@@ -358,10 +363,6 @@ in
        enable = true;
        initContent = ''
          export PATH="$HOME/.local/bin:$PATH"
-         # OpenClaw CLI on macOS: OpenClaw.app (homebrew cask) installs the
-         # CLI and its own Node runtime under ~/.openclaw and does not touch
-         # PATH itself. Harmless on Linux where the directory does not exist.
-         [ -d "$HOME/.openclaw/bin" ] && export PATH="$HOME/.openclaw/bin:$PATH"
 
          # API keys and other secrets live outside the Nix store (anything in
          # initContent ends up world-readable in /nix/store). Drop plain
