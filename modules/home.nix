@@ -15,6 +15,7 @@ in
          neovide       # GUI frontend for Neovim
          vim           # classic vi, always-available fallback
          vscode        # Visual Studio Code
+         cursor-cli    # Cursor CLI agent (`cursor-agent`); the Cursor editor itself is the `cursor` Homebrew cask on macOS. Orca uses this for --agent cursor
 
          # --- Version control & dev tools ---
          gh            # GitHub CLI
