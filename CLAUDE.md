@@ -41,6 +41,7 @@ The flake uses `flake-parts.lib.mkFlake` with two custom modules registered unde
 
 - `flake.modules.nixos.v0d1ch` — declared in `modules/system-packages.nix`, provides `environment.systemPackages` (Linux-only packages: Wayland/X11, ALSA, PAM, drivers)
 - `flake.modules.homeManager.v0d1ch` — declared in `modules/home.nix`, provides home-manager config (apps, programs, services, dotfiles). This module is **cross-platform**: it is imported on both NixOS machines and the macbook. Linux-only packages/services are behind `pkgs.stdenv.isLinux` guards; darwin-only bits behind `isDarwin`.
+- `flake.modules.homeManager.hermes` — declared in `modules/hermes.nix`, Hermes Agent install + config; macbook only
 
 Each `configuration.nix` imports these modules:
 ```nix
@@ -71,6 +72,7 @@ All share the flake-parts modules. Machine-specific config lives in their respec
 
 - `modules/` — Flake-parts modules (system packages + home-manager)
 - `packages/` — Custom Nix derivations (e.g., `qmd.nix` with fixed-output derivation for bun deps; `ollama-prism.nix` overrides nixpkgs ollama to build on the PrismML llama.cpp fork for Ternary Bonsai models, see `docs/ollama-bonsai.md`)
+- `modules/hermes.nix` — `flake.modules.homeManager.hermes`: Hermes Agent via its upstream home-manager module (flake input `hermes-agent`), imported only by the macbook. Declares `~/.hermes/config.yaml` (local terminal backend, API server on :8642, no gateway at login). Secrets live in `~/.hermes/.env`, outside the repo. The agent fleet that uses it (A2A agents, `fleet` script, plenum MCP hub) lives in github.com/Devnull-org/plenum at `~/code/plenum`
 - `home/` — Dotfiles copied into home by home-manager (`hyprland.conf`, `kitty.conf`, `waybar/`, `zellij/`)
 
 ### Flake Inputs
