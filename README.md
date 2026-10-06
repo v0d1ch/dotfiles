@@ -88,38 +88,23 @@ git pull && sudo nixos-rebuild switch --flake .#nixos-yoga
 
 ## KeePass database sync
 
-The KeePassXC databases (`*.kdbx`) live in the root of Google Drive and are
-mirrored locally in `~/Documents/google-drive-local/`. The live database is
-`keesharexc-sync.kdbx` (the `*.kdbx` copies directly in `~/Documents` are
-stale 2022 leftovers).
+The KeePassXC database `keesharexc-sync.kdbx` lives at the root of the
+Syncthing share `~/Sync` and is synced peer-to-peer between the desktop
+(Syncthing as a NixOS service, `nixos/configuration.nix`), the MacBook
+(Syncthing as a home-manager launchd agent, `darwin/configuration.nix`) and
+the iPhone (a third-party Syncthing client; Strongbox opens the database in
+place from it). No cloud drive and no always-on server are involved: any two
+awake devices sync directly over LAN or Tailscale.
 
-`keepass-sync` (defined in `modules/home.nix`, available on every machine):
+KeePassXC opens `~/Sync/keesharexc-sync.kdbx` on both computers. Don't edit
+on two devices at the same time; if Syncthing produces a
+`*.sync-conflict*.kdbx`, merge it into the live database (KeePassXC:
+Database -> Merge From Database) rather than deleting it. Staggered file
+versioning is on for the folder.
 
-```bash
-keepass-sync pull     # Drive -> ~/Documents/google-drive-local
-keepass-sync push     # ~/Documents/google-drive-local -> Drive
-keepass-sync status   # compare local vs Drive
-```
-
-Both directions use `rclone copy --update`, so an older copy never
-overwrites a newer one. Still: don't edit the database on two machines at
-once — KeePassXC can't merge diverged copies. Pull before editing, push
-after.
-
-One-time setup on a new machine: the script needs the rclone remote named
-`google_drive`. Either run `rclone config` (new remote -> name it
-`google_drive` -> type `drive`), or copy the existing config from another
-machine:
-
-```bash
-# old machine
-wormhole send ~/.config/rclone/rclone.conf
-# new machine
-mkdir -p ~/.config/rclone && cd ~/.config/rclone && wormhole receive
-```
-
-Then `keepass-sync pull` and open
-`~/Documents/google-drive-local/keesharexc-sync.kdbx` in KeePassXC.
+Pairing a new device, folder IDs and the hard-won gotchas (NixOS
+`PrivateUsers` hardening, macOS folder paths, iOS in-place opening) are in
+`docs/sync-setup.md`.
 
 ## Gotchas
 

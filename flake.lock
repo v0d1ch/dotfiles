@@ -1,5 +1,21 @@
 {
   "nodes": {
+    "aiken": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1764931480,
+        "narHash": "sha256-1JlJlNfMmn2/BIz8rzy5+VJZ2gnjmxAiIG6Q5pB/ZDY=",
+        "owner": "aiken-lang",
+        "repo": "editor-integration-nvim",
+        "rev": "7f4848e49d33ebc5aa0e0b594e3e2d8b6db23379",
+        "type": "github"
+      },
+      "original": {
+        "owner": "aiken-lang",
+        "repo": "editor-integration-nvim",
+        "type": "github"
+      }
+    },
     "cl-nix-lite": {
       "inputs": {
         "flake-parts": "flake-parts_3",
@@ -594,6 +610,7 @@
     },
     "nixvim": {
       "inputs": {
+        "aiken": "aiken",
         "ctrlsf": "ctrlsf",
         "flake-parts": "flake-parts_4",
         "nixpkgs": "nixpkgs_8",
@@ -601,11 +618,11 @@
         "tree-sitter-haskell": "tree-sitter-haskell"
       },
       "locked": {
-        "lastModified": 1790144901,
-        "narHash": "sha256-Tl3W/xKCJrhyw0RDn6e5cOAt6oiplNyT4LArqQ5TpWY=",
+        "lastModified": 1791285254,
+        "narHash": "sha256-Wf7mEsTcRYUc0JnFyB2ZW75v6BWHGk7GDyoAGTzNWZE=",
         "owner": "v0d1ch",
         "repo": "nixvim",
-        "rev": "8d284d6b2a53e73cbd642903acbf4cd62265cd8c",
+        "rev": "4a64972ad988330dad56f50366c10332bcf18dd4",
         "type": "github"
       },
       "original": {
