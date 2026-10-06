@@ -76,7 +76,6 @@ in
          # --- Development ---
          docker-compose       # engine: virtualisation.docker on NixOS, Docker Desktop/colima on macOS
          cachix               # Nix binary cache client
-         rustup               # Rust toolchain manager
          nodejs_22            # Node.js
          blesh                # ble.sh — bash autosuggestions/highlighting
 
