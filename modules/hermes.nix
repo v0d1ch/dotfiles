@@ -70,7 +70,9 @@
           enabled = true;
           host = "127.0.0.1";
           port = 8642;
-          direct_model_requests = false;   # a bare `model` without `provider` is ignored, as the agent expects
+          # Honour a bare `model` without `provider`: fast-agent's OpenAI-compatible provider sends only
+          # `model`, so this is what lets each fast-agent card pick its model. plenum always sends both.
+          direct_model_requests = true;
           tool_progress_events = true;     # hermes.tool.progress SSE events -> A2A status updates
           max_concurrent_runs = 4;
         };
