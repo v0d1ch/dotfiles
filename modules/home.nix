@@ -16,6 +16,7 @@ in
          vim           # classic vi, always-available fallback
          vscode        # Visual Studio Code
          cursor-cli    # Cursor CLI agent (`cursor-agent`); the Cursor editor itself is the `cursor` Homebrew cask on macOS. Orca uses this for --agent cursor
+         codex         # OpenAI Codex CLI agent; `codex login` signs in with the ChatGPT account, no API key needed
 
          # --- Version control & dev tools ---
          gh            # GitHub CLI
