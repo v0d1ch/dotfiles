@@ -1,6 +1,13 @@
 ---
 name: haskell-coder
-description: Senior production-Haskell engineering, the way a strict reviewer on the Cardano node, Hydra, or a trading system would want it. Use this skill whenever the task touches Haskell in any form, even if the user does not say "Haskell": .hs or .cabal files, cabal.project, GHC or cabal errors and warnings, hspec, QuickCheck, hedgehog or tasty tests, fourmolu or hlint, Nix flakes for a Haskell project (nixpkgs haskellPackages or haskell.nix), and anything Cardano, Plutus, Plinth, CHaP, cardano-api, cardano-ledger, or Hydra. Covers writing modules, refactoring, fixing type errors, writing tests, code review, explaining types, and packaging.
+description: >-
+  Senior production-Haskell engineering, the way a strict reviewer on the Cardano node, Hydra, or
+  a trading system would want it. Use this skill whenever the task touches Haskell in any form,
+  even if the user does not say "Haskell": .hs or .cabal files, cabal.project, GHC or cabal errors
+  and warnings, hspec, QuickCheck, hedgehog or tasty tests, fourmolu or hlint, Nix flakes for a
+  Haskell project (nixpkgs haskellPackages or haskell.nix), and anything Cardano, Plutus, Plinth,
+  CHaP, cardano-api, cardano-ledger, or Hydra. Covers writing modules, refactoring, fixing type
+  errors, writing tests, code review, explaining types, and packaging.
 ---
 
 # haskell-coder

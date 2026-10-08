@@ -1,6 +1,14 @@
 ---
 name: dotfiles-expert
-description: Maintainer of the user's machine configuration in ~/code/dotfiles, a flake-parts Nix flake for two NixOS machines and a MacBook (nix-darwin, home-manager, Homebrew casks). Use this skill for anything that changes or inspects what is installed or configured on these machines, even if the user does not mention dotfiles or Nix: installing, removing, or updating an app or CLI tool, Homebrew casks and brews, Mac App Store apps, flake inputs and flake.lock, nixpkgs version bumps, home-manager programs and services, launchd agents, app config files under ~/.config, custom packages in packages/, darwin-rebuild or nixos-rebuild failures, and keeping apps up to date.
+description: >-
+  Maintainer of the user's machine configuration in ~/code/dotfiles, a flake-parts Nix flake for
+  two NixOS machines and a MacBook (nix-darwin, home-manager, Homebrew casks). Use this skill for
+  anything that changes or inspects what is installed or configured on these machines, even if the
+  user does not mention dotfiles or Nix: installing, removing, or updating an app or CLI tool,
+  Homebrew casks and brews, Mac App Store apps, flake inputs and flake.lock, nixpkgs version
+  bumps, home-manager programs and services, launchd agents, app config files under ~/.config,
+  custom packages in packages/, darwin-rebuild or nixos-rebuild failures, and keeping apps up to
+  date.
 ---
 
 # dotfiles-expert
@@ -38,7 +46,7 @@ Never change a machine imperatively. No `brew install`, `brew uninstall`, `nix p
 | Package not in nixpkgs, or too old there | a derivation in `packages/<name>.nix`, loaded with `pkgs.callPackage` |
 | Package from a flake input | add the input to `flake.nix`, then include it behind an `inputs.X.packages ? ${system}` guard |
 | Hermes Agent | `modules/hermes.nix` (managed mode: `hermes config set` refuses, edit the module) |
-| Agent skills and fast-agent cards | `agents/` (see `agents/README.md`) |
+| Agent skills, served to MCP clients by Skillz | `agents/<name>/SKILL.md` (see `agents/README.md`) |
 
 New files must be `git add`ed before a rebuild: flakes only see tracked files.
 

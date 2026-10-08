@@ -1,194 +1,125 @@
 # Agents
 
-Agent skills and the fast-agent cards that serve them. A skill is written once and used from any
-client and any model: Claude Code and Codex load the skill folders directly, and fast-agent
-serves them as MCP tools that run on whatever model Hermes is pointed at.
+Agent skills, written once and used from any MCP client on that client's own model and login:
+Claude Code with the Claude subscription, Codex with the ChatGPT login, or any other client. No
+API keys, no background services.
 
 ```
 agents/
   README.md                 this file
-  agents                    start/stop script: ./agents up | down | status
-  fast-agent.yaml           fast-agent config: Hermes as the model endpoint, default model, skills
-  haskell-coder/SKILL.md    a skill: frontmatter (name, description) plus the instructions
-  dotfiles-expert/SKILL.md  a skill: maintains this repository (Nix, nix-darwin, Homebrew, updates)
-  cards/haskell-coder.md    a fast-agent card: the agent fast-agent serves as an MCP tool
-  cards/dotfiles-expert.md  the card for dotfiles-expert
+  haskell-coder/SKILL.md    production Haskell: modules, GHC errors, tests, cabal and Nix
+  dotfiles-expert/SKILL.md  maintains this repository: Nix, nix-darwin, Homebrew, updates
 ```
 
-## Quick start
+A skill is a folder with a `SKILL.md`: frontmatter with a `name` and a `description` (which
+also says when to use it), then the instructions. This is the open Agent Skills format.
+
+## How it works
+
+[Skillz](https://pypi.org/project/skillz/) is a small MCP server that reads this folder and serves
+each skill as a tool. When a client calls the tool, it receives the skill's instructions and
+carries out the task itself, with its own model, tools and sandbox.
+
+```
+Claude Code / Codex / any MCP client ──MCP (stdio)──> skillz ──reads──> ~/code/dotfiles/agents/*/SKILL.md
+          └── does the work with its own model
+```
+
+The client starts Skillz on demand through `uvx` (`uv` comes from `modules/home.nix`), so there is
+nothing to install and nothing left running.
+
+## Setup
+
+The skills reach every client through Skillz only. Don't also link them into a client's own skill
+folder (`~/.claude/skills`, `~/.codex/skills`): the client would then load each skill twice.
+
+Once per machine and per client. Every skill in this folder comes with the one registration; a
+skill added later needs no new setup, only a client restart.
+
+### Claude Code
+
+1. Register the server for your user, so it is available in every project:
+
+   ```sh
+   claude mcp add --scope user skills -- uvx skillz@latest ~/code/dotfiles/agents
+   ```
+
+2. Restart Claude Code.
+3. Check it: `claude mcp list` should show `skills` as connected, and `/mcp` inside a session
+   lists its tools: one per skill, plus `fetch_resource` for files a skill ships with.
+
+To remove it: `claude mcp remove skills -s user`.
+
+### Codex
+
+1. Register the server:
+
+   ```sh
+   codex mcp add skills -- uvx skillz@latest ~/code/dotfiles/agents
+   ```
+
+   This writes the entry to `~/.codex/config.toml`. Written by hand, it is:
+
+   ```toml
+   [mcp_servers.skills]
+   command = "uvx"
+   args = ["skillz@latest", "/Users/v0d1ch/code/dotfiles/agents"]
+   ```
+
+   Use the full path there; the config file does not expand `~`.
+
+2. Restart Codex.
+3. Check it: `codex mcp list` should show `skills`, and `/mcp` inside a session lists the same tools.
+
+To remove it: `codex mcp remove skills`.
+
+### Any other MCP client
+
+Add a stdio server named `skills` with the command `uvx` and the arguments
+`skillz@latest /Users/v0d1ch/code/dotfiles/agents`.
+
+## Using a skill
+
+Ask for the task and name the skill, so the client calls it rather than working without it:
+
+```
+use dotfiles-expert to install Raycast
+use haskell-coder to fix the GHC errors in ~/code/hydra
+```
+
+## Adding a skill
+
+Create `agents/<name>/SKILL.md`. Skillz picks it up the next time a client starts it, so restart
+the client. Check that it parses with:
 
 ```sh
-~/code/dotfiles/agents/agents up
+uvx skillz@latest ~/code/dotfiles/agents --list-skills
 ```
 
-That links the skills for Hermes, Claude Code and Codex; starts Ollama when the default model is a
-local one (and pulls it the first time); starts Hermes and fast-agent; and registers fast-agent with
-Claude Code and Codex. Restart the client, then prompt it, naming the agent. `./agents status`
-shows what is running and `./agents down` stops what `up` started; anything already running before
-`up` is left alone. Logs are in `~/.local/state/agents`. The sections below are the same steps by
-hand.
-
-- **Skills hold the expertise.** One folder per skill, in the open Agent Skills format. No model
-  is named in a skill.
-- **Cards turn skills into callable agents.** A card gives the tool its name and description, the
-  model, and run settings. Its body is two lines: an instruction to load the skill, and the
-  `{{agentSkills}}` placeholder, where fast-agent lists the available skills. Do not copy skill
-  text into a card.
-
-How a call flows:
-
-```
-MCP client ──MCP──> fast-agent (:8810) ──OpenAI wire──> Hermes (:8642) ──> model vendor
- (Claude Code, Codex)   cards + skills                    tool loop, credentials   └─> ~/code/<project>
-```
-
-## 1. Start Hermes
-
-Hermes is installed and configured by `modules/hermes.nix`. It runs in managed mode, so
-`hermes config set` refuses; change that module and rebuild instead:
-
-```sh
-cd ~/code/dotfiles && sudo darwin-rebuild switch --flake .#macbook
-```
-
-Nothing starts at login. Start the gateway in its own terminal and leave it running:
-
-```sh
-hermes gateway run
-```
-
-It serves an OpenAI-compatible API on `127.0.0.1:8642`. Requests need `API_SERVER_KEY` from
-`~/.hermes/.env` as a bearer token. Check it is up:
-
-```sh
-curl -s -o /dev/null -w "%{http_code}\n" http://127.0.0.1:8642/v1/models   # 401 = up, wants the key
-```
-
-Restart Hermes after every rebuild or Hermes upgrade. A gateway started before an upgrade keeps
-running from the old install and fails every model call with `ModuleNotFoundError`.
-
-### Credentials and models
-
-Hermes holds every provider credential; fast-agent holds none. Provider logins and keys live in
-`~/.hermes/.env` and `~/.hermes/auth.json`, never in this repository.
-
-`direct_model_requests = true` in `modules/hermes.nix` makes Hermes honour the model a caller
-names. The model string is `<provider>:<model>`, split at the first colon (tested 2026-10-08):
-
-| model string sent to Hermes | provider used | model name passed on |
-|---|---|---|
-| `custom:qwen3-coder` | `custom` (the Ollama endpoint in `modules/hermes.nix`) | `qwen3-coder` |
-| `anthropic:<model>` | `anthropic` | `<model>` |
-
-Only route traffic through a credential that allows it. A Claude subscription login is not for
-third-party tools; use an Anthropic API key, a cloud route (Bedrock, Vertex), Copilot, or a local
-model.
-
-For a local model, run Ollama and pull it once:
-
-```sh
-ollama serve &
-ollama pull gpt-oss:20b
-```
-
-## 2. Configure fast-agent
-
-fast-agent needs no install: `uvx fast-agent-mcp` downloads and runs it (`uv` comes from
-`modules/home.nix`). Its config is `agents/fast-agent.yaml`:
+Skillz reads the frontmatter as strict YAML and silently skips a skill it cannot parse. A
+`description` containing `: ` (a colon and a space) breaks it, so write the description as a
+folded block:
 
 ```yaml
-# fast-agent talks to Hermes's OpenAI-compatible API. The key is GENERIC_API_KEY (= API_SERVER_KEY).
-generic:
-  base_url: "http://127.0.0.1:8642/v1"
+description: >-
+  What the skill does and when to use it, over as many indented lines as needed.
+``` Write the `description` so it says what the skill does and when to use it: that is
+what the client reads when deciding to call it.
 
-# Used by every card without its own `model:` line. "generic." selects the provider above; the rest
-# is the Hermes model string from the table in section 1.
-default_model: "generic.custom:gpt-oss:20b"
+## Optional: delegating to another model
 
-skills:
-  directories:
-    - "~/code/dotfiles/agents"
-```
+Not needed for the setup above. To hand a whole task to a different model than the one you are
+talking to (a local model, or a long loop kept out of your session), the same skills can be served
+by [fast-agent](https://fast-agent.ai) as agents running on Hermes (`modules/hermes.nix`).
+Findings from trying it on 2026-10-08:
 
-Choosing the model:
-
-- **One model for everything:** `default_model` above, and no `model:` line in the cards.
-- **One model per agent:** a `model:` line in that card, in the same `generic.<provider>:<model>`
-  form. The card wins over the default.
-- **One model for a single run:** `--model` on the command line.
-
-`cards/haskell-coder.md` has no `model:` line, so it runs on the default. A plain name such as
-`model: sonnet` would bypass Hermes and call Anthropic directly, which needs `ANTHROPIC_API_KEY`.
-
-## 3. Load the skills
-
-The same skill folders feed three places:
-
-- **fast-agent** reads `~/code/dotfiles/agents` through `skills.directories` above, or
-  `--skills <dir>` on the command line.
-- **Hermes** has its own skills directory. Link a skill there too, so Hermes's own skill tools can
-  load it when the card says "load the haskell-coder skill":
-
-  ```sh
-  ln -sfn ~/code/dotfiles/agents/haskell-coder ~/.hermes/skills/haskell-coder
-  ```
-
-- **Claude Code and Codex**, to use a skill directly with no fast-agent in between:
-
-  ```sh
-  mkdir -p ~/.claude/skills ~/.codex/skills
-  ln -sfn ~/code/dotfiles/agents/haskell-coder ~/.claude/skills/haskell-coder
-  ln -sfn ~/code/dotfiles/agents/haskell-coder ~/.codex/skills/haskell-coder
-  ```
-
-To add a skill, create `agents/<name>/SKILL.md` and link it the same way. To give it its own
-tool, add `cards/<name>.md` modelled on `cards/haskell-coder.md`.
-
-## 4. Run fast-agent
-
-From `~/code/dotfiles/agents`, with the Hermes key exported for fast-agent:
-
-```sh
-cd ~/code/dotfiles/agents
-export GENERIC_API_KEY=$(grep '^API_SERVER_KEY=' ~/.hermes/.env | cut -d= -f2-)
-```
-
-Try an agent interactively first:
-
-```sh
-uvx fast-agent-mcp go -c fast-agent.yaml --agent-cards cards --agent haskell-coder
-```
-
-Serve every card as an MCP tool over HTTP:
-
-```sh
-uvx fast-agent-mcp serve -c fast-agent.yaml --agent-cards cards --transport http --port 8810
-```
-
-Leave out `--shell`: with Hermes as the model, Hermes already runs the terminal and file tools on
-this machine.
-
-Register the server once with each client:
-
-```sh
-claude mcp add --scope user --transport http fast-agent http://localhost:8810/mcp
-codex mcp add fast-agent --url http://localhost:8810/mcp
-```
-
-Each card appears as one tool, named after the card. Restart the client to pick up a new card.
-
-## Stopping
-
-Ctrl-C in the fast-agent and Hermes terminals. Nothing else is left running.
-
-## Not yet verified
-
-Verified 2026-10-08 with fast-agent 0.10.43: `serve` starts the server at
-`http://127.0.0.1:8810/mcp`, and each card is one tool named after the card, taking a single
-`message` string. There is no separate project argument, so name the project in the message.
-fast-agent serves no MCP prompts.
-
-Not yet verified:
-
-- **Skill loading through Hermes.** Whether the agent loads the skill via Hermes's own skill tools
-  when the card tells it to. If it does not, put the skill text back into the card body.
+- `uvx fast-agent-mcp serve --agent-cards <dir> --transport http --port 8810` serves one MCP tool
+  per agent card at `http://127.0.0.1:8810/mcp`; a card is a Markdown file with `name`,
+  `description` and run settings in its frontmatter, and its body is the agent's instructions.
+- fast-agent reaches Hermes through its `generic` provider (`base_url:
+  http://127.0.0.1:8642/v1`, key in `GENERIC_API_KEY`). Hermes honours the requested model only with
+  `direct_model_requests = true` (set in `modules/hermes.nix`), and reads it as
+  `<provider>:<model>`, split at the first colon, e.g. `generic.custom:gpt-oss:20b` for local Ollama.
+- On this 24 GB MacBook, `gpt-oss:20b` (13 GB) is the largest local model that leaves room to work.
+- Hermes reaches Anthropic through an OAuth login. A Claude subscription is not for third-party
+  tools, so route only API-key, cloud, Copilot or local credentials through it.
