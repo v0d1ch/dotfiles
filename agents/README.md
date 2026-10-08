@@ -10,7 +10,9 @@ agents/
   agents                    start/stop script: ./agents up | down | status
   fast-agent.yaml           fast-agent config: Hermes as the model endpoint, default model, skills
   haskell-coder/SKILL.md    a skill: frontmatter (name, description) plus the instructions
+  dotfiles-expert/SKILL.md  a skill: maintains this repository (Nix, nix-darwin, Homebrew, updates)
   cards/haskell-coder.md    a fast-agent card: the agent fast-agent serves as an MCP tool
+  cards/dotfiles-expert.md  the card for dotfiles-expert
 ```
 
 ## Quick start

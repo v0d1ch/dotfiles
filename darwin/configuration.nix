@@ -142,6 +142,14 @@
   # homebrew.enable = false if you'd rather skip it.
   homebrew = {
     enable = true;
+    # Every `darwin-rebuild switch` refreshes Homebrew and upgrades outdated brews and casks.
+    # Casks that update themselves (auto_updates) or are versioned `latest` are skipped by
+    # `brew upgrade` unless marked `greedy = true` in their entry below. Cleanup stays off on
+    # purpose: "zap"/"uninstall" would remove any app not declared here, data included.
+    onActivation = {
+      autoUpdate = true;
+      upgrade = true;
+    };
     taps = [
       "stablyai/orca" # Orca ADE; the core `orca` cask is plotly's unrelated chart exporter, so the cask below is fully qualified
     ];
