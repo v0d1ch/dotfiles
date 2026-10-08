@@ -138,6 +138,8 @@
 
   # GUI apps whose nixpkgs build is Linux-only get installed through Homebrew
   # casks instead (each is marked with its cask name in modules/home.nix).
+  # A few fast-moving macOS CLIs also live here when Homebrew tracks upstream
+  # releases more closely than nixpkgs.
   # Requires Homebrew to be installed first (https://brew.sh); set
   # homebrew.enable = false if you'd rather skip it.
   homebrew = {
@@ -177,6 +179,7 @@
       "raspberry-pi-imager" # SD card flasher for Raspberry Pi OS; the nixpkgs darwin build isn't cached (Qt from source)
       "handy"       # open-source offline speech-to-text (push-to-talk dictation, local Whisper/Parakeet models); not in nixpkgs
       "cursor"      # AI code editor; nixpkgs code-cursor builds for darwin but lags many releases behind and can't self-update
+      "codex"       # OpenAI Codex CLI; Homebrew cask tracks upstream releases faster than nixpkgs on macOS
       "dbx"         # DBX database client (MySQL/Postgres/SQLite/Redis/Mongo/...); the upstream flake's dbx-desktop is Linux-only, and the nixpkgs `dbx` is an unrelated Databricks CLI
       "stablyai/orca/orca" # Orca ADE: run/watch many coding agents in parallel worktrees, phone companion app; Linux uses packages/orca.nix. See docs/orca-tailscale.md
     ];

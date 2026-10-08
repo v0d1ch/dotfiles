@@ -16,7 +16,6 @@ in
          vim           # classic vi, always-available fallback
          vscode        # Visual Studio Code
          cursor-cli    # Cursor CLI agent (`cursor-agent`); the Cursor editor itself is the `cursor` Homebrew cask on macOS. Orca uses this for --agent cursor
-         codex         # OpenAI Codex CLI agent; `codex login` signs in with the ChatGPT account, no API key needed
 
          # --- Version control & dev tools ---
          gh            # GitHub CLI
@@ -149,6 +148,7 @@ in
          maccy  # menu bar clipboard manager (macOS-only); grant Accessibility access on first launch
      ]
      ++ lib.optionals isLinux [
+         codex # OpenAI Codex CLI agent (macOS: cask codex tracks upstream releases faster than nixpkgs)
          # DBX database client, built from its upstream flake (Tauri 2 + Rust +
          # pnpm, no binary cache, so the first build takes a while). The flake
          # exposes a darwin attr too but marks it platforms.linux, hence the
