@@ -1,0 +1,15 @@
+# fast-agent talks to Hermes's OpenAI-compatible API. The key is GENERIC_API_KEY, set by `./agents up`
+# from API_SERVER_KEY in ~/.hermes/.env. See README.md, section 2.
+generic:
+  base_url: "http://127.0.0.1:8642/v1"
+
+# Used by every card without its own `model:` line. "generic." selects Hermes; the rest is the Hermes
+# model string <provider>:<model>. custom:<model> is the local Ollama endpoint from modules/hermes.nix.
+default_model: "generic.custom:gpt-oss:20b"
+
+skills:
+  directories:
+    - "~/code/dotfiles/agents"
+
+logger:
+  level: "info"
