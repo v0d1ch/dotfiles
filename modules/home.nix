@@ -77,7 +77,7 @@ in
          docker-compose       # engine: virtualisation.docker on NixOS, Docker Desktop/colima on macOS
          cachix               # Nix binary cache client
          nodejs_22            # Node.js
-         uv                   # Python package/tool manager; `uv tool install X` puts CLIs in ~/.local/bin
+         uv                   # Python package/tool manager; user-wide tools are listed in ../uv-tools.sh
          blesh                # ble.sh — bash autosuggestions/highlighting
 
          # --- Agda ---

@@ -24,8 +24,8 @@ Never change a machine imperatively. No `brew install`, `brew uninstall`, `nix p
 
 ## Before changing anything
 
-1. Read `CLAUDE.md` (or its twin `AGENTS.md`) and `README.md` in the repo. They hold the placement
-   rules and the gotchas. They can be stale on details such as the nixpkgs release: `flake.nix`
+1. Read `README.md` in the repo for architecture, commands, placement rules and gotchas.
+   It can be stale on details such as the nixpkgs release: `flake.nix`
    and `flake.lock` are the truth, and when you find a stale line, fix it.
 2. Find the existing pattern for what you are about to do and copy it. Every package line in this
    repo carries a short comment saying what it is and, where it matters, why it comes from where
@@ -117,8 +117,8 @@ service (Hermes, ollama, syncthing, a launchd agent), say what needs a restart a
 
 The repo documents itself; a change is not done until the docs match it.
 
-- `README.md`: the "Where to change things" table, the macOS notes, the gotchas.
-- `CLAUDE.md` and `AGENTS.md`: the same text for two tools. Change both in the same way.
+- `README.md`: the shared repository guidance, architecture, build commands, package placement,
+  the "Where to change things" table, the macOS notes and the gotchas.
 - `docs/*.md`: setup guides for specific subsystems. Update the one that covers what you touched.
 - Inline comments: when a workaround's reason goes away (an upstream fix, a new release), remove
   the workaround and its comment together.
