@@ -20,6 +20,7 @@ in
          # --- Version control & dev tools ---
          gh            # GitHub CLI
          lazygit       # git TUI
+         difftastic    # syntax-aware diff viewer (difft)
          jujutsu       # jj, git-compatible VCS
          dbeaver-bin   # database GUI client
          nvd           # diff nix closures/generations
@@ -342,6 +343,9 @@ in
            core = {
              editor = "nvim";
            };
+           # Use Difftastic for local Git diffs; `git diff --no-ext-diff`
+           # remains available when a plain patch is needed.
+           diff.external = "difft";
            pull = {
              rebase = true;
            };
