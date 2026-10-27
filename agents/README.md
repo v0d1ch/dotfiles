@@ -105,21 +105,3 @@ description: >-
   What the skill does and when to use it, over as many indented lines as needed.
 ``` Write the `description` so it says what the skill does and when to use it: that is
 what the client reads when deciding to call it.
-
-## Optional: delegating to another model
-
-Not needed for the setup above. To hand a whole task to a different model than the one you are
-talking to (a local model, or a long loop kept out of your session), the same skills can be served
-by [fast-agent](https://fast-agent.ai) as agents running on Hermes (`modules/hermes.nix`).
-Findings from trying it on 2026-10-08:
-
-- `uvx fast-agent-mcp serve --agent-cards <dir> --transport http --port 8810` serves one MCP tool
-  per agent card at `http://127.0.0.1:8810/mcp`; a card is a Markdown file with `name`,
-  `description` and run settings in its frontmatter, and its body is the agent's instructions.
-- fast-agent reaches Hermes through its `generic` provider (`base_url:
-  http://127.0.0.1:8642/v1`, key in `GENERIC_API_KEY`). Hermes honours the requested model only with
-  `direct_model_requests = true` (set in `modules/hermes.nix`), and reads it as
-  `<provider>:<model>`, split at the first colon, e.g. `generic.custom:gpt-oss:20b` for local Ollama.
-- On this 24 GB MacBook, `gpt-oss:20b` (13 GB) is the largest local model that leaves room to work.
-- Hermes reaches Anthropic through an OAuth login. A Claude subscription is not for third-party
-  tools, so route only API-key, cloud, Copilot or local credentials through it.

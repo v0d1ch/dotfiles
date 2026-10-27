@@ -66,7 +66,7 @@ macOS notes:
 
 ### Flake-parts modules
 
-The flake uses `flake-parts.lib.mkFlake` with three custom modules registered
+The flake uses `flake-parts.lib.mkFlake` with two custom modules registered
 under `flake.modules`:
 
 - `flake.modules.nixos.v0d1ch`, declared in `modules/system-packages.nix`,
@@ -76,8 +76,6 @@ under `flake.modules`:
   apps, programs, services and dotfiles on all three machines. Linux-only
   packages and services use `pkgs.stdenv.isLinux` guards; Darwin-only settings
   use `isDarwin`.
-- `flake.modules.homeManager.hermes`, declared in `modules/hermes.nix`, installs
-  and configures Hermes Agent on the MacBook only.
 
 The NixOS machine configurations import the system and shared home-manager
 modules with this pattern:
@@ -91,8 +89,8 @@ home-manager.users.v0d1ch = { ... }: {
 };
 ```
 
-The Darwin configuration uses the same home-manager settings and imports both
-home-manager modules, without the Linux system module.
+The Darwin configuration uses the same home-manager settings and imports the
+shared home-manager module, without the Linux system module.
 
 ### Machine configurations
 
@@ -116,13 +114,6 @@ applicable flake-parts modules.
   `waybar/` and `zellij/`. Home-manager installs the wired-up files; the
   remaining manual snapshots are listed under Gotchas below.
 
-`modules/hermes.nix` uses the upstream `hermes-agent` home-manager module and
-is imported only by the MacBook. It declares `~/.hermes/config.yaml` with a
-local terminal backend and an API server on port 8642; the gateway does not
-start at login. Secrets live in `~/.hermes/.env`, outside the repository.
-The A2A agent fleet, `fleet` script and plenum MCP hub that use Hermes live in
-`github.com/Devnull-org/plenum`, checked out at `~/code/plenum`.
-
 ### Flake inputs
 
 `flake.nix` declares the inputs and `flake.lock` records their exact revisions:
@@ -137,8 +128,6 @@ The A2A agent fleet, `fleet` script and plenum MCP hub that use Hermes live in
   in the NixOS machine configurations; it is not a separate flake input.
 - `herdr`: tabbed terminal session manager from `ogulcancelik/herdr`.
 - `dbx`: database client from `t8y2/dbx`, retaining its own nixpkgs pin.
-- `hermes-agent`: Hermes Agent from `NousResearch/hermes-agent`, retaining its
-  own nixpkgs pin for its uv2nix build.
 - `mac-app-util`: macOS app trampolines from `hraban/mac-app-util`, following
   `nixpkgs-unstable`.
 

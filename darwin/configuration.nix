@@ -50,7 +50,6 @@
   home-manager.users.v0d1ch = { lib, config, pkgs, ... }: {
     imports = [
       inputs.self.modules.homeManager.v0d1ch
-      inputs.self.modules.homeManager.hermes   # Hermes Agent, macbook only
     ];
 
     # macOS-only: sign with a local software key instead of the YubiKey-backed

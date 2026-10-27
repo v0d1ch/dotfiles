@@ -25,10 +25,6 @@
     # No nixpkgs.follows on purpose: the flake pins its own nixpkgs-unstable +
     # rust toolchain, and following ours would only make the build diverge.
     dbx.url = "github:t8y2/dbx";
-    # Hermes Agent, the brain behind the agent fleet (see modules/hermes.nix). Its own nixpkgs
-    # pin on purpose: the uv2nix build is tied to it.
-    hermes-agent.url = "github:NousResearch/hermes-agent";
-
     flake-parts.url = "github:hercules-ci/flake-parts";
   };
   outputs = inputs: inputs.flake-parts.lib.mkFlake {inherit inputs;} {
@@ -38,7 +34,6 @@
        inputs.flake-parts.flakeModules.modules
        ./modules/system-packages.nix
        ./modules/home.nix
-       ./modules/hermes.nix
     ];
     flake.nixosConfigurations = {
       nixos = inputs.unstable.lib.nixosSystem {

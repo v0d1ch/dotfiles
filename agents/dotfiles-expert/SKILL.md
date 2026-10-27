@@ -45,7 +45,6 @@ Never change a machine imperatively. No `brew install`, `brew uninstall`, `nix p
 | Something for one machine only | that machine's `configuration.nix` |
 | Package not in nixpkgs, or too old there | a derivation in `packages/<name>.nix`, loaded with `pkgs.callPackage` |
 | Package from a flake input | add the input to `flake.nix`, then include it behind an `inputs.X.packages ? ${system}` guard |
-| Hermes Agent | `modules/hermes.nix` (managed mode: `hermes config set` refuses, edit the module) |
 | Agent skills, served to MCP clients by Skillz | `agents/<name>/SKILL.md` (see `agents/README.md`) |
 
 New files must be `git add`ed before a rebuild: flakes only see tracked files.
@@ -95,8 +94,9 @@ Do updates as their own change, never mixed with feature work, and always show w
   their names in the repo. Cleanup is off on purpose, so removing a cask from the repo does not
   uninstall the app; say so, and give the `brew uninstall --cask <name>` command if the user wants
   it gone.
-- **Flake inputs that pin their own nixpkgs** (`hermes-agent`, `dbx`, `mac-app-util` follows
-  `nixpkgs-unstable`) have comments explaining why. Keep those choices unless the reason is gone.
+- **Flake inputs with independent nixpkgs choices** (`dbx` pins its own;
+  `mac-app-util` follows `nixpkgs-unstable`) have comments explaining why.
+  Keep those choices unless the reason is gone.
 
 ## Verifying a change
 
@@ -111,7 +111,7 @@ Build every configuration the change can affect, as far as this machine allows:
 Do not run `switch`. It needs `sudo` and changes the running system, so give the user the exact
 command instead: `sudo darwin-rebuild switch --flake ~/code/dotfiles#macbook`, or
 `sudo nixos-rebuild switch --flake ~/code/dotfiles#<machine>`. When a change affects a running
-service (Hermes, ollama, syncthing, a launchd agent), say what needs a restart afterwards.
+service (ollama, syncthing, a launchd agent), say what needs a restart afterwards.
 
 ## Keeping the docs true
 
@@ -125,8 +125,8 @@ The repo documents itself; a change is not done until the docs match it.
 
 ## Safety
 
-- No secrets in the repo, ever. Keys and logins live in files such as `~/.hermes/.env`, outside
-  git. If you find one tracked, stop and tell the user.
+- No secrets in the repo, ever. Keys and logins live outside git. If you find
+  one tracked, stop and tell the user.
 - Never `sudo`, never `nix-collect-garbage` or `nix store gc`, never force-push, never rewrite
   history.
 - Do not remove a package, cask, or service the user did not ask to remove, even if it looks
