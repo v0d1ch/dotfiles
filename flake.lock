@@ -366,6 +366,22 @@
         "type": "github"
       }
     },
+    "neogit": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1791971045,
+        "narHash": "sha256-B2phtEz/UfqooGgIy2RGmKgTiYOOwMP1nIr1qKp9Uy0=",
+        "owner": "NeogitOrg",
+        "repo": "neogit",
+        "rev": "a6549816e62cec7037f1549d8f1659d45635370c",
+        "type": "github"
+      },
+      "original": {
+        "owner": "NeogitOrg",
+        "repo": "neogit",
+        "type": "github"
+      }
+    },
     "nix-darwin": {
       "inputs": {
         "nixpkgs": [
@@ -613,16 +629,17 @@
         "aiken": "aiken",
         "ctrlsf": "ctrlsf",
         "flake-parts": "flake-parts_4",
+        "neogit": "neogit",
         "nixpkgs": "nixpkgs_8",
         "nixvim": "nixvim_2",
         "tree-sitter-haskell": "tree-sitter-haskell"
       },
       "locked": {
-        "lastModified": 1791285254,
-        "narHash": "sha256-Wf7mEsTcRYUc0JnFyB2ZW75v6BWHGk7GDyoAGTzNWZE=",
+        "lastModified": 1793101290,
+        "narHash": "sha256-+/j8+ctTsEVlk0AjLEmhEhkbUG/i12W2JFuDjYECCkA=",
         "owner": "v0d1ch",
         "repo": "nixvim",
-        "rev": "4a64972ad988330dad56f50366c10332bcf18dd4",
+        "rev": "555a3441a53cd7831b97b761aa238350046ba131",
         "type": "github"
       },
       "original": {
