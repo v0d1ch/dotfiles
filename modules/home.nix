@@ -147,6 +147,7 @@ in
          yaak   # API client for REST/GraphQL/gRPC (move to shared list if wanted on Linux too)
          shottr # screenshot app with OCR, annotation and scrolling capture (macOS-only)
          maccy  # menu bar clipboard manager (macOS-only); grant Accessibility access on first launch
+         (pkgs.callPackage ../packages/semantic-diff.nix {}) # upstream macOS release; Homebrew tap fails validation
      ]
      ++ lib.optionals isLinux [
          codex # OpenAI Codex CLI agent (macOS: cask codex tracks upstream releases faster than nixpkgs)
