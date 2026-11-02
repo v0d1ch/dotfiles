@@ -153,6 +153,7 @@
     };
     taps = [
       "stablyai/orca" # Orca ADE; the core `orca` cask is plotly's unrelated chart exporter, so the cask below is fully qualified
+      { name = "humanlayer/humanlayer"; trusted = true; } # HumanLayer's tap requires explicit trust
     ];
     brews = [
       "mas" # Mac App Store CLI, needed for masApps below; declared so cleanup doesn't remove it after each rebuild
@@ -181,6 +182,7 @@
       "codex"       # OpenAI Codex CLI; Homebrew cask tracks upstream releases faster than nixpkgs on macOS
       "dbx"         # DBX database client (MySQL/Postgres/SQLite/Redis/Mongo/...); the upstream flake's dbx-desktop is Linux-only, and the nixpkgs `dbx` is an unrelated Databricks CLI
       "stablyai/orca/orca" # Orca ADE: run/watch many coding agents in parallel worktrees, phone companion app; Linux uses packages/orca.nix. See docs/orca-tailscale.md
+      "humanlayer/humanlayer/humanlayer" # HumanLayer desktop app; vendor tap publishes it as a cask, not a formula
     ];
     # Mac App Store apps (installed via `mas`, which nix-darwin adds when this
     # is non-empty). Requires being signed in to the App Store beforehand.
