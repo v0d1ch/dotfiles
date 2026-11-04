@@ -360,9 +360,22 @@ in
        enable = true;
        enableFishIntegration = true;
        enableZshIntegration = true;
-       presets = [ "gruvbox-rainbow" ];
        settings = {
-         add_newline = true;
+         add_newline = false;
+         format = "$directory$git_branch $character";
+         directory = {
+           format = "[$path]($style)";
+           style = "bold cyan";
+           truncation_length = 3;
+         };
+         git_branch = {
+           format = " [$branch]($style)";
+           style = "purple";
+         };
+         character = {
+           success_symbol = "[❯](green)";
+           error_symbol = "[❯](red)";
+         };
        };
      };
 
